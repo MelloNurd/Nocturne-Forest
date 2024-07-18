@@ -6,12 +6,15 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public PlayerInputActions playerControls;
+    [HideInInspector] public PlayerInputActions playerControls;
 
     Vector2 moveDirection = Vector2.zero;
 
     private InputAction move;
     private InputAction fire;
+
+    [Range(0.01f, 5f)]
+    [SerializeField] private float moveSpeed = 0.5f;
 
     private void OnEnable()
     {
@@ -47,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        transform.position += (Vector3)moveDirection;
+        transform.position += (Vector3)moveDirection * moveSpeed;
     }
 
     private void Fire(InputAction.CallbackContext context) {
