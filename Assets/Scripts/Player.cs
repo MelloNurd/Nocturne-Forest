@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
     [HideInInspector] public PlayerInputActions playerControls;
 
-    Vector2 moveDirection = Vector2.zero;
-
     private InputAction move;
     private InputAction fire;
+    
+    Vector2 moveDirection = Vector2.zero;
+
 
     [Range(0.01f, 5f)]
     [SerializeField] private float moveSpeed = 0.5f;
+
+    private bool canAttack = true;
 
     private void OnEnable()
     {
@@ -54,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Fire(InputAction.CallbackContext context) {
-        Debug.Log("We Fired");
+        if (!canAttack) return;
+
+        Debug.Log("Player Attacked");
     }
 }

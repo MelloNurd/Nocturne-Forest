@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 1211797341}
   - component: {fileID: 1211797340}
   m_Layer: 0
-  m_Name: grid_img
+  m_Name: temp bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
