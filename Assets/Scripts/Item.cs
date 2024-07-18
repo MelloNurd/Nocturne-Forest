@@ -12,11 +12,11 @@ public class Item : ScriptableObject
     public ActionType actionType;
     public Vector2Int range = new Vector2Int(5, 4);
 
-    [Header("Only gameplay")]
+    //[Header("Only gameplay")]
 
-    [Header("Only UI")]
+    //[Header("Only UI")]
 
-    [Header("Both")]
+    //[Header("Both")]
 
 }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,17 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+
+    [Serializable]
+    public enum PlayerStates {
+        Static, // The player cannot move
+        Dynamic, // Basically, if the player is capable of moving and performing actions.
+        // Running,
+        Rolling,
+        Attacking
+    }
+
+    public PlayerStates currentState = PlayerStates.Dynamic;
 
     private GameObject attackArea;
 
@@ -17,22 +29,20 @@ public class Player : MonoBehaviour
     
     Vector2 moveDirection = Vector2.zero;
 
-    [HideInInspector] public bool canMove = true;
-    private bool lockMovement = false; // This bool will lock movement to the whatever it currently is and prevent it from changing (utilized in rolling)
+    [Header("Moving")]
+    [SerializeField] float moveSpeed = 0.25f;
 
-    [Range(0.01f, 5f)]
-    [SerializeField] private float moveSpeed = 0.5f;
+    [Header("Attacking")]
+    [SerializeField] bool canAttack = true;
+    [SerializeField] float attackDelaySeconds = 0.2f; // The amount of time from attacking (clicking) until the attack hitbox activates
+    [SerializeField] float attackLengthSeconds = 0.2f; // The length of time that the attack hitbox is active
+    [SerializeField] float attackSpeedModifier = 0.2f;
 
-    [HideInInspector] public bool canAttack = true;
-    private float attackDelaySeconds = 0.2f; // The amount of time from attacking (clicking) until the attack hitbox activates
-    private float attackLengthSeconds = 0.2f; // The length of time that the attack hitbox is active
-    private float attackSpeedModifier = 0.2f;
-
-    [HideInInspector] public bool canRoll = true;
-    private float rollDelaySeconds = 0f; // The amount of time from rolling (pressing the button) until the roll starts
-    private float rollLengthSeconds = 0.1f; // The length of time that the roll occurs
-    private float rollCooldownLength = 3f; // not yet implemented
-    private float rollSpeedModifier = 5f;
+    [Header("Rolling")]
+    [SerializeField] bool canRoll = true;
+    [SerializeField] float rollLengthSeconds = 0.1f; // The length of time that the roll occurs
+    [SerializeField] float rollCooldownSeconds = 1f; // The length of time until the player can roll again
+    [SerializeField] float rollSpeedModifier = 5f;
 
     private void OnEnable()
     {
@@ -78,20 +88,26 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!lockMovement && canMove) {
+        if (currentState != PlayerStates.Rolling) {
             moveDirection = move.ReadValue<Vector2>();
         }
 
         if (IsMoving()) {
-            attackArea.transform.right = moveDirection;// = Quaternion.LookRotation(moveDirection); //RotateAround(transform.position, Vector3.forward, angle);
+            attackArea.transform.right = moveDirection;
             attackArea.transform.localPosition = moveDirection;
         }
     }
 
     private void FixedUpdate() {
-        if (canMove) 
+        if (currentState == PlayerStates.Dynamic) 
         {
             transform.position += (Vector3)moveDirection * moveSpeed;
+        }
+        else if (currentState == PlayerStates.Rolling) {
+            transform.position += (Vector3)moveDirection * moveSpeed * rollSpeedModifier;
+        }
+        else if (currentState == PlayerStates.Attacking) {
+            transform.position += (Vector3)moveDirection * moveSpeed * attackSpeedModifier;
         }
     }
 
@@ -100,13 +116,13 @@ public class Player : MonoBehaviour
     }
 
     private void OnAttack(InputAction.CallbackContext context) {
-        if (!canAttack) return;
+        if (currentState != PlayerStates.Dynamic || !canAttack) return;
 
         StartCoroutine(Attack());
     }
 
     private void OnRoll(InputAction.CallbackContext context) {
-        if (!IsMoving() || !canRoll) return;
+        if (currentState != PlayerStates.Dynamic || !canRoll) return;
 
         StartCoroutine(Roll());
     }
@@ -116,40 +132,32 @@ public class Player : MonoBehaviour
     }
 
     public bool IsMoving() {
-        return moveDirection != Vector2.zero;
+        return moveDirection != Vector2.zero || currentState == PlayerStates.Static;
     }
 
     IEnumerator Attack() {
-
+        currentState = PlayerStates.Attacking;
         canAttack = false;
-        canRoll = false;
-        float tempMoveSpeed = moveSpeed;
-        moveSpeed *= attackSpeedModifier;
 
         yield return new WaitForSeconds(attackDelaySeconds);
         EnableAttackArea();
         yield return new WaitForSeconds(attackLengthSeconds);
         DisableAttackArea();
-        
+
+        currentState = PlayerStates.Dynamic;
         canAttack = true;
-        canRoll = true;
-        moveSpeed = tempMoveSpeed;
     }
 
     IEnumerator Roll() {
+        currentState = PlayerStates.Rolling;
         canRoll = false;
-        canAttack = false;
 
-        yield return new WaitForSeconds(rollDelaySeconds);
-        lockMovement = true; // This will not disable movement, but disable the changing of the movement. In other words, it locks moveDirection.
-        float tempMoveSpeed = moveSpeed;
-        moveSpeed *= rollSpeedModifier;
-        
         yield return new WaitForSeconds(rollLengthSeconds);
-        
-        moveSpeed = tempMoveSpeed;
-        lockMovement = false;
-        canAttack = true;
+
+        currentState = PlayerStates.Dynamic;
+
+        yield return new WaitForSeconds(rollCooldownSeconds);
+
         canRoll = true;
     }
 
