@@ -18,13 +18,21 @@ public class Player : MonoBehaviour
     Vector2 moveDirection = Vector2.zero;
 
     [HideInInspector] public bool canMove = true;
+    private bool lockMovement = false; // This bool will lock movement to the whatever it currently is and prevent it from changing (utilized in rolling)
 
     [Range(0.01f, 5f)]
     [SerializeField] private float moveSpeed = 0.5f;
 
     [HideInInspector] public bool canAttack = true;
     private float attackDelaySeconds = 0.2f; // The amount of time from attacking (clicking) until the attack hitbox activates
-    private float attackLengthSeconds = 0.2f; // The amount of time that the attack hitbox is active
+    private float attackLengthSeconds = 0.2f; // The length of time that the attack hitbox is active
+    private float attackSpeedModifier = 0.2f;
+
+    [HideInInspector] public bool canRoll = true;
+    private float rollDelaySeconds = 0f; // The amount of time from rolling (pressing the button) until the roll starts
+    private float rollLengthSeconds = 0.1f; // The length of time that the roll occurs
+    private float rollCooldownLength = 3f; // not yet implemented
+    private float rollSpeedModifier = 5f;
 
     private void OnEnable()
     {
@@ -70,7 +78,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canMove) {
+        if (!lockMovement && canMove) {
             moveDirection = move.ReadValue<Vector2>();
         }
 
@@ -98,7 +106,9 @@ public class Player : MonoBehaviour
     }
 
     private void OnRoll(InputAction.CallbackContext context) {
-        Debug.Log("Player Rolled");
+        if (!IsMoving() || !canRoll) return;
+
+        StartCoroutine(Roll());
     }
 
     private void OnInteract(InputAction.CallbackContext context) {
@@ -110,9 +120,11 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator Attack() {
+
         canAttack = false;
+        canRoll = false;
         float tempMoveSpeed = moveSpeed;
-        moveSpeed *= 0.2f;
+        moveSpeed *= attackSpeedModifier;
 
         yield return new WaitForSeconds(attackDelaySeconds);
         EnableAttackArea();
@@ -120,7 +132,25 @@ public class Player : MonoBehaviour
         DisableAttackArea();
         
         canAttack = true;
+        canRoll = true;
         moveSpeed = tempMoveSpeed;
+    }
+
+    IEnumerator Roll() {
+        canRoll = false;
+        canAttack = false;
+
+        yield return new WaitForSeconds(rollDelaySeconds);
+        lockMovement = true; // This will not disable movement, but disable the changing of the movement. In other words, it locks moveDirection.
+        float tempMoveSpeed = moveSpeed;
+        moveSpeed *= rollSpeedModifier;
+        
+        yield return new WaitForSeconds(rollLengthSeconds);
+        
+        moveSpeed = tempMoveSpeed;
+        lockMovement = false;
+        canAttack = true;
+        canRoll = true;
     }
 
     private void EnableAttackArea() { // This is not to enable the canAttack bool, this is for setting the attackArea to enabled
