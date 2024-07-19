@@ -180,6 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 1
   moveSpeed: 0.1
+  playerDistanceCutoff: 1.25
   canRoam: 1
   roamRadius: 5
   timeBetweenRoam: 3
@@ -199,13 +200,13 @@ MonoBehaviour:
   pursueSpeedModifier: 1
   canAttack: 1
   attackRange: 2.5
-  attackDelaySeconds: 0.25
+  attackDelaySeconds: 0.3
   attackLengthSeconds: 0.2
   attackCooldownSeconds: 1
   attackSpeedModifier: 0.1
   canCharge: 1
-  windUpLengthSeconds: 0.5
-  windUpSpeedModifier: -0.2
+  windUpLengthSeconds: 0.8
+  windUpSpeedModifier: -0.5
   chargeLengthSeconds: 0.3
   chargeCooldownSeconds: 8
   chargeSpeedModifier: 5

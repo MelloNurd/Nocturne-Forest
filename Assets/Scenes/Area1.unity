@@ -448,7 +448,7 @@ SpriteRenderer:
   m_Size: {x: 9.8, y: 9.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1211797341
@@ -651,6 +651,18 @@ PrefabInstance:
     - target: {fileID: 3808750101104644973, guid: 68bbc42b72b3c30499189b3d644e4a22, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076566869411775415, guid: 68bbc42b72b3c30499189b3d644e4a22, type: 3}
+      propertyPath: attackDelaySeconds
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076566869411775415, guid: 68bbc42b72b3c30499189b3d644e4a22, type: 3}
+      propertyPath: windUpLengthSeconds
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076566869411775415, guid: 68bbc42b72b3c30499189b3d644e4a22, type: 3}
+      propertyPath: windUpSpeedModifier
+      value: -0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

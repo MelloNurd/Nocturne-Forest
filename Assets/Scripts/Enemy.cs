@@ -33,6 +33,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] float moveSpeed = 0.25f; // The base speed of the enemy
 
+    [SerializeField] float playerDistanceCutoff = 1.25f; // The distance from the player the enemy will stop moving towards the player. This is so it doesn't go inside the player.
+
     [Header("Roaming")]
     [SerializeField] bool canRoam = true;
     [SerializeField] float roamRadius = 5f; // Maximum distance the enemy may pick to roam to, in a circle
@@ -64,7 +66,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Charging")]
     [SerializeField] bool canCharge = true;
-    [SerializeField] float windUpLengthSeconds = 1f; // The length of time that the wind up occurs
+    [SerializeField] float windUpLengthSeconds = 0.8f; // The length of time that the wind up occurs
     [SerializeField] float windUpSpeedModifier = -0.8f; // Multiplicative modifier of moveSpeed while winding up
     [SerializeField] float chargeLengthSeconds = 0.1f; // The length of time that the roll occurs
     [SerializeField] float chargeCooldownSeconds = 1f; // The length of time until the player can roll again
@@ -103,43 +105,46 @@ public class Enemy : MonoBehaviour
         // These are the different movement codes. Different states will move at different speeds.
         if (currentState == EnemyStates.Roaming) { // Code for when enemy is in roaming state
             if (!canRoam) return;
-            
+
+            if (playerDist <= pursuitDistance) { // If enemy is close enough to player, start pursuing
+                currentState = EnemyStates.Pursuing;
+                return;
+            }
+
             transform.position += ((Vector3)activeRoamPoint - transform.position).normalized * moveSpeed * roamSpeedModifier; // Moving in direction of activeRoamPoint
 
             if (Vector2.Distance(transform.position, activeRoamPoint) < 0.2f) {
                 StartCoroutine(TryRoam()); // If has reached roam point, try to get a new roam point
             }
-
-            if (playerDist <= pursuitDistance) { // If enemy is close enough to player, start pursuing
-                currentState = EnemyStates.Pursuing; 
-            }
         }
         else if (currentState == EnemyStates.Patrolling) { // Code for when enemy is in patrolling state
             if (!canPatrol) return;
+
+            if (playerDist <= pursuitDistance) { // If enemy is close enough to player, start pursuing
+                currentState = EnemyStates.Pursuing;
+                return;
+            }
 
             transform.position += ((Vector3)activePatrolPoint - transform.position).normalized * moveSpeed * patrolSpeedModifier; // Moving in direction of actingPatrolPoint
 
             if (Vector2.Distance(transform.position, activePatrolPoint) < 0.2f) {
                 StartCoroutine(TryPatrol()); // If has reached patrol point, try to get a new patrol point
             }
-
-            if (playerDist <= pursuitDistance) { // If enemy is close enough to player, start pursuing
-                currentState = EnemyStates.Pursuing;
-            }
         }
         else if (currentState == EnemyStates.Pursuing) { // Code for when enemy is in pursuing state
             if (!canPursue) return;
 
-            transform.position += (Vector3)playerDir * moveSpeed * pursueSpeedModifier; // Moves in direction of player
-
-            TryAttack(); // Checks if attacking conditions are met. If so, attacks
-
             if (playerDist >= pursuitLossDistance) { // If player gets too far away, stop pursuing
                 ResetMovementState();
+                return;
             }
+
+            if (playerDist > playerDistanceCutoff) transform.position += (Vector3)playerDir * moveSpeed * pursueSpeedModifier; // Moves in direction of player. Only does this when far enough away, to prevent enemy from walking into player.
+
+            TryAttack(); // Checks if attacking conditions are met. If so, attacks
         }
         else if (currentState == EnemyStates.Attacking) { // Code for when enemy is in attacking state
-            transform.position += (Vector3)playerDir * moveSpeed * attackSpeedModifier;
+            if (playerDist > playerDistanceCutoff) transform.position += (Vector3)playerDir * moveSpeed * attackSpeedModifier;
         }
         else if (currentState == EnemyStates.WindingUp) { // Code for when enemy is in winding up state
             transform.position += (Vector3)playerDir * moveSpeed * windUpSpeedModifier;
