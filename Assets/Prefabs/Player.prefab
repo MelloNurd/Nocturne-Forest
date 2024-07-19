@@ -49,15 +49,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 1
+  interactionRange: 2
   moveSpeed: 0.25
   canAttack: 1
   attackDelaySeconds: 0.2
   attackLengthSeconds: 0.2
   attackSpeedModifier: 0.2
   canRoll: 1
-  rollLengthSeconds: 0.1
+  rollLengthSeconds: 0.15
   rollCooldownSeconds: 1
-  rollSpeedModifier: 5
+  rollSpeedModifier: 3.5
+  showRadiusSizes: 1
 --- !u!50 &3015978145383430843
 Rigidbody2D:
   serializedVersion: 4

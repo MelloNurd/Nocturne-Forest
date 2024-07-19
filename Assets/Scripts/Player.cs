@@ -28,7 +28,10 @@ public class Player : MonoBehaviour
     
     Vector2 moveDirection = Vector2.zero; // Vector which will be based on the movement inputs
 
-    [Header("Moving")]
+    [SerializeField] float interactionRange = 2f;
+    LayerMask interactionMask;
+
+    [Header("Movement")]
     [SerializeField] float moveSpeed = 0.25f; // The base speed of the player
 
     [Header("Attacking")]
@@ -39,9 +42,12 @@ public class Player : MonoBehaviour
 
     [Header("Rolling")]
     [SerializeField] bool canRoll = true;
-    [SerializeField] float rollLengthSeconds = 0.1f; // The length of time that the roll occurs
+    [SerializeField] float rollLengthSeconds = 0.15f; // The length of time that the roll occurs
     [SerializeField] float rollCooldownSeconds = 1f; // The length of time until the player can roll again
-    [SerializeField] float rollSpeedModifier = 5f; // Multiplicative modifier of moveSpeed while rolling
+    [SerializeField] float rollSpeedModifier = 3.5f; // Multiplicative modifier of moveSpeed while rolling
+
+    [Header("Debug")]
+    [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes = true; // Shows the radiuses for various variables within the scene view
 
     private void OnEnable()
     { // This is where we are initialzing all of the input stuff
@@ -76,6 +82,8 @@ public class Player : MonoBehaviour
 
         attackArea = transform.Find("AttackArea").gameObject; // Initializes object to the "AttackArea" child
         DisableAttackArea(); // Disables the attack area on start, just in case
+
+        interactionMask = LayerMask.GetMask("Interactable"); // Sets the interactionMask to only interact with the layer "Interactable". This is used in the OverlapCircle function.
     }
 
     // Update is called once per frame
@@ -106,8 +114,8 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.CompareTag("EnemyAttack")) { // Code for when the player is hit by Enemy attack area
-            Debug.Log("Player Hit");
+        if(currentState != PlayerStates.Rolling && collision.CompareTag("EnemyAttack")) { // Code for when the player is hit by Enemy attack area
+            // Player was hit
         }
     }
 
@@ -124,7 +132,10 @@ public class Player : MonoBehaviour
     }
 
     private void OnInteract(InputAction.CallbackContext context) { // Function is called when the interact input button is pressed
-        Debug.Log("Player Interacted");
+        Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask); // Gets all interactable objects within the interactionRange of the player into a collider array
+        foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
+            Debug.Log(objCol.gameObject.name); // Prints name
+        }
     }
 
     public bool IsMoving() { // Returns true or false based on whether the player is inputting movement buttons (keys, controller, etc) OR the player is in static state
@@ -165,5 +176,12 @@ public class Player : MonoBehaviour
     private void DisableAttackArea() { // Disabling the attackArea gameobject, which has the collider for attacking
         attackArea.SetActive(false);
         attackArea.GetComponent<BoxCollider2D>().enabled = false;
+    }
+
+    private void OnDrawGizmos() { // Function that draws the debug circles in the scene view
+        if (showRadiusSizes) {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, interactionRange);
+        }
     }
 }

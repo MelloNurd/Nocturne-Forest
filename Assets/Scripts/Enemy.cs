@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     Vector2 playerDir;
     float playerDist;
 
+    [Header("Movement")]
     [SerializeField] float moveSpeed = 0.25f; // The base speed of the enemy
 
     [SerializeField] float playerDistanceCutoff = 1.25f; // The distance from the player the enemy will stop moving towards the player. This is so it doesn't go inside the player.
@@ -67,7 +68,7 @@ public class Enemy : MonoBehaviour
     [Header("Charging")]
     [SerializeField] bool canCharge = true;
     [SerializeField] float windUpLengthSeconds = 0.8f; // The length of time that the wind up occurs
-    [SerializeField] float windUpSpeedModifier = -0.8f; // Multiplicative modifier of moveSpeed while winding up
+    [SerializeField] float windUpSpeedModifier = -0.5f; // Multiplicative modifier of moveSpeed while winding up
     [SerializeField] float chargeLengthSeconds = 0.1f; // The length of time that the roll occurs
     [SerializeField] float chargeCooldownSeconds = 1f; // The length of time until the player can roll again
     [SerializeField] float chargeSpeedModifier = 5f; // Multiplicative modifier of moveSpeed while charging
@@ -75,7 +76,7 @@ public class Enemy : MonoBehaviour
     [Tooltip("This is the percent for the attack to be a charge instead of a normal attack")][SerializeField] int chargeChancePercent = 80; // The percent for the attack to be a charge instead of a normal attack, out of 100
 
     [Header("Debug")]
-    [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes; // Shows the radiuses for various variables within the scene view
+    [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes = true; // Shows the radiuses for various variables within the scene view
 
     // Start is called before the first frame update
     void Awake()
@@ -156,7 +157,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("PlayerAttack")) { // When getting hit by the player's attack area
-            Debug.Log("Enemy Hit");
+            // Enemy was hit
         }
     }
 

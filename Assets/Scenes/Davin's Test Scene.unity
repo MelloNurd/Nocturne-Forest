@@ -2196,6 +2196,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1607398005197541767, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
+      propertyPath: canRoll
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607398005197541767, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
+      propertyPath: canAttack
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6140301126427888329, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.021880746
