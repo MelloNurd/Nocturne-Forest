@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8669531736936097403}
   m_Layer: 0
   m_Name: AttackArea
-  m_TagString: PlayerAttack
+  m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.039215688}
+  m_Color: {r: 0.690566, g: 0, b: 0, a: 0.039215688}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -198,15 +198,19 @@ MonoBehaviour:
   pursuitLossDistance: 20
   pursueSpeedModifier: 1
   canAttack: 1
-  attackDelaySeconds: 0.2
+  attackRange: 2.5
+  attackDelaySeconds: 0.25
   attackLengthSeconds: 0.2
-  attackSpeedModifier: 0.2
+  attackCooldownSeconds: 1
+  attackSpeedModifier: 0.1
   canCharge: 1
-  chargeDelaySeconds: 0.2
-  chargeLengthSeconds: 0.1
-  chargeCooldownSeconds: 1
+  windUpLengthSeconds: 0.5
+  windUpSpeedModifier: -0.2
+  chargeLengthSeconds: 0.3
+  chargeCooldownSeconds: 8
   chargeSpeedModifier: 5
-  showRadiusSizes: 0
+  chargeChancePercent: 80
+  showRadiusSizes: 1
 --- !u!50 &9156526688074381366
 Rigidbody2D:
   serializedVersion: 4

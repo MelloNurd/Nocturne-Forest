@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
         Patrolling,
         Pursuing,
         Attacking,
+        WindingUp, // This is the "charging up" for the charging attack
         Charging
     }
 
@@ -30,187 +31,243 @@ public class Enemy : MonoBehaviour
     Vector2 playerDir;
     float playerDist;
 
-
-    [SerializeField] float moveSpeed = 0.25f;
+    [SerializeField] float moveSpeed = 0.25f; // The base speed of the enemy
 
     [Header("Roaming")]
     [SerializeField] bool canRoam = true;
-    [SerializeField] float roamRadius = 5f;
-    [SerializeField] float timeBetweenRoam = 3f;
-    [SerializeField] float roamSpeedModifier = 1f;
+    [SerializeField] float roamRadius = 5f; // Maximum distance the enemy may pick to roam to, in a circle
+    [SerializeField] float timeBetweenRoam = 3f; // The amount of time the enemy pauses before moving to a new random point
+    [SerializeField] float roamSpeedModifier = 1f; // Multiplicative modifier of moveSpeed while roaming
     Vector2 activeRoamPoint = Vector2.zero;
 
     [Header("Patrolling")]
     [SerializeField] bool canPatrol = true;
-    [SerializeField] List<Vector2> patrolPoints = new List<Vector2>();
-    [SerializeField] PatrolStyles patrolStyle = PatrolStyles.RoundRobin;
-    [SerializeField] float timeBetweenPatrol = 3f;
-    [SerializeField] float patrolSpeedModifier = 1f;
+    [SerializeField] List<Vector2> patrolPoints = new List<Vector2>(); // A list of Vector2's that the enemy will patrol amongst
+    [SerializeField] PatrolStyles patrolStyle = PatrolStyles.RoundRobin; // Round-Robin: picks the next patrol point in the list; Random: Picks a random patrol point from the list
+    [SerializeField] float timeBetweenPatrol = 3f; // The amount of time the enemy pauses before moving to a new patrol point
+    [SerializeField] float patrolSpeedModifier = 1f; // Multiplicative modifier of moveSpeed while patrolling
     Vector2 activePatrolPoint;
 
     [Header("Pursuing")]
     [SerializeField] bool canPursue = true;
-    [SerializeField] float pursuitDistance = 5f;
-    [SerializeField] float pursuitLossDistance = 15f; // How far away an active pursuit has to be to stop pursuiting
-    [SerializeField] float pursueSpeedModifier = 1f; // This controls the behaviour of the player's moveSpeed while attacking
+    [SerializeField] float pursuitDistance = 5f; // Distance the player has to be from the enemy for the enemy to start pursuing
+    [SerializeField] float pursuitLossDistance = 15f; // How far away an active pursuit has to be to stop pursuiing
+    [SerializeField] float pursueSpeedModifier = 1f; // Multiplicative modifier of moveSpeed while pursuing
 
     [Header("Attacking")]
     [SerializeField] bool canAttack = true;
+    [SerializeField] float attackRange = 2f; // Distance the player has to be from the enemy for the enemy to attack
     [SerializeField] float attackDelaySeconds = 0.2f; // The amount of time from attacking (clicking) until the attack hitbox activates
     [SerializeField] float attackLengthSeconds = 0.2f; // The length of time that the attack hitbox is active
-    [SerializeField] float attackSpeedModifier = 0.2f; // This controls the behaviour of the player's moveSpeed while attacking
+    [SerializeField] float attackCooldownSeconds = 2f; // The length of time until the player can roll again
+    [SerializeField] float attackSpeedModifier = 0.2f; // Multiplicative modifier of moveSpeed while attacking
 
     [Header("Charging")]
     [SerializeField] bool canCharge = true;
-    [SerializeField] float chargeDelaySeconds = 0.2f; // The length of time that the roll occurs
+    [SerializeField] float windUpLengthSeconds = 1f; // The length of time that the wind up occurs
+    [SerializeField] float windUpSpeedModifier = -0.8f; // Multiplicative modifier of moveSpeed while winding up
     [SerializeField] float chargeLengthSeconds = 0.1f; // The length of time that the roll occurs
     [SerializeField] float chargeCooldownSeconds = 1f; // The length of time until the player can roll again
-    [SerializeField] float chargeSpeedModifier = 5f; // This controls the behaviour of the player's moveSpeed while rolling
+    [SerializeField] float chargeSpeedModifier = 5f; // Multiplicative modifier of moveSpeed while charging
+    [Range(0, 100)]
+    [Tooltip("This is the percent for the attack to be a charge instead of a normal attack")][SerializeField] int chargeChancePercent = 80; // The percent for the attack to be a charge instead of a normal attack, out of 100
 
     [Header("Debug")]
-    [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes;
+    [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes; // Shows the radiuses for various variables within the scene view
 
     // Start is called before the first frame update
     void Awake()
     {
-        attackArea = transform.Find("AttackArea").gameObject;
-        DisableAttackArea();
+        attackArea = transform.Find("AttackArea").gameObject; // Initializes object to the "AttackArea" child
+        DisableAttackArea(); // Disables the attack area on start, just in case
 
         player = GameObject.Find("Player");
 
-        activePatrolPoint = GetNewPatrolPoint();
-        activeRoamPoint = GetNewRoamPoint();
+        activePatrolPoint = GetNewPatrolPoint(); // Initializes the active patrol point to one from the list
+        activeRoamPoint = GetNewRoamPoint(); // Initializes the active roam point to a random roam point
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (currentState != EnemyStates.Static || currentState != EnemyStates.Charging) {
-            playerDir = (player.transform.position - transform.position).normalized;
-            playerDist = Vector2.Distance(transform.position, player.transform.position);
+        if (currentState != EnemyStates.Static && currentState != EnemyStates.Charging) { // If the enemy is not static or charging, update the relative player's stats
+            playerDir = (player.transform.position - transform.position).normalized; // Direction the player is from the enemy
+            playerDist = Vector2.Distance(transform.position, player.transform.position); // Distance the player is from the enemy
         }
-    }
 
-    private void OnDrawGizmos() {
-        if (showRadiusSizes) {
-            Gizmos.color = new Color(0,255, 0, 0.5f);
-            Gizmos.DrawWireSphere(transform.position, pursuitDistance);
-
-            Gizmos.color = new Color(255, 0, 0, 0.5f);
-            Gizmos.DrawWireSphere(transform.position, pursuitLossDistance);
-        }
+        attackArea.transform.right = playerDir; // Sets the attack area to be in the direction of the player from the enemy
+        attackArea.transform.localPosition = playerDir; // Sets the attack area to be offset from the enemy slightly (so it doesnt attack inside of the body)
     }
 
     private void FixedUpdate() {
         // These are the different movement codes. Different states will move at different speeds.
-        if (currentState == EnemyStates.Roaming) {
-            if (canRoam) {
-                transform.position += ((Vector3)activeRoamPoint - transform.position).normalized * moveSpeed * roamSpeedModifier;
+        if (currentState == EnemyStates.Roaming) { // Code for when enemy is in roaming state
+            if (!canRoam) return;
+            
+            transform.position += ((Vector3)activeRoamPoint - transform.position).normalized * moveSpeed * roamSpeedModifier; // Moving in direction of activeRoamPoint
 
-                if (Vector2.Distance(transform.position, activeRoamPoint) < 0.2f) {
-                    StartCoroutine(TryRoam());
-                }
+            if (Vector2.Distance(transform.position, activeRoamPoint) < 0.2f) {
+                StartCoroutine(TryRoam()); // If has reached roam point, try to get a new roam point
             }
-            if (canPursue && playerDist <= pursuitDistance) {
+
+            if (playerDist <= pursuitDistance) { // If enemy is close enough to player, start pursuing
+                currentState = EnemyStates.Pursuing; 
+            }
+        }
+        else if (currentState == EnemyStates.Patrolling) { // Code for when enemy is in patrolling state
+            if (!canPatrol) return;
+
+            transform.position += ((Vector3)activePatrolPoint - transform.position).normalized * moveSpeed * patrolSpeedModifier; // Moving in direction of actingPatrolPoint
+
+            if (Vector2.Distance(transform.position, activePatrolPoint) < 0.2f) {
+                StartCoroutine(TryPatrol()); // If has reached patrol point, try to get a new patrol point
+            }
+
+            if (playerDist <= pursuitDistance) { // If enemy is close enough to player, start pursuing
                 currentState = EnemyStates.Pursuing;
             }
         }
-        else if (currentState == EnemyStates.Patrolling) {
-            if(canPatrol) {
-                transform.position += ((Vector3)activePatrolPoint - transform.position).normalized * moveSpeed * roamSpeedModifier;
+        else if (currentState == EnemyStates.Pursuing) { // Code for when enemy is in pursuing state
+            if (!canPursue) return;
 
-                if (Vector2.Distance(transform.position, activePatrolPoint) < 0.2f) {
-                    StartCoroutine(TryPatrol());
-                }
-            }
-            if (canPursue && playerDist <= pursuitDistance) {
-                currentState = EnemyStates.Pursuing;
+            transform.position += (Vector3)playerDir * moveSpeed * pursueSpeedModifier; // Moves in direction of player
+
+            TryAttack(); // Checks if attacking conditions are met. If so, attacks
+
+            if (playerDist >= pursuitLossDistance) { // If player gets too far away, stop pursuing
+                ResetMovementState();
             }
         }
-        else if (currentState == EnemyStates.Pursuing) {
-            transform.position += (Vector3)playerDir * moveSpeed * pursueSpeedModifier;
-
-            if(playerDist >= pursuitLossDistance) {
-                if (patrolPoints.Count <= 0) currentState = EnemyStates.Roaming;
-                else currentState = EnemyStates.Patrolling;
-            }
-        }
-        else if (currentState == EnemyStates.Attacking) {
+        else if (currentState == EnemyStates.Attacking) { // Code for when enemy is in attacking state
             transform.position += (Vector3)playerDir * moveSpeed * attackSpeedModifier;
         }
-        else if (currentState == EnemyStates.Charging) {
+        else if (currentState == EnemyStates.WindingUp) { // Code for when enemy is in winding up state
+            transform.position += (Vector3)playerDir * moveSpeed * windUpSpeedModifier;
+        }
+        else if (currentState == EnemyStates.Charging) { // Code for when enemy is in charging state
             transform.position += (Vector3)playerDir * moveSpeed * chargeSpeedModifier;
         }
     }
 
-    private void EnableAttackArea() { // This is not to enable the canAttack bool, this is for setting the attackArea to enabled
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("PlayerAttack")) { // When getting hit by the player's attack area
+            Debug.Log("Enemy Hit");
+        }
+    }
+
+    private void EnableAttackArea() { // Enabling the attackArea gameobject, which has the collider for attacking
         attackArea.SetActive(true);
         attackArea.GetComponent<BoxCollider2D>().enabled = true;
     }
 
-    private void DisableAttackArea() { // This is not to disable the canAttack bool, this is for setting the attackArea to disabled
+    private void DisableAttackArea() { // Disabling the attackArea gameobject, which has the collider for attacking
         attackArea.SetActive(false);
         attackArea.GetComponent<BoxCollider2D>().enabled = false;
     }
 
+    void ResetMovementState() { // Using this because we might not know which "passive" state the enemy should switch to when done pursuing
+        if (patrolPoints.Count <= 0) currentState = EnemyStates.Roaming; // If there are no patrol points in the patrolPoints list, switch to roaming
+        else currentState = EnemyStates.Patrolling; // Otherwise, switch to patrolling
+    }
+
+    void TryAttack() {
+        if(playerDist <= attackRange && canAttack) { // If the player is within the attack range and the enemy can attack
+            if(canCharge && UnityEngine.Random.Range(1, 101) < chargeChancePercent) StartCoroutine(Charge()); // If the charge is off cooldown (canCharge), and the charge chance percentage is met, do a charge attack
+            else StartCoroutine(Attack()); // Otherwise, do a normal attack
+        }
+    }
+
+
     IEnumerator Charge() {
-        currentState = EnemyStates.Static;
+        currentState = EnemyStates.WindingUp; // Sets state to winding up and disables further charging/attacking
         canCharge = false;
+        canAttack = true;
 
-        yield return new WaitForSeconds(chargeDelaySeconds);
+        yield return new WaitForSeconds(windUpLengthSeconds); // Runs for length of windUpLengthSeconds
 
-        currentState = EnemyStates.Charging;
+        EnableAttackArea(); // Enables attack area
+        currentState = EnemyStates.Charging; // Sets state to charging
 
-        yield return new WaitForSeconds(chargeLengthSeconds);
+        yield return new WaitForSeconds(chargeLengthSeconds); // Waits for chargeLengthSeconds
 
-        currentState = EnemyStates.Roaming;
+        DisableAttackArea(); // Disables attack area and sets canAttack to true.
+        canAttack = true;
+        ResetMovementState(); // Changes state back to "passive"
 
-        yield return new WaitForSeconds(chargeCooldownSeconds);
+        yield return new WaitForSeconds(chargeCooldownSeconds); // Waits for chargeCooldownSeconds
 
-        canCharge = true;
+        canCharge = true; // Re-enables charging
+    }
+
+    IEnumerator Attack() {
+        currentState = EnemyStates.Attacking; // Sets state to attack and disables further attacking
+        canAttack = false;
+
+        yield return new WaitForSeconds(attackDelaySeconds); // Waits for attackDelaySeconds
+        EnableAttackArea(); // Enables attack area
+        yield return new WaitForSeconds(attackLengthSeconds); // Waits for attackLengthSeconds
+        DisableAttackArea(); // Disables attack area
+
+        ResetMovementState(); // Changes state back to "passive"
+
+        yield return new WaitForSeconds(attackCooldownSeconds); // Waits for attackCooldownSeconds
+
+        canAttack = true; // Re-enables attacking
     }
 
     Vector3 GetNewRoamPoint() {
-        return (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius);
-    }
-
-    IEnumerator TryRoam() {
-        canRoam = false;
-        yield return new WaitForSeconds(timeBetweenRoam);
-        activeRoamPoint = GetNewRoamPoint();
-        canRoam = true;
+        return (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius); // Get a random point in a circle around the enemy, by roamRadius size
     }
 
     Vector2 GetNewPatrolPoint() {
-        if(patrolPoints.Count <= 0) {
+        if(patrolPoints.Count <= 0) { // If there are no patrol points in the list
             Debug.LogError("No patrol points loaded!");
             return Vector2.zero;
         }
 
-        if(patrolStyle == PatrolStyles.Random) {
+        if(patrolStyle == PatrolStyles.Random) { // When patrolling by Random
             int index;
             do {
                 index = UnityEngine.Random.Range(0, patrolPoints.Count);
-            } while (index == patrolPoints.IndexOf(activePatrolPoint));
-            return patrolPoints[index];
+            } while (index == patrolPoints.IndexOf(activePatrolPoint)); // Basically ensuring we pick a random patrol point from the list that isn't the one the enemy is already at. This has potential to break, like for instance if there is only one point in the list.
+            return patrolPoints[index]; // Returns the new patrol point
         }
-        else if (patrolStyle == PatrolStyles.RoundRobin) {
+        else if (patrolStyle == PatrolStyles.RoundRobin) { // When patrolling by Round-Robin
             int index = patrolPoints.IndexOf(activePatrolPoint);
 
             index =  index < 0 ? 0 : (index + 1) % patrolPoints.Count; // If index is less than 0, set it to zero. Otherwise, increment it / loop around to zero if larger than patrolPoints.Count
 
-            return patrolPoints[index];
+            return patrolPoints[index]; // Returns the new patrol point
         }
-        else {
+        else { // Should not ever run, but needed it for the function to not error
             Debug.LogError("Invalid Patrol Style selected!");
             return Vector2.zero;
         }
     }
+    IEnumerator TryRoam() { // Attempts to get a new roaming point
+        canRoam = false;
+        yield return new WaitForSeconds(timeBetweenRoam); // Waits for timeBetweenRoam
+        activeRoamPoint = GetNewRoamPoint(); // Assigns a new random roaming point
+        canRoam = true;
+    }
 
-    IEnumerator TryPatrol() {
+    IEnumerator TryPatrol() { // Attempts to get a new patrolling point
         canPatrol = false;
-        yield return new WaitForSeconds(timeBetweenPatrol);
-        activePatrolPoint = GetNewPatrolPoint();
+        yield return new WaitForSeconds(timeBetweenPatrol); // Waits for timeBetweenPatrol
+        activePatrolPoint = GetNewPatrolPoint(); // Assigns a new patrol point
         canPatrol = true;
+    }
+
+    private void OnDrawGizmos() { // Function that draws the debug circles in the scene view
+        if (showRadiusSizes) {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, pursuitDistance);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, pursuitLossDistance);
+
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
+        }
     }
 }
