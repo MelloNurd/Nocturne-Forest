@@ -48,9 +48,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6303f17531cdb44bab094adb831a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
+  currentState: 1
   moveSpeed: 0.25
   canAttack: 1
+  attackDelaySeconds: 0.2
+  attackLengthSeconds: 0.2
+  attackSpeedModifier: 0.2
+  canRoll: 1
+  rollLengthSeconds: 0.1
+  rollCooldownSeconds: 1
+  rollSpeedModifier: 5
 --- !u!50 &3015978145383430843
 Rigidbody2D:
   serializedVersion: 4
@@ -124,7 +131,7 @@ GameObject:
   - component: {fileID: 465962214909486026}
   - component: {fileID: 121209890217267000}
   m_Layer: 0
-  m_Name: Player Body
+  m_Name: PlayerBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

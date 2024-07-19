@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public enum PlayerStates {
         Static, // The player cannot move
         Dynamic, // Basically, if the player is capable of moving and performing actions.
-        // Running,
         Rolling,
         Attacking
     }
@@ -36,18 +35,17 @@ public class Player : MonoBehaviour
     [SerializeField] bool canAttack = true;
     [SerializeField] float attackDelaySeconds = 0.2f; // The amount of time from attacking (clicking) until the attack hitbox activates
     [SerializeField] float attackLengthSeconds = 0.2f; // The length of time that the attack hitbox is active
-    [SerializeField] float attackSpeedModifier = 0.2f;
+    [SerializeField] float attackSpeedModifier = 0.2f; // This controls the behaviour of the player's moveSpeed while attacking
 
     [Header("Rolling")]
     [SerializeField] bool canRoll = true;
     [SerializeField] float rollLengthSeconds = 0.1f; // The length of time that the roll occurs
     [SerializeField] float rollCooldownSeconds = 1f; // The length of time until the player can roll again
-    [SerializeField] float rollSpeedModifier = 5f;
+    [SerializeField] float rollSpeedModifier = 5f; // This controls the behaviour of the player's moveSpeed while rolling
 
     private void OnEnable()
     {
         move = playerControls.Player.Move;
-        move.performed += OnMove;
         move.Enable();
 
         attack = playerControls.Player.Attack;
@@ -79,12 +77,6 @@ public class Player : MonoBehaviour
         DisableAttackArea();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-                
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -99,6 +91,7 @@ public class Player : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        // These are the different movement codes. Different states will move at different speeds.
         if (currentState == PlayerStates.Dynamic) 
         {
             transform.position += (Vector3)moveDirection * moveSpeed;
@@ -109,10 +102,6 @@ public class Player : MonoBehaviour
         else if (currentState == PlayerStates.Attacking) {
             transform.position += (Vector3)moveDirection * moveSpeed * attackSpeedModifier;
         }
-    }
-
-    private void OnMove(InputAction.CallbackContext context) {
-        // wowee
     }
 
     private void OnAttack(InputAction.CallbackContext context) {
