@@ -48,7 +48,7 @@ public class Pickupable : MonoBehaviour
         if (!canPickup || !isInRange) return;
 
         playerInventory.AddItem(item);
-        GameObject.Destroy(gameObject);
+        ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 
     public void UpdatePickupableObj(Item newItem) {

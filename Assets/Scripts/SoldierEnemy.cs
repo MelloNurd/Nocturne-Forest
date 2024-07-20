@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using static Player;
 
-public class Enemy : MonoBehaviour
+public class SoldierEnemy : MonoBehaviour
 {
     [Serializable]
     public enum EnemyStates {
@@ -274,8 +274,9 @@ public class Enemy : MonoBehaviour
         activePatrolPoint = GetNewPatrolPoint(); // Assigns a new patrol point
         canPatrol = true;
     }
+
     public void DropItem(Item item) {
-        GameObject droppedItem = Instantiate(pickupablePrefab, transform.position, Quaternion.identity);
+        GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
         Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
         pickupScript.UpdatePickupableObj(item);
         pickupScript.canPickup = false;

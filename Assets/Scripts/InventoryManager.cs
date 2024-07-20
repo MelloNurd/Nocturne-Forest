@@ -55,6 +55,10 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             InventorySlot slot = inventorySlots[i];
+            if(slot == null) {
+                Debug.LogError("something");
+                return false;
+            }
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < maxStackedItems && itemInSlot.item.stackable == true)
             {
@@ -84,7 +88,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     public void DropItem(Item item) {
-        GameObject droppedItem = Instantiate(pickupablePrefab, transform.position, Quaternion.identity);
+        GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
         Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
         pickupScript.canPickup = false;
 
