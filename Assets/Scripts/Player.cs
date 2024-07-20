@@ -111,11 +111,6 @@ public class Player : MonoBehaviour
                 animator.SetBool("Walking", false);
             }
         }
-
-        if (IsMoving()) { // If the player is moving, update the AttackArea position and rotating around the player
-            attackArea.transform.right = moveDirection;
-            attackArea.transform.localPosition = moveDirection;
-        }
     }
 
     private void FixedUpdate() {
@@ -141,6 +136,11 @@ public class Player : MonoBehaviour
     private void OnAttack(InputAction.CallbackContext context) { // Function is called when the attack input button is pressed
         if (currentState != PlayerStates.Dynamic || !canAttack) return;
 
+        Vector2 facingDir = GetDirectionFacing();
+
+        attackArea.transform.right = facingDir;
+        attackArea.transform.localPosition = facingDir;
+
         StartCoroutine(Attack());
     }
 
@@ -162,6 +162,23 @@ public class Player : MonoBehaviour
 
     public bool IsMoving() { // Returns true or false based on whether the player is inputting movement buttons (keys, controller, etc) OR the player is in static state
         return moveDirection != Vector2.zero || currentState == PlayerStates.Static;
+    }
+
+    private Vector2 GetDirectionFacing() {
+        // This is ugly, and I'd have done a switch statement instead, but this is just because we're going to have many different animations for each state...
+        if(animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Up")) {
+            return Vector2.up;
+        }
+        else if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Right")) {
+            return Vector2.right;
+        }
+        else if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Down")) {
+            return Vector2.down;
+        }
+        else if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Left")) {
+            return Vector2.left;
+        }
+        return Vector2.zero;
     }
 
     IEnumerator Attack() {
