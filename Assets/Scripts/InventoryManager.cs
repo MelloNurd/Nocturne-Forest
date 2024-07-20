@@ -16,7 +16,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] float dropStrength = 1.5f; // How high the "jump" arc is when dropping an item
     [SerializeField] float dropDuration = 0.6f; // How long it takes for the item to reach it's dropped position
 
-    [SerializeField] GameObject pickupablePrefab;
+    public GameObject pickupablePrefab;
 
     //at start no slot set "active" nothing stopping play from just clicking a number
     int selectedSlot = -1;

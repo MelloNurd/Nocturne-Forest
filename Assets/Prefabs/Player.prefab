@@ -11,11 +11,12 @@ GameObject:
   - component: {fileID: 6140301126427888329}
   - component: {fileID: 1607398005197541767}
   - component: {fileID: 4145188999432358223}
+  - component: {fileID: 4630779527530026524}
   - component: {fileID: 3015978145383430843}
   - component: {fileID: 8092547217854305753}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,6 +55,7 @@ MonoBehaviour:
   canPickup: 1
   currentHealth: 20
   currentState: 1
+  inventoryManager: {fileID: 0}
   interactionRange: 2
   moveSpeed: 0.1
   canAttack: 1
@@ -114,6 +116,18 @@ MonoBehaviour:
   dropStrength: 1.5
   dropDuration: 0.6
   pickupablePrefab: {fileID: 1315593998461436275, guid: 9838a1874713e024696acb464125294a, type: 3}
+--- !u!114 &4630779527530026524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161362346288710690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6244674f6c878f343a3b167fffda1500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &3015978145383430843
 Rigidbody2D:
   serializedVersion: 4

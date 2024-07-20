@@ -28,7 +28,7 @@ public class Pickupable : MonoBehaviour
             canPickup = false;
         }
 
-        player = GameObject.Find("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
         playerPickupRange = player.GetComponent<Player>().interactionRange;
 
         playerInventory = player.GetComponent<InventoryManager>();

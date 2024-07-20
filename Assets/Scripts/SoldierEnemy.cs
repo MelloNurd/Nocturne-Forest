@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using static Player;
 
-public class SoldierEnemy : MonoBehaviour
+public class SoldierEnemy : EnemyBase
 {
     [Serializable]
     public enum EnemyStates {
@@ -29,16 +29,9 @@ public class SoldierEnemy : MonoBehaviour
     public float currentHealth = 20f;
     public EnemyStates currentState = EnemyStates.Roaming;
 
-    [Header("Item Dropping")]
-    public List<Item> drops = new List<Item>();
-    [SerializeField] float dropRange = 2f; // Maximum distance a dropped item will drop from the player
-    [SerializeField] float dropStrength = 1.5f; // How high the "jump" arc is when dropping an item
-    [SerializeField] float dropDuration = 0.6f; // How long it takes for the item to reach it's dropped position
-    [SerializeField] GameObject pickupablePrefab;
-
     private GameObject attackArea;
 
-    GameObject player;
+    GameObject playerObj;
     Vector2 playerDir;
     float playerDist;
 
@@ -89,24 +82,27 @@ public class SoldierEnemy : MonoBehaviour
     [Header("Debug")]
     [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes = true; // Shows the radiuses for various variables within the scene view
 
-    // Start is called before the first frame update
     void Awake()
     {
         attackArea = transform.Find("AttackArea").gameObject; // Initializes object to the "AttackArea" child
-        DisableAttackArea(); // Disables the attack area on start, just in case
+    }
 
-        player = GameObject.Find("Player");
+    private void Start() {
+        playerObj = player.gameObject;
+
+        DisableAttackArea(); // Disables the attack area on start, just in case
 
         activePatrolPoint = GetNewPatrolPoint(); // Initializes the active patrol point to one from the list
         activeRoamPoint = GetNewRoamPoint(); // Initializes the active roam point to a random roam point
+
     }
 
     // Update is called once per frame
     void Update()
     {
         if (currentState != EnemyStates.Static && currentState != EnemyStates.Charging) { // If the enemy is not static or charging, update the relative player's stats
-            playerDir = (player.transform.position - transform.position).normalized; // Direction the player is from the enemy
-            playerDist = Vector2.Distance(transform.position, player.transform.position); // Distance the player is from the enemy
+            playerDir = (playerObj.transform.position - transform.position).normalized; // Direction the player is from the enemy
+            playerDist = Vector2.Distance(transform.position, playerObj.transform.position); // Distance the player is from the enemy
         }
 
         attackArea.transform.right = playerDir; // Sets the attack area to be in the direction of the player from the enemy
@@ -194,7 +190,6 @@ public class SoldierEnemy : MonoBehaviour
         }
     }
 
-
     IEnumerator Charge() {
         currentState = EnemyStates.WindingUp; // Sets state to winding up and disables further charging/attacking
         canCharge = false;
@@ -273,27 +268,6 @@ public class SoldierEnemy : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenPatrol); // Waits for timeBetweenPatrol
         activePatrolPoint = GetNewPatrolPoint(); // Assigns a new patrol point
         canPatrol = true;
-    }
-
-    public void DropItem(Item item) {
-        GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
-        Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
-        pickupScript.UpdatePickupableObj(item);
-        pickupScript.canPickup = false;
-
-        Vector3 originalSize = droppedItem.transform.localScale;
-        droppedItem.transform.localScale = originalSize * 0.5f;
-
-        // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
-        droppedItem.transform.DOJump(transform.position + (Vector3)UnityEngine.Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
-        droppedItem.transform.DOScale(originalSize, dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
-    }
-
-    public void Die() {
-        foreach(Item item in drops) {
-            DropItem(item);
-        }
-        Destroy(gameObject);
     }
 
     private void OnDrawGizmos() { // Function that draws the debug circles in the scene view

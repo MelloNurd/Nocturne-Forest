@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public PlayerStates currentState = PlayerStates.Dynamic;
 
     private GameObject attackArea;
-    private InventoryManager inventoryManager;
+    public InventoryManager inventoryManager;
 
     // Input stuff
     [HideInInspector] public PlayerInputActions playerControls;
@@ -93,6 +93,12 @@ public class Player : MonoBehaviour
         inventoryManager = GetComponent<InventoryManager>();
 
         interactionMask = LayerMask.GetMask("Interactable"); // Sets the interactionMask to only interact with the layer "Interactable". This is used in the OverlapCircle function.
+    }
+
+    private void Start() {
+        Vector2 facingDir = GetDirectionFacing();
+        attackArea.transform.right = facingDir;
+        attackArea.transform.localPosition = facingDir; // Do this once so the attackArea is going to be not centered on the player at the start
     }
 
     // Update is called once per frame
