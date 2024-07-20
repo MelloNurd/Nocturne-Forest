@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
         Attacking
     }
 
+    [Header("General")]
+    [SerializeField] float maxHealth = 20f;
+    public float currentHealth = 20f;
     public PlayerStates currentState = PlayerStates.Dynamic;
 
     private GameObject attackArea;
@@ -28,7 +31,7 @@ public class Player : MonoBehaviour
     
     Vector2 moveDirection = Vector2.zero; // Vector which will be based on the movement inputs
 
-    [SerializeField] float interactionRange = 2f;
+    public float interactionRange = 2f;
     LayerMask interactionMask;
 
     [Header("Movement")]
@@ -134,8 +137,9 @@ public class Player : MonoBehaviour
     private void OnInteract(InputAction.CallbackContext context) { // Function is called when the interact input button is pressed
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask); // Gets all interactable objects within the interactionRange of the player into a collider array
         foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
-            Debug.Log(objCol.gameObject.name); // Prints name
+            if(objCol.TryGetComponent(out Pickupable pickupable)) pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
         }
+        // Probably do another pass to check for interactables, things like doors and whatnot. Would be prioritized by which comes first in the list.
     }
 
     public bool IsMoving() { // Returns true or false based on whether the player is inputting movement buttons (keys, controller, etc) OR the player is in static state

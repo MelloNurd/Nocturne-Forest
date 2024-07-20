@@ -44,6 +44,7 @@ public class DemoScript : MonoBehaviour
         if (receivedItem != null)
         {
             Debug.Log("Used item: " + receivedItem);
+            inventoryManager.DropItem(receivedItem);
         }
         else
         {

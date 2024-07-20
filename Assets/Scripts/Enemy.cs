@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,7 +24,17 @@ public class Enemy : MonoBehaviour
         RoundRobin
     }
 
+    [Header("General")]
+    [SerializeField] float maxHealth = 20f;
+    public float currentHealth = 20f;
     public EnemyStates currentState = EnemyStates.Roaming;
+
+    [Header("Item Dropping")]
+    public List<Item> drops = new List<Item>();
+    [SerializeField] float dropRange = 2f; // Maximum distance a dropped item will drop from the player
+    [SerializeField] float dropStrength = 1.5f; // How high the "jump" arc is when dropping an item
+    [SerializeField] float dropDuration = 0.6f; // How long it takes for the item to reach it's dropped position
+    [SerializeField] GameObject pickupablePrefab;
 
     private GameObject attackArea;
 
@@ -157,7 +168,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("PlayerAttack")) { // When getting hit by the player's attack area
-            // Enemy was hit
+            Die();
         }
     }
 
@@ -262,6 +273,26 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenPatrol); // Waits for timeBetweenPatrol
         activePatrolPoint = GetNewPatrolPoint(); // Assigns a new patrol point
         canPatrol = true;
+    }
+    public void DropItem(Item item) {
+        GameObject droppedItem = Instantiate(pickupablePrefab, transform.position, Quaternion.identity);
+        Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
+        pickupScript.UpdatePickupableObj(item);
+        pickupScript.canPickup = false;
+
+        Vector3 originalSize = droppedItem.transform.localScale;
+        droppedItem.transform.localScale = originalSize * 0.5f;
+
+        // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
+        droppedItem.transform.DOJump(transform.position + (Vector3)UnityEngine.Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
+        droppedItem.transform.DOScale(originalSize, dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
+    }
+
+    public void Die() {
+        foreach(Item item in drops) {
+            DropItem(item);
+        }
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos() { // Function that draws the debug circles in the scene view

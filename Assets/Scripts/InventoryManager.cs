@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,13 @@ public class InventoryManager : MonoBehaviour
     public int numSlots = 7;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+
+    [Header("Item Dropping")]
+    [SerializeField] float dropRange = 2f; // Maximum distance a dropped item will drop from the player
+    [SerializeField] float dropStrength = 1.5f; // How high the "jump" arc is when dropping an item
+    [SerializeField] float dropDuration = 0.6f; // How long it takes for the item to reach it's dropped position
+
+    [SerializeField] GameObject pickupablePrefab;
 
     //at start no slot set "active" nothing stopping play from just clicking a number
     int selectedSlot = -1;
@@ -41,7 +49,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     //adds item to inventory or stack when possible
-   public bool AddItem(Item item)
+    public bool AddItem(Item item)
     {
         //check if slot has the same item with lower count than max
         for (int i = 0; i < inventorySlots.Length; i++)
@@ -73,6 +81,19 @@ public class InventoryManager : MonoBehaviour
         }
         //returns false if no available slots
         return false;
+    }
+
+    public void DropItem(Item item) {
+        GameObject droppedItem = Instantiate(pickupablePrefab, transform.position, Quaternion.identity);
+        Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
+        pickupScript.canPickup = false;
+
+        Vector3 originalSize = droppedItem.transform.localScale;
+        droppedItem.transform.localScale = originalSize * 0.5f;
+
+        // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
+        droppedItem.transform.DOJump(transform.position + (Vector3)Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
+        droppedItem.transform.DOScale(originalSize, dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
     }
 
     //puts new item into empty slot

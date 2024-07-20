@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,8 @@ public class Item : ScriptableObject
     public TileBase Tile;
     public ItemType type;
     public ActionType actionType;
-    public Vector2Int range = new Vector2Int(5, 4);
+    //public Vector2Int range = new Vector2Int(5, 4);
+    //public int maxStackSize = 1;
 
     [Header("Only UI")]
     public bool stackable = true;
@@ -22,7 +24,7 @@ public class Item : ScriptableObject
 public enum ItemType
 {
     Ingredient,
-    Tool
+    Utility
 }
 
 public enum ActionType

@@ -30,13 +30,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         //if slot is empty then put item into slot
-        if (transform.childCount == 0)
+        if (transform.childCount <= 0)
         {
             InventoryItem invItem = eventData.pointerDrag.GetComponent<InventoryItem>();
             invItem.parentAfterDrag = transform;
         }
         //if slot isn't empty then swap the items spots
-        if(transform.childCount == 1) 
+        else
         {
             InventoryItem drugItem = eventData.pointerDrag.GetComponent<InventoryItem>();
             InventoryItem currentItem = transform.GetComponentInChildren<InventoryItem>();
