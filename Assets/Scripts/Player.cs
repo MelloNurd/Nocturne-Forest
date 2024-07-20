@@ -100,6 +100,11 @@ public class Player : MonoBehaviour
             {
                 animator.SetFloat("XInput", moveDirection.x);
                 animator.SetFloat("YInput", moveDirection.y);
+                animator.SetBool("Walking", true);
+            }
+            else
+            {
+                animator.SetBool("Walking", false);
             }
 
         }
