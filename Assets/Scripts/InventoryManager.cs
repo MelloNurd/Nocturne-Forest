@@ -9,6 +9,7 @@ public class InventoryManager : MonoBehaviour
     public int numSlots = 7;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+    public GameObject inventoryObj;
 
     [Header("Item Dropping")]
     [SerializeField] float dropRange = 2f; // Maximum distance a dropped item will drop from the player
@@ -19,7 +20,7 @@ public class InventoryManager : MonoBehaviour
 
     //at start no slot set "active" nothing stopping play from just clicking a number
     int selectedSlot = -1;
-    
+
     //updates active slot when key is pressed
     private void Update()
     {

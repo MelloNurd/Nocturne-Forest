@@ -19,10 +19,12 @@ public class Player : MonoBehaviour
 
     [Header("General")]
     [SerializeField] float maxHealth = 20f;
+    public bool canPickup = true;
     public float currentHealth = 20f;
     public PlayerStates currentState = PlayerStates.Dynamic;
 
     private GameObject attackArea;
+    private InventoryManager inventoryManager;
 
     // Input stuff
     [HideInInspector] public PlayerInputActions playerControls;
@@ -88,6 +90,8 @@ public class Player : MonoBehaviour
         attackArea = transform.Find("AttackArea").gameObject; // Initializes object to the "AttackArea" child
         DisableAttackArea(); // Disables the attack area on start, just in case
 
+        inventoryManager = GetComponent<InventoryManager>();
+
         interactionMask = LayerMask.GetMask("Interactable"); // Sets the interactionMask to only interact with the layer "Interactable". This is used in the OverlapCircle function.
     }
 
@@ -96,7 +100,7 @@ public class Player : MonoBehaviour
     {
         if (currentState != PlayerStates.Rolling) { // Updates moveDirection as long as the player is not rolling (moveDirection is locked when rolling)
             moveDirection = move.ReadValue<Vector2>();
-            if(moveDirection != Vector2.zero)
+            if(IsMoving())
             {
                 animator.SetFloat("XInput", moveDirection.x);
                 animator.SetFloat("YInput", moveDirection.y);
@@ -106,7 +110,6 @@ public class Player : MonoBehaviour
             {
                 animator.SetBool("Walking", false);
             }
-
         }
 
         if (IsMoving()) { // If the player is moving, update the AttackArea position and rotating around the player
@@ -148,6 +151,8 @@ public class Player : MonoBehaviour
     }
 
     private void OnInteract(InputAction.CallbackContext context) { // Function is called when the interact input button is pressed
+        if (!canPickup || inventoryManager.inventoryObj.activeSelf) return;
+
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask); // Gets all interactable objects within the interactionRange of the player into a collider array
         foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
             if(objCol.TryGetComponent(out Pickupable pickupable)) pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.

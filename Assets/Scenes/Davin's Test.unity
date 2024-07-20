@@ -2207,6 +2207,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1607398005197541767, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
+      propertyPath: inventoryObj
+      value: 
+      objectReference: {fileID: 1941764094}
     - target: {fileID: 4145188999432358223, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
       propertyPath: dropRange
       value: 2
@@ -2219,6 +2223,10 @@ PrefabInstance:
       propertyPath: dropStrength
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4145188999432358223, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
+      propertyPath: inventoryObj
+      value: 
+      objectReference: {fileID: 1941764094}
     - target: {fileID: 4145188999432358223, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
       propertyPath: inventorySlots.Array.data[0]
       value: 
