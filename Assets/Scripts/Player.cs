@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
         Attacking
     }
 
+    [SerializeField] Animator animator;
+
     [Header("General")]
     [SerializeField] float maxHealth = 20f;
     public float currentHealth = 20f;
@@ -94,6 +96,12 @@ public class Player : MonoBehaviour
     {
         if (currentState != PlayerStates.Rolling) { // Updates moveDirection as long as the player is not rolling (moveDirection is locked when rolling)
             moveDirection = move.ReadValue<Vector2>();
+            if(moveDirection != Vector2.zero)
+            {
+                animator.SetFloat("XInput", moveDirection.x);
+                animator.SetFloat("YInput", moveDirection.y);
+            }
+
         }
 
         if (IsMoving()) { // If the player is moving, update the AttackArea position and rotating around the player
