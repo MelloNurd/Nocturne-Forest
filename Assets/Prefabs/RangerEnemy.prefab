@@ -50,7 +50,11 @@ MonoBehaviour:
   maxHealth: 20
   currentHealth: 20
   currentState: 1
-  drops: []
+  drops:
+  - {fileID: 11400000, guid: f581887e22a05b943b2c58070fe5c1f1, type: 2}
+  - {fileID: 11400000, guid: f581887e22a05b943b2c58070fe5c1f1, type: 2}
+  - {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}
+  - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
   dropRange: 2
   dropStrength: 1.5
   dropDuration: 0.6
@@ -214,7 +218,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 0.92690367, b: 0, a: 1}
   m_FlipX: 0
