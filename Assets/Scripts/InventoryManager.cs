@@ -87,17 +87,21 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    public void DropItem(Item item) {
-        GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
-        Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
-        pickupScript.canPickup = false;
+    public void DropItem(Item item, int count = 1) {
+        for(int i =0; i < count; i++)
+        {
+            GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
+            Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
+            pickupScript.UpdatePickupableObj(item);
+            pickupScript.canPickup = false;
 
-        Vector3 originalSize = droppedItem.transform.localScale;
-        droppedItem.transform.localScale = originalSize * 0.5f;
+            Vector3 originalSize = droppedItem.transform.localScale;
+            droppedItem.transform.localScale = originalSize * 0.5f;
 
-        // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
-        droppedItem.transform.DOJump(transform.position + (Vector3)Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
-        droppedItem.transform.DOScale(originalSize, dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
+            // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
+            droppedItem.transform.DOJump(transform.position + (Vector3)Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
+            droppedItem.transform.DOScale(originalSize, dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
+        }
     }
 
     //puts new item into empty slot
@@ -125,7 +129,7 @@ public class InventoryManager : MonoBehaviour
                 //lowers stack count
                 itemInSlot.count--;
                 //if stack is empty remove the item from inventory
-                if(itemInSlot.count <= 0)
+                if (itemInSlot.count <= 0)
                 {
                     Destroy(itemInSlot.gameObject);
                 }
@@ -138,7 +142,6 @@ public class InventoryManager : MonoBehaviour
             //if not being used returns item in slot
             return itemInSlot.item;
         }
-
         return null;
     }
 }

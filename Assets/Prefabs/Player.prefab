@@ -49,16 +49,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6303f17531cdb44bab094adb831a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 4575373480017886365}
   maxHealth: 20
   currentHealth: 20
   currentState: 1
   interactionRange: 2
   moveSpeed: 0.1
-  canAttack: 1
+  canAttack: 0
   attackDelaySeconds: 0.2
   attackLengthSeconds: 0.2
   attackSpeedModifier: 0.2
-  canRoll: 1
+  canRoll: 0
   rollLengthSeconds: 0.15
   rollCooldownSeconds: 1
   rollSpeedModifier: 3.5
@@ -183,6 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 465962214909486026}
   - component: {fileID: 121209890217267000}
+  - component: {fileID: 4575373480017886365}
   m_Layer: 0
   m_Name: PlayerBody
   m_TagString: Untagged
@@ -246,7 +248,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -1329028978, guid: 1573960e3f4552b4e895cc793f4eea44, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -257,6 +259,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4575373480017886365
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256962851551349769}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e1685b3fdce3cfb4d842a4ea2b17b2f5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8515558389908702496
 GameObject:
   m_ObjectHideFlags: 0
