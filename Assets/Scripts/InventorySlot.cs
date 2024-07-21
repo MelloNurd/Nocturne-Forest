@@ -11,6 +11,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public Color selectedColor, notSelectedColor;
 
     public UnityEvent onDropCall;
+    public UnityEvent onItemLeave;
 
     private void Awake()
     {
@@ -58,5 +59,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         }
 
         onDropCall?.Invoke();
+    }
+
+    public void OnItemLeave() {
+        onItemLeave?.Invoke();
     }
 }

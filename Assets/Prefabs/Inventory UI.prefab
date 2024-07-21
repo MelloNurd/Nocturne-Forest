@@ -556,7 +556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491937ad2b298704bbba214ca7a678c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryManager: {fileID: 0}
 --- !u!1 &2162889492912546188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,6 +1103,7 @@ GameObject:
   - component: {fileID: 915821176944069457}
   - component: {fileID: 235848221343238029}
   - component: {fileID: 1131095629011428703}
+  - component: {fileID: 6092691134284989004}
   m_Layer: 5
   m_Name: Inventory UI
   m_TagString: Untagged
@@ -1198,6 +1198,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6092691134284989004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4513003156565302353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8acb97943e93d1c4ca55d2a3b389d1ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventorySlotPrefab: {fileID: 9000435140228021285, guid: 8dbab68d0fbd2284c91d2a6101e3e402, type: 3}
+  inventoryItemPrefab: {fileID: 8957634044052052241, guid: 20b5071784fe0724c825c11b92f7232e, type: 3}
+  inventoryObj: {fileID: 8855503360375590813}
+  pedestalUIobj: {fileID: 0}
+  dropRange: 3
+  dropStrength: 1.5
+  dropDuration: 0.6
+  pickupablePrefab: {fileID: 1315593998461436275, guid: 9838a1874713e024696acb464125294a, type: 3}
 --- !u!1 &4867912034820182380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,7 +1778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39782ef054f6b3640a359ae1f764a78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryManager: {fileID: 0}
   itemsToPickup:
   - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
   - {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}

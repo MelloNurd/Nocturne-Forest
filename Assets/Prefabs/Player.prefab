@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6140301126427888329}
   - component: {fileID: 1607398005197541767}
-  - component: {fileID: 4145188999432358223}
   - component: {fileID: 4630779527530026524}
   - component: {fileID: 3015978145383430843}
-  - component: {fileID: 8092547217854305753}
+  - component: {fileID: 6214055415294169307}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -53,7 +52,7 @@ MonoBehaviour:
   animator: {fileID: 4575373480017886365}
   maxHealth: 20
   canPickup: 1
-  canOpenInventory: 1
+  canOpenInventory: 0
   inventoryOpen: 0
   currentHealth: 20
   currentState: 1
@@ -68,24 +67,6 @@ MonoBehaviour:
   rollCooldownSeconds: 1
   rollSpeedModifier: 3.5
   showRadiusSizes: 1
---- !u!114 &4145188999432358223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 161362346288710690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8acb97943e93d1c4ca55d2a3b389d1ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryItemPrefab: {fileID: 8957634044052052241, guid: 20b5071784fe0724c825c11b92f7232e, type: 3}
-  inventoryObj: {fileID: 0}
-  dropRange: 3
-  dropStrength: 1.5
-  dropDuration: 0.6
-  pickupablePrefab: {fileID: 1315593998461436275, guid: 9838a1874713e024696acb464125294a, type: 3}
 --- !u!114 &4630779527530026524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,8 +106,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8092547217854305753
-CircleCollider2D:
+--- !u!70 &6214055415294169307
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -157,9 +138,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Offset: {x: 0, y: -0.014219582}
+  m_Size: {x: 0.5517664, y: 0.9429126}
+  m_Direction: 0
 --- !u!1 &5256962851551349769
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +214,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 10
   m_Sprite: {fileID: -1329028978, guid: 1573960e3f4552b4e895cc793f4eea44, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -283,7 +264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8815613935030464100
 Transform:
   m_ObjectHideFlags: 0
@@ -306,7 +287,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8515558389908702496}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

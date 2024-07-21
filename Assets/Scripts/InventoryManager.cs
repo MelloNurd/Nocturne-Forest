@@ -10,8 +10,10 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager currentInstance; // There should only ever be one InventoryManager per scene, so we are doing this for easy access.
 
     int numHotbarSlots;
+    public GameObject inventorySlotPrefab;
     public GameObject inventoryItemPrefab;
     [HideInInspector] public GameObject inventoryObj;
+    public GameObject pedestalUIobj;
     List<InventorySlot> inventorySlots = new List<InventorySlot>();
     List<InventorySlot> hotbarSlots = new List<InventorySlot>();
 

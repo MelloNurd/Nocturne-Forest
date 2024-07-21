@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -172,12 +173,15 @@ public class Player : MonoBehaviour
         if (!canPickup || inventoryManager.inventoryObj.activeSelf) return;
 
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask); // Gets all interactable objects within the interactionRange of the player into a collider array
-        
-        // The below might be good for an interface if I ever end up wanting to do that
 
-        // First, we loop through to look for things that are interactables. This will be like doors, item pedestals, etc. We do this first to give them priority over Pickups.
-        foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
-            if (objCol.TryGetComponent(out Pedestal itemPedestal)) itemPedestal.OpenPedestal(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+        // The stuff below might be good for an interface if I ever end up wanting to do that
+
+        // This stuff is using some weird formats, but basically we are checking if the interacted list contains anything on the layer "Interactable. Then, we only want the closest one.
+        if (interacted.FirstOrDefault(x => x.gameObject.layer == 6)) { // Layer 6 is "Interactable"
+            GameObject closestInteractable = interacted.OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray()[0].gameObject;
+
+            if (closestInteractable.TryGetComponent(out Pedestal itemPedestal)) itemPedestal.OpenPedestal(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+            return;
         }
 
         // If there have not been any Interactables, then we look for Pickupables.
