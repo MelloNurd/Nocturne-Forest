@@ -6,8 +6,12 @@ using UnityEngine;
 
 public class DemoScript : MonoBehaviour
 {
-    public InventoryManager inventoryManager;
+    InventoryManager inventoryManager;
     public Item[] itemsToPickup;
+
+    private void Start() {
+        inventoryManager = InventoryManager.currentInstance;
+    }
 
     public void PickupItem(int id)
     {

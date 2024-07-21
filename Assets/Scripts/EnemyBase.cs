@@ -16,7 +16,6 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void Awake() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        pickupablePrefab = player.inventoryManager.pickupablePrefab;
     }
 
     public virtual void Die() {
@@ -27,6 +26,7 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     public void DropItem(Item item) {
+        if(pickupablePrefab == null) pickupablePrefab = InventoryManager.currentInstance.pickupablePrefab; // Unfortunately have to do this here, as Awake is too early to set this and there is no Start for this abstract class
         GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
         Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
         pickupScript.UpdatePickupableObj(item);

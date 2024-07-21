@@ -31,7 +31,7 @@ public class Pickupable : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerPickupRange = player.GetComponent<Player>().interactionRange;
 
-        playerInventory = player.GetComponent<InventoryManager>();
+        playerInventory = InventoryManager.currentInstance;
 
         shadow = transform.Find("Shadow").gameObject;
     }

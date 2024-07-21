@@ -6,7 +6,12 @@ using UnityEngine.EventSystems;
 
 public class DropArea : MonoBehaviour, IDropHandler
 {
-    [SerializeField] InventoryManager inventoryManager;
+    InventoryManager inventoryManager;
+
+    private void Start() {
+        inventoryManager = InventoryManager.currentInstance;
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         InventoryItem drugItem = eventData.pointerDrag.GetComponent<InventoryItem>();

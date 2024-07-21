@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,11 +21,13 @@ public class Player : MonoBehaviour
     [Header("General")]
     [SerializeField] float maxHealth = 20f;
     public bool canPickup = true;
+    public bool canOpenInventory = true;
+    public bool inventoryOpen = false;
     public float currentHealth = 20f;
     public PlayerStates currentState = PlayerStates.Dynamic;
 
     private GameObject attackArea;
-    public InventoryManager inventoryManager;
+    private InventoryManager inventoryManager;
 
     // Input stuff
     [HideInInspector] public PlayerInputActions playerControls;
@@ -32,6 +35,7 @@ public class Player : MonoBehaviour
     private InputAction attack;
     private InputAction roll;
     private InputAction interact;
+    private InputAction openInv;
     
     Vector2 moveDirection = Vector2.zero; // Vector which will be based on the movement inputs
 
@@ -72,6 +76,10 @@ public class Player : MonoBehaviour
         interact = playerControls.Player.Interact;
         interact.performed += OnInteract;
         interact.Enable();
+
+        openInv = playerControls.Player.OpenInventory;
+        openInv.performed += OnInventory;
+        openInv.Enable();
     }
 
     private void OnDisable()
@@ -90,15 +98,15 @@ public class Player : MonoBehaviour
         attackArea = transform.Find("AttackArea").gameObject; // Initializes object to the "AttackArea" child
         DisableAttackArea(); // Disables the attack area on start, just in case
 
-        inventoryManager = GetComponent<InventoryManager>();
-
-        interactionMask = LayerMask.GetMask("Interactable"); // Sets the interactionMask to only interact with the layer "Interactable". This is used in the OverlapCircle function.
+        interactionMask = LayerMask.GetMask("Interactable", "Pickupable"); // Sets the interactionMask to only interact with the layer "Interactable". This is used in the OverlapCircle function.
     }
 
     private void Start() {
         Vector2 facingDir = GetDirectionFacing();
         attackArea.transform.right = facingDir;
         attackArea.transform.localPosition = facingDir; // Do this once so the attackArea is going to be not centered on the player at the start
+
+        inventoryManager = InventoryManager.currentInstance;
     }
 
     // Update is called once per frame
@@ -139,6 +147,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    #region InputCalls
+
     private void OnAttack(InputAction.CallbackContext context) { // Function is called when the attack input button is pressed
         if (currentState != PlayerStates.Dynamic || !canAttack) return;
 
@@ -160,11 +170,26 @@ public class Player : MonoBehaviour
         if (!canPickup || inventoryManager.inventoryObj.activeSelf) return;
 
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask); // Gets all interactable objects within the interactionRange of the player into a collider array
+        
+        // First, we loop through to look for things that are interactables. This will be like doors, item pedestals, etc. We do this first to give them priority over Pickups.
         foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
-            if(objCol.TryGetComponent(out Pickupable pickupable)) pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+            if (objCol.TryGetComponent(out Pedestal itemPedestal)) continue; // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
         }
-        // Probably do another pass to check for interactables, things like doors and whatnot. Would be prioritized by which comes first in the list.
+
+        // If there have not been any Interactables, then we look for Pickupables.
+        foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
+            if (objCol.TryGetComponent(out Pickupable pickupable)) pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+        }
     }
+
+    private void OnInventory(InputAction.CallbackContext context) {
+        if (!canOpenInventory) return;
+
+        inventoryOpen = !inventoryOpen;
+        inventoryManager.inventoryObj.SetActive(inventoryOpen);
+    }
+
+    #endregion
 
     public bool IsMoving() { // Returns true or false based on whether the player is inputting movement buttons (keys, controller, etc) OR the player is in static state
         return moveDirection != Vector2.zero || currentState == PlayerStates.Static;

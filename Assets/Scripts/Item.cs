@@ -12,10 +12,7 @@ public class Item : ScriptableObject
     public ItemType type;
     public ActionType actionType;
     //public Vector2Int range = new Vector2Int(5, 4);
-    //public int maxStackSize = 1;
-
-    [Header("Only UI")]
-    public bool stackable = true;
+    public int maxStackSize = 1;
 
     [Header("Both")]
     public Sprite image;

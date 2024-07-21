@@ -1,15 +1,19 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
-    public int maxStackedItems = 4;
-    public int numSlots = 7;
-    public InventorySlot[] inventorySlots;
+    public static InventoryManager currentInstance; // There should only ever be one InventoryManager per scene, so we are doing this for easy access.
+
+    int numHotbarSlots;
     public GameObject inventoryItemPrefab;
-    public GameObject inventoryObj;
+    [HideInInspector] public GameObject inventoryObj;
+    List<InventorySlot> inventorySlots = new List<InventorySlot>();
+    List<InventorySlot> hotbarSlots = new List<InventorySlot>();
 
     [Header("Item Dropping")]
     [SerializeField] float dropRange = 2f; // Maximum distance a dropped item will drop from the player
@@ -18,8 +22,22 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject pickupablePrefab;
 
+    GameObject player;
+
     //at start no slot set "active" nothing stopping play from just clicking a number
     int selectedSlot = -1;
+
+    private void Awake() {
+        currentInstance = this;
+        InitializeInventorySlots();
+
+        inventoryObj = transform.Find("PlayerInventory").gameObject;
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    private void Start() {
+        ChangeSelectedSlot(0); // Automatically picks the first slot on start
+    }
 
     //updates active slot when key is pressed
     private void Update()
@@ -29,11 +47,21 @@ public class InventoryManager : MonoBehaviour
         {
             //checks if input is a number key and switches active slot to key pressed
             bool isNumber = int.TryParse(Input.inputString, out int number);
-            if(isNumber && number > 0 && number <= numSlots)
+            if(isNumber && number > 0 && number <= numHotbarSlots)
             {
                 ChangeSelectedSlot(number - 1);
             }
         }
+    }
+
+    void InitializeInventorySlots() {
+        // Initializes inventory slots
+        inventorySlots.AddRange(transform.Find("PlayerInventory").GetComponentsInChildren<InventorySlot>()); // Adds all the InvetorySlots from the PlayerInventory to the list
+        //inventorySlots.AddRange(transform.Find("HotBar").GetComponentsInChildren<InventorySlot>()); // Adds all the InventorySlots from the Hotbar to the list
+
+        // Iniitializes hotbar slots
+        hotbarSlots.AddRange(transform.Find("HotBar").GetComponentsInChildren<InventorySlot>()); // Adds all the InventorySlots from the Hotbar to the list
+        numHotbarSlots = hotbarSlots.Count;
     }
 
     //code for changing slot
@@ -42,65 +70,56 @@ public class InventoryManager : MonoBehaviour
         //deactivates old active slot
         if (selectedSlot >= 0)
         {
-            inventorySlots[selectedSlot].Deselect();
+            hotbarSlots[selectedSlot].Deselect();
         }
         //sets new slot to active
-        inventorySlots[newValue].Select();
+        hotbarSlots[newValue].Select();
         selectedSlot = newValue;
     }
 
     //adds item to inventory or stack when possible
     public bool AddItem(Item item)
     {
-        //check if slot has the same item with lower count than max
-        for (int i = 0; i < inventorySlots.Length; i++)
-        {
-            InventorySlot slot = inventorySlots[i];
-            if(slot == null) {
-                Debug.LogError("something");
-                return false;
-            }
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < maxStackedItems && itemInSlot.item.stackable == true)
-            {
-                itemInSlot.count++;
-                itemInSlot.RefreshCount();
+        // Checks if slot has the same item with lower count than max
+        foreach (InventorySlot slot in inventorySlots) {
+            if (slot.IsEmptySlot()) continue; // Skips it if it was an empty slot
+
+            // Checks if it has InventoryItem and is not a full stack
+            InventoryItem inventoryItem = slot.GetItemInSlot();
+            if(inventoryItem != null && inventoryItem.item == item && inventoryItem.count < inventoryItem.item.maxStackSize) {
+                inventoryItem.count++;
+                inventoryItem.RefreshCount();
                 return true;
             }
         }
 
-        //finds empty slot to put item into
-        for ( int i = 0; i < inventorySlots.Length; i++)
-        {
-            //selects slot
-            InventorySlot slot = inventorySlots[i];
-            //checks if slot is empty
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            //if empty puts item in
-            if (itemInSlot == null) 
-            { 
-                //puts item in new slot
-                SpawnNewItem(item, slot);
-                return true;
-            }
+        // Finds empty slot to put item into
+        InventorySlot newSlot = inventorySlots.Find(slot => slot.IsEmptySlot()); // Finds the first slot in the list where slot.IsEmptySlot() is true
+        if (newSlot != null) { // If one was successfully found
+            SpawnNewItem(item, newSlot);
+            return true;
         }
-        //returns false if no available slots
+
+        // No available slot was found
         return false;
     }
 
     public void DropItem(Item item, int count = 1) {
+        Debug.Log(count);
         for(int i =0; i < count; i++)
         {
-            GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
+            GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, player.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
             Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
             pickupScript.UpdatePickupableObj(item);
             pickupScript.canPickup = false;
+
+            Debug.Log(droppedItem);
 
             Vector3 originalSize = droppedItem.transform.localScale;
             droppedItem.transform.localScale = originalSize * 0.5f;
 
             // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
-            droppedItem.transform.DOJump(transform.position + (Vector3)Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
+            droppedItem.transform.DOJump(player.transform.position + (Vector3)Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
             droppedItem.transform.DOScale(originalSize, dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
         }
     }
@@ -119,8 +138,7 @@ public class InventoryManager : MonoBehaviour
     public Item GetSelectedItem(bool use)
     {
         //gets slot then gets item from slot
-        InventorySlot slot = inventorySlots[selectedSlot];
-        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        InventoryItem itemInSlot = hotbarSlots[selectedSlot].GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null)
         {
             Item item = itemInSlot.item;

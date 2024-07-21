@@ -26,9 +26,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         image.color = notSelectedColor;
     }
 
+    public InventoryItem GetItemInSlot() {
+        if (transform.childCount <= 0) return null; // If there are no children, return null
+        else return GetComponentInChildren<InventoryItem>(); // If there are children, return any InventoryItem component in children (possible to be null as well)
+    }
+
+    public bool IsEmptySlot() {
+        return transform.childCount <= 0; // Returns true if there are no children
+    }
+
     //if item's icon is dropped on slot, set as new slot
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log("tset')");
         //if slot is empty then put item into slot
         if (transform.childCount <= 0)
         {

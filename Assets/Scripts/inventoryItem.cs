@@ -44,12 +44,16 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     //moves item's icon when being dragged in inventory
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+        transform.position = Input.mousePosition + Vector3.forward;
     }
 
     //drops item's icon and either snaps into a slot or goes back to original slot
     public void OnEndDrag(PointerEventData eventData)
     {
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+        //if (hit.collider != null)
+        //    Debug.Log(hit.collider.gameObject.name);
         image.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
     }

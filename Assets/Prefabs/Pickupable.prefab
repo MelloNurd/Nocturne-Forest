@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1242678521582771813}
   - component: {fileID: 1531282678247545657}
   - component: {fileID: 8211147220283306825}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Pickupable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,6 +84,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
   canPickup: 1
+  stackSize: 1
 --- !u!1 &7214744002114247073
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 409108170409503463}
   - component: {fileID: 4046723459529450622}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4146441125901866047}
   - component: {fileID: 6180038522586820371}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
