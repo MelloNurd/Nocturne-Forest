@@ -216,10 +216,12 @@ public class Player : MonoBehaviour
         currentState = PlayerStates.Attacking; // Changes state to atacking and disables further attacking
         canAttack = false;
 
+        animator.SetBool("Attack", true);
         yield return new WaitForSeconds(attackDelaySeconds); // Waits for attackDelaySeconds
         EnableAttackArea(); // Enables the attack area
         yield return new WaitForSeconds(attackLengthSeconds); // Waits for attackLengthSeconds
         DisableAttackArea(); // Disables the attack area
+        animator.SetBool("Attack", false);
 
         currentState = PlayerStates.Dynamic; // Changes state back to Dynamic
         canAttack = true; // Re-enables attacking
