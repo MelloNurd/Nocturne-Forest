@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public Image image;
     public Color selectedColor, notSelectedColor;
+
+    public UnityEvent onDropCall;
 
     private void Awake()
     {
@@ -38,7 +41,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     //if item's icon is dropped on slot, set as new slot
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("tset')");
         //if slot is empty then put item into slot
         if (transform.childCount <= 0)
         {
@@ -54,5 +56,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             currentItem.transform.SetParent(drugItem.parentAfterDrag);
             drugItem.parentAfterDrag = temp;
         }
+
+        onDropCall?.Invoke();
     }
 }

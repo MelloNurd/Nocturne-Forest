@@ -171,9 +171,11 @@ public class Player : MonoBehaviour
 
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask); // Gets all interactable objects within the interactionRange of the player into a collider array
         
+        // The below might be good for an interface if I ever end up wanting to do that
+
         // First, we loop through to look for things that are interactables. This will be like doors, item pedestals, etc. We do this first to give them priority over Pickups.
         foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
-            if (objCol.TryGetComponent(out Pedestal itemPedestal)) continue; // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+            if (objCol.TryGetComponent(out Pedestal itemPedestal)) itemPedestal.OpenPedestal(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
         }
 
         // If there have not been any Interactables, then we look for Pickupables.
@@ -196,7 +198,7 @@ public class Player : MonoBehaviour
     }
 
     private Vector2 GetDirectionFacing() {
-        // This is ugly, and I'd have done a switch statement instead, but this is just because we're going to have many different animations for each state...
+        // This is ugly, and I'd have done a switch statement instead, but this is just because we're going to have many different animations for each state, so we're just checking the names for key terms...
         if(animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Up")) {
             return Vector2.up;
         }

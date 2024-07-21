@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01c5a4fe16bb43d43880f07a41b5d0ec, type: 3}
-  m_Name: Cat
+  m_Name: Key
   m_EditorClassIdentifier: 
   Tile: {fileID: 0}
   type: 0
-  actionType: 1
-  maxStackSize: 5
-  image: {fileID: 21300000, guid: 6ee35d302d9868d44b76982b3e976772, type: 3}
+  actionType: 0
+  maxStackSize: 1
+  image: {fileID: 21300000, guid: 20d1749c7a498b94f95572353249b090, type: 3}

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.Events;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -36,6 +37,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     //picks up item's icon and sets an origin for if dropped in invalid spot
     public void OnBeginDrag(PointerEventData eventData)
     {
+        InventorySlot slot = transform.parent.GetComponent<InventorySlot>();
+        if(slot != null) {
+
+        }
+
         image.raycastTarget = false;
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);

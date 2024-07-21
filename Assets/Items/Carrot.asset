@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01c5a4fe16bb43d43880f07a41b5d0ec, type: 3}
-  m_Name: Rat
+  m_Name: Carrot
   m_EditorClassIdentifier: 
   Tile: {fileID: 0}
   type: 0
   actionType: 1
-  range: {x: 5, y: 4}
-  stackable: 0
-  image: {fileID: 21300000, guid: 8e7e0e8d38c18b447a1d4d632725d9a0, type: 3}
+  maxStackSize: 16
+  image: {fileID: 21300000, guid: 462955078d27fbb419c1694731e7e8f2, type: 3}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Pickupable : MonoBehaviour
@@ -21,6 +22,7 @@ public class Pickupable : MonoBehaviour
 
     GameObject shadow;
 
+    SpriteRenderer childSpriteRenderer;
 
     private void Awake() {
         if(item == null) {
@@ -32,8 +34,9 @@ public class Pickupable : MonoBehaviour
         playerPickupRange = player.GetComponent<Player>().interactionRange;
 
         playerInventory = InventoryManager.currentInstance;
-
         shadow = transform.Find("Shadow").gameObject;
+
+        childSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -52,7 +55,7 @@ public class Pickupable : MonoBehaviour
     }
 
     public void UpdatePickupableObj(Item newItem) {
-        GetComponentInChildren<SpriteRenderer>().sprite = newItem.image;
+        childSpriteRenderer.sprite = newItem.image;
         item = newItem;
     }
 
