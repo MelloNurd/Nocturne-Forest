@@ -53,9 +53,10 @@ MonoBehaviour:
   animator: {fileID: 4575373480017886365}
   maxHealth: 20
   canPickup: 1
+  canOpenInventory: 1
+  inventoryOpen: 0
   currentHealth: 20
   currentState: 1
-  inventoryManager: {fileID: 0}
   interactionRange: 2
   moveSpeed: 0.1
   canAttack: 1
@@ -79,37 +80,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8acb97943e93d1c4ca55d2a3b389d1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStackedItems: 4
-  numSlots: 7
-  inventorySlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   inventoryItemPrefab: {fileID: 8957634044052052241, guid: 20b5071784fe0724c825c11b92f7232e, type: 3}
   inventoryObj: {fileID: 0}
   dropRange: 3
@@ -324,7 +294,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.89602, y: 2.30231, z: 1.3543}
+  m_LocalScale: {x: 1.45, y: 1.6, z: 1.35}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6140301126427888329}

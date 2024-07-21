@@ -39,7 +39,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         InventorySlot slot = transform.parent.GetComponent<InventorySlot>();
         if(slot != null) {
-
+            //slot.
         }
 
         image.raycastTarget = false;

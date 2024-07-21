@@ -153,9 +153,11 @@ public class Player : MonoBehaviour
         if (currentState != PlayerStates.Dynamic || !canAttack) return;
 
         Vector2 facingDir = GetDirectionFacing();
-
         attackArea.transform.right = facingDir;
-        attackArea.transform.localPosition = facingDir;
+
+        Vector2 posOffset = facingDir * 0.85f;
+        if (facingDir == Vector2.right || facingDir == Vector2.left) posOffset += new Vector2(0, 0.2f);
+        attackArea.transform.localPosition = posOffset;
 
         StartCoroutine(Attack());
     }
