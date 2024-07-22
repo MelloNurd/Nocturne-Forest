@@ -309,6 +309,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1b5a384765b6c1e4ab83f8b4ea955f57, type: 3}
     - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
@@ -618,7 +622,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1049,7 +1053,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: -31.54
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -1998,7 +2002,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: -10
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -2724,6 +2728,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1b5a384765b6c1e4ab83f8b4ea955f57, type: 3}
     - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
@@ -2967,7 +2975,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 6
-    NearClipPlane: 0.3
+    NearClipPlane: -31.54
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -3372,7 +3380,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -4616,6 +4624,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 121209890217267000, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 161362346288710690, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -4681,6 +4693,10 @@ PrefabInstance:
     - target: {fileID: 719478253164164256, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_Name
       value: Pedestal L
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1309704528964462450, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_LocalPosition.x
