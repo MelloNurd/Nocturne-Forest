@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c5a4fe16bb43d43880f07a41b5d0ec, type: 3}
   m_Name: Mana Potion
   m_EditorClassIdentifier: 
-  Tile: {fileID: 0}
-  type: 1
-  actionType: 0
-  maxStackSize: 4
   image: {fileID: -807172001, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
+  type: 1
+  maxStackSize: 4
+  marketPrice: 30

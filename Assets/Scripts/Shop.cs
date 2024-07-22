@@ -39,6 +39,18 @@ public class Shop : MonoBehaviour
         }
     }
 
+    public bool UpdateItem(Pedestal _pedestal) {
+        try {
+            RemoveItem(_pedestal);
+            AddItem(_pedestal);
+            return true;
+        }
+        catch {
+            Debug.LogWarning("Unable to add item to shop with associating pedestal: " + _pedestal.name);
+            return false;
+        }
+    }
+
     public bool RemoveItem(Pedestal _pedestal) {
         try {
             if(items.Any(x => x.pedestal == _pedestal)) items.Remove(items.FirstOrDefault(x => x.pedestal == _pedestal));

@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c5a4fe16bb43d43880f07a41b5d0ec, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: 
-  Tile: {fileID: 0}
-  type: 0
-  actionType: 1
-  maxStackSize: 16
   image: {fileID: -1243920363, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
+  type: 0
+  maxStackSize: 16
+  marketPrice: 10

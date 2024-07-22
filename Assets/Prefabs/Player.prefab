@@ -50,12 +50,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4575373480017886365}
-  maxHealth: 20
   canPickup: 1
-  canOpenInventory: 0
+  canOpenInventory: 1
   inventoryOpen: 0
-  currentHealth: 20
   currentState: 1
+  maxHealth: 20
+  currentHealth: 20
+  attackDamage: 5
   baseKnockback: 1
   attackKnockback: 1
   interactionRange: 2

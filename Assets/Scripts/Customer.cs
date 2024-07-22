@@ -15,6 +15,13 @@ public class Customer : MonoBehaviour
     }
     public CustomerStates currentState;
 
+    public enum PurchasingState {
+        WillBuy,
+        TooExpensive,
+        WontBuy
+    }
+    public PurchasingState customerPurchasingState;
+
     public LootTable desiredItemsPool;
     List<Item> desiredItems;
     ShopItem itemToBuy;
@@ -24,8 +31,6 @@ public class Customer : MonoBehaviour
     public int money;
 
     bool shopHasItem;
-    bool canAfford;
-    bool willBuy;
 
     /**
      * just gonna jot some ideas down for all of this
@@ -52,7 +57,7 @@ public class Customer : MonoBehaviour
     {
         shop = GameObject.FindGameObjectWithTag("Shop").GetComponent<Shop>();
 
-        money = Random.Range(20, 100); // Money will determine amount of item to purchase
+        money = Random.Range(20, 100);
 
         CheckForItems();
     }
@@ -61,12 +66,15 @@ public class Customer : MonoBehaviour
         // The customer is going to roll their desiredItemsPool to get the items they want to buy
         desiredItems = desiredItemsPool.RollDrops().Distinct().ToList();
 
-        if (shop.GetShopItems().Count <= 0) { // If there are no items in shop, just go straight to rolling from desiredItems
-            willBuy = false;
+        // If there are no items in shop, just go straight to rolling from desiredItems
+        if (shop.GetShopItems().Count <= 0) {
+            customerPurchasingState = PurchasingState.WontBuy;
             itemToBuy = new ShopItem(desiredItems[Random.Range(0, desiredItems.Count)], -1, null);
         }
+        // Evaluate items in the shop
         else {
-            shopHasItem = false;
+            shopHasItem = false; // Initialize this to false
+
             // We check if the shop has any of the items the customer wants to buy, and if so, adjust desiredItems accordingly.
             if (desiredItems.Intersect(shop.GetItemsInShopItems()).Any()) {
                 shopHasItem = true;
@@ -75,9 +83,11 @@ public class Customer : MonoBehaviour
 
             // If the shop DOES have an item that the customer wants to buy
             if (shopHasItem) {
-                // need to do further checking here to see if canBuy (money)
-                willBuy = true;
+                customerPurchasingState = PurchasingState.WillBuy;
                 itemToBuy = shop.GetShopItems().First(x => x.item == desiredItems[Random.Range(0, desiredItems.Count)]);
+
+                // If the item is priced too high
+                if (itemToBuy.price > itemToBuy.item.marketPrice) customerPurchasingState = PurchasingState.TooExpensive;
             }
             // If the shop DOES NOT have an item that the customer wants to buy
             else {
@@ -85,23 +95,32 @@ public class Customer : MonoBehaviour
 
                 // Customer WILL NOT buy an item. itemToBuy is set to an item they want to buy, to inform the player.
                 if (Random.Range(0, 2) == 0) { // 50% chance
-                    willBuy = false;
+                    customerPurchasingState = PurchasingState.WontBuy;
                     itemToBuy = new ShopItem(desiredItems[Random.Range(0, desiredItems.Count)], -1, null);
                 }
                 // Customer WILL buy an item. itemToBuy is set to one of the items offered in the shop
                 else {
-                    willBuy = true;
-                    // need to do further checking here to see if canBuy (money)
+                    customerPurchasingState = PurchasingState.WillBuy;
                     itemToBuy = shop.GetShopItems().ToList()[Random.Range(0, shop.GetShopItems().Count)];
+
+                    // If the item is priced too high
+                    if (itemToBuy.price > itemToBuy.item.marketPrice) customerPurchasingState = PurchasingState.TooExpensive;
                 }
             }
         }
 
-        if(!willBuy) {
-            Debug.Log("Customer will not make a purchase. They want " + itemToBuy.item.name);
-        }
-        else {
-            Debug.Log("Customer will make a purchase! They want " + itemToBuy.item.name + " which is priced at " + itemToBuy.price + " and is in pedestal: " + itemToBuy.pedestal.name);
+        switch(customerPurchasingState) {
+            case PurchasingState.WillBuy:
+                Debug.Log("Customer will make a purchase! They want " + itemToBuy.item.name + " which is priced at $" + itemToBuy.price + " and is in pedestal: " + itemToBuy.pedestal.name + ".");
+                break;
+            case PurchasingState.TooExpensive:
+                Debug.Log("Customer would have bought for a more reasonable price! They wanted " + itemToBuy.item.name + " which is priced at $" + itemToBuy.price + " (compared to market value: $" + itemToBuy.item.marketPrice + "), and is in pedestal: " + itemToBuy.pedestal.name + ".");
+                break;
+            case PurchasingState.WontBuy:
+                Debug.Log("Customer will not make a purchase. They want to buy " + itemToBuy.item.name + ".");
+                break;
+            default:
+                break;
         }
     }
 

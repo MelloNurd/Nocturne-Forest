@@ -76,6 +76,7 @@ public class Pedestal : Interactable
 
     public void UpdatePedestalPrice() {
         openedPedestal.sellPrice = int.Parse(pedestalPriceField.text);
+        shop.UpdateItem(this);
     }
 
     public void ClearItem() {

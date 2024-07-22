@@ -7,15 +7,12 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu(menuName = "Scriptable Object/Item")]
 public class Item : ScriptableObject
 {
-    [Header("Only gameplay")]
-    public TileBase Tile;
+    public Sprite image; 
     public ItemType type;
-    public ActionType actionType;
     //public Vector2Int range = new Vector2Int(5, 4);
     public int maxStackSize = 1;
-
-    [Header("Both")]
-    public Sprite image;
+    public int marketPrice;
+   
 }
 
 public enum ItemType
@@ -24,8 +21,9 @@ public enum ItemType
     Utility
 }
 
-public enum ActionType
-{
-    Dig,
-    Grab
-}
+// This will be better implemented as an interface
+//public enum ActionType
+//{
+//    Dig,
+//    Grab
+//}
