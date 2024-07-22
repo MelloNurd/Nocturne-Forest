@@ -7,7 +7,7 @@ public abstract class Interactable : MonoBehaviour
     public static Interactable nextInteract; // This will be the object that the player has in range to interact. Only one Interactable can be interacted with at a time.
 
     public bool canInteract = true;
-    bool isInRange;
+    protected bool isInRange;
 
     [SerializeField] Material normalMat;
     [SerializeField] Material outlineMat;

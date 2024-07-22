@@ -1217,6 +1217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 835398287}
   - component: {fileID: 835398286}
+  - component: {fileID: 835398288}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -1291,6 +1292,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &835398288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835398285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92380958a8f53894c9114696f91a478a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteract: 1
+  normalMat: {fileID: 2100000, guid: f9a9b41d09a3c7e49ae9917b6e5cb16a, type: 2}
+  outlineMat: {fileID: 2100000, guid: 6932bc608d7992c4494e0be602a2c111, type: 2}
 --- !u!1001 &857525308
 PrefabInstance:
   m_ObjectHideFlags: 0
