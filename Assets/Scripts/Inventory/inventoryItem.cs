@@ -24,6 +24,14 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         RefreshCount();
     }
 
+    private void OnDisable() {
+        InventoryManager.currentInstance.draggingItem = false;
+    }
+
+    private void OnDestroy() {
+        InventoryManager.currentInstance.draggingItem = false;
+    }
+
     //changes the count number on item stack
     public void RefreshCount()
     {
@@ -45,6 +53,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         image.raycastTarget = false;
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
+
+        InventoryManager.currentInstance.draggingItem = true;
     }
 
     //moves item's icon when being dragged in inventory
@@ -62,5 +72,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         //    Debug.Log(hit.collider.gameObject.name);
         image.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
+
+        InventoryManager.currentInstance.draggingItem = false;
     }
 }

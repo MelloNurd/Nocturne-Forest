@@ -24,6 +24,8 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject pickupablePrefab;
 
+    public bool draggingItem;
+
     GameObject player;
 
     //at start no slot set "active" nothing stopping play from just clicking a number
