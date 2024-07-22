@@ -35,14 +35,12 @@ public class Pickupable : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerPickupRange = player.GetComponent<Player>().interactionRange;
 
-        playerInventory = InventoryManager.currentInstance;
-
         childSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start() {
         DisableOutline();
-
+        playerInventory = InventoryManager.currentInstance;
     }
 
     public void OnDrop(Item _item) {
