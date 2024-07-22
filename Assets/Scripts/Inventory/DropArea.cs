@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class DropArea : MonoBehaviour, IDropHandler
 {
     InventoryManager inventoryManager;
+    public bool trash;
 
     private void Start() {
         inventoryManager = InventoryManager.currentInstance;
@@ -15,7 +16,10 @@ public class DropArea : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         InventoryItem drugItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-        inventoryManager.DropItem(drugItem.item, drugItem.count);
+        if(!trash)
+        {
+            inventoryManager.DropItem(drugItem.item, drugItem.count);
+        }
         Destroy(drugItem.gameObject);
     }
 }
