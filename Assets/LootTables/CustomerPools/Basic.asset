@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5651db6ed882e2540a75eef68506af28, type: 3}
-  m_Name: RangerEnemy
+  m_Name: Basic
   m_EditorClassIdentifier: 
+  allowEmptyRolls: 0
   items:
-  - item: {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
+  - item: {fileID: 11400000, guid: e4bda56ecfa3eec468c09d00dfed0680, type: 2}
     amount: 1
-    weight: 100
-  - item: {fileID: 11400000, guid: 0352dfae4e694ba4d9a7b714a59653b2, type: 2}
-    amount: 2
-    weight: 100
-  - item: {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}
-    amount: 3
-    weight: 100
+    weight: 50
+  - item: {fileID: 11400000, guid: d979ed7e6be999549891912887295618, type: 2}
+    amount: 1
+    weight: 50

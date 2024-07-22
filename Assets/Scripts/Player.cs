@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,15 +21,22 @@ public class Player : MonoBehaviour
     [SerializeField] Animator animator;
 
     [Header("General")]
-    [SerializeField] float maxHealth = 20f;
     public bool canPickup = true;
     public bool canOpenInventory = true;
     public bool inventoryOpen = false;
-    public float currentHealth = 20f;
     public PlayerStates currentState = PlayerStates.Dynamic;
+
+    [Header("Combat")]
+    [SerializeField] float maxHealth = 20f;
+    public float currentHealth = 20f;
+    public float attackDamage = 5f;
+    [Tooltip("Knockback multiplier when hit")] public float baseKnockback; // This is the knockback multiplier the player receives on hit
+    [Tooltip("Knockback multiplier when attacking")] public float attackKnockback; // This is the knockback multiplier the player gives on attacl
+
 
     private GameObject attackArea;
     private InventoryManager inventoryManager;
+    Rigidbody2D rb;
 
     // Input stuff
     [HideInInspector] public PlayerInputActions playerControls;
@@ -44,7 +52,7 @@ public class Player : MonoBehaviour
     LayerMask interactionMask;
 
     [Header("Movement")]
-    [SerializeField] float moveSpeed = 0.25f; // The base speed of the player
+    [SerializeField] float moveSpeed = 2f; // The base speed of the player
 
     [Header("Attacking")]
     [SerializeField] bool canAttack = true;
@@ -100,6 +108,10 @@ public class Player : MonoBehaviour
         DisableAttackArea(); // Disables the attack area on start, just in case
 
         interactionMask = LayerMask.GetMask("Interactable", "Pickupable"); // Sets the interactionMask to only interact with the layer "Interactable". This is used in the OverlapCircle function.
+
+        rb = GetComponent<Rigidbody2D>();
+
+        currentHealth = maxHealth;
     }
 
     private void Start() {
@@ -130,22 +142,60 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate() {
         // These are the different movement codes. Different states will move at different speeds.
-        if (currentState == PlayerStates.Dynamic) // Code for when player is in "Dynamic" state
-        {
-            transform.position += (Vector3)moveDirection * moveSpeed; // Updates position based on movement
-        }
-        else if (currentState == PlayerStates.Rolling) { // Code for when the player is in Rolling state
-            transform.position += (Vector3)moveDirection * moveSpeed * rollSpeedModifier; // Modifies speed by rollSpeedModifier
-        }
-        else if (currentState == PlayerStates.Attacking) { // Code for when the player is in Attacking state
-            transform.position += (Vector3)moveDirection * moveSpeed * attackSpeedModifier; // Modifies speed by rollSpeedModifier
+        switch (currentState) {
+            case PlayerStates.Dynamic: // Code for when player is in "Dynamic" state
+                rb.velocity = (Vector3)moveDirection * moveSpeed; // Updates position based on movement
+                break;
+            case PlayerStates.Rolling: // Code for when the player is in Rolling state
+                rb.velocity = (Vector3)moveDirection * moveSpeed * rollSpeedModifier; // Modifies speed by rollSpeedModifier
+                break;
+            case PlayerStates.Attacking: // Code for when the player is in Attacking state
+                rb.velocity = (Vector3)moveDirection * moveSpeed * attackSpeedModifier; // Modifies speed by rollSpeedModifier
+                break;
+            default:
+                break;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if(currentState != PlayerStates.Rolling && collision.CompareTag("EnemyAttack")) { // Code for when the player is hit by Enemy attack area
             // Player was hit
+            float knockbackMultipler = 1f;
+
+            Vector3 knockbackDir = (collision.transform.position - transform.position).normalized;
+
+            float damage = 0f;
+
+            if (collision.TryGetComponent(out EnemyBase enemy)) {
+                knockbackMultipler = enemy.attackKnockback;
+                damage = enemy.attackDamage;
+            }
+            else if (collision.TryGetComponent(out Projectile projectile)) {
+                knockbackMultipler = projectile.attackKnockback;
+                knockbackDir = projectile.travelDir;
+                damage = projectile.attackDamage;
+            }
+
+            Knockback(knockbackDir, knockbackMultipler);
+            TakeDamage(damage);
         }
+    }
+
+    void TakeDamage(float damage) {
+        if ((currentHealth -= damage) <= 0) {
+            Die();
+        }
+    }
+
+    void Die() {
+        currentHealth = 0;
+        Debug.Log("holy moly the player died!");
+    }
+
+    public void Knockback(Vector3 dir, float knockbackPower = 1f) {
+        currentState = PlayerStates.Static;
+        float distance = baseKnockback * knockbackPower * 1.6f;
+        transform.DOJump(transform.position + dir * distance, distance * 0.16f, 1, distance * 0.16f).SetEase(Ease.Linear).onComplete = () => { currentState = PlayerStates.Dynamic; };
     }
 
     #region InputCalls

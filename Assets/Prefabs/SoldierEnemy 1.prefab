@@ -178,14 +178,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3690a2b0b5b6ae24097c426c55bfa7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseKnockback: 1
+  itemDrops: {fileID: 0}
   maxHealth: 20
   currentHealth: 20
   currentState: 1
-  drops: []
-  dropRange: 2
-  dropStrength: 1.5
-  dropDuration: 0.6
-  pickupablePrefab: {fileID: 1315593998461436275, guid: 9838a1874713e024696acb464125294a, type: 3}
   moveSpeed: 0.1
   playerDistanceCutoff: 1.25
   canRoam: 1

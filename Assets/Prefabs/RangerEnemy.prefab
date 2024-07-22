@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a0b39ca0993fb40b1b258ce1e3b26c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseKnockback: 1
   itemDrops: {fileID: 11400000, guid: 1dc737d3a7507404c9a9c96c1fa08803, type: 2}
   maxHealth: 20
   currentHealth: 20
