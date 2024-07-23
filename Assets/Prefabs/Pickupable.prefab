@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e26598647780944497c343f657719ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
+  item: {fileID: 11400000, guid: d979ed7e6be999549891912887295618, type: 2}
   canPickup: 1
   stackSize: 1
   normalMat: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}

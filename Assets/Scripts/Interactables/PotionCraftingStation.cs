@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionCrafting : Interactable {
+public class PotionCraftingStation : Interactable {
     protected override void Awake() {
         base.Awake();
     }
@@ -18,6 +18,6 @@ public class PotionCrafting : Interactable {
     }
 
     public override void Interact() {
-        Debug.Log("potion crafting opened");
+        InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.PotionCrafting, gameObject);
     }
 }

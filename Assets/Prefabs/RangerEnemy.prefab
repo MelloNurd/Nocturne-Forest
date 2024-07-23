@@ -47,12 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a0b39ca0993fb40b1b258ce1e3b26c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseKnockback: 1
-  itemDrops: {fileID: 11400000, guid: 1dc737d3a7507404c9a9c96c1fa08803, type: 2}
   maxHealth: 20
   currentHealth: 20
+  attackDamage: 5
+  baseKnockback: 1
+  attackKnockback: 1
+  itemDrops: {fileID: 11400000, guid: 9733ef90348d71e469316d525666378d, type: 2}
   currentState: 1
-  moveSpeed: 0.1
+  moveSpeed: 2
   playerDistanceCutoff: 9
   canRoam: 1
   roamRadius: 5
@@ -67,7 +69,7 @@ MonoBehaviour:
   pursuitDistance: 15
   pursuitLossDistance: 15
   pursueSpeedModifier: 0.9
-  canAttack: 1
+  canAttack: 0
   attackRange: 9
   attackDelaySeconds: 0.2
   attackLengthSeconds: 0.2

@@ -17,6 +17,8 @@ public class InventoryManager : MonoBehaviour
 
     public static InventoryManager currentInstance; // There should only ever be one InventoryManager per scene, so we are doing this for easy access.
 
+    public List<Recipe> globalCraftingRecipes = new List<Recipe>();
+
     int numHotbarSlots;
     [SerializeField] GameObject hotbarCover; // This is just to block mouse dragging from the hotbar when the inventory is not opened
 
@@ -26,6 +28,7 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public GameObject playerInventoryObj;
     [HideInInspector] public GameObject shopInventoryObj;
     [HideInInspector] public GameObject pedestalMenuObj;
+    [HideInInspector] public GameObject cauldronCraftingObj;
 
     List<InventorySlot> inventorySlots = new List<InventorySlot>();
     List<InventorySlot> hotbarSlots = new List<InventorySlot>();
@@ -56,9 +59,14 @@ public class InventoryManager : MonoBehaviour
         playerInventoryObj = transform.Find("PlayerInventory").gameObject;
         shopInventoryObj = transform.Find("ShopInventory").gameObject;
         pedestalMenuObj = transform.Find("PedestalMenu").gameObject;
+        cauldronCraftingObj = transform.Find("PotionCrafting").gameObject;
 
         playerObj = GameObject.FindGameObjectWithTag("Player");
         player = playerObj.GetComponent<Player>();
+    }
+
+    public static List<Recipe> GetAllCauldronRecipes() {
+        return currentInstance.globalCraftingRecipes.FindAll(x => x.craftingWorkstation == Workstation.Cauldron);
     }
 
     private void Start() {
@@ -121,10 +129,12 @@ public class InventoryManager : MonoBehaviour
                 break;
             case InventoryOpening.PotionCrafting:
                 playerInventoryObj.SetActive(true);
-                playerInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, -200);
+                playerInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200, -200);
 
                 shopInventoryObj.SetActive(true);
-                shopInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, 200);
+                shopInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200, 200);
+
+                cauldronCraftingObj.SetActive(true);
                 break;
             case InventoryOpening.Closing:
                 dropArea.SetActive(false);
@@ -137,6 +147,8 @@ public class InventoryManager : MonoBehaviour
                     slot.gameObject.SetActive(false);
                 }
                 pedestalMenuObj.SetActive(false);
+
+                cauldronCraftingObj.SetActive(false);
 
                 player.itemOpened = null;
                 hotbarCover.SetActive(true);

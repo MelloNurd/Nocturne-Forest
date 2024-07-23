@@ -51,11 +51,29 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         //if slot isn't empty then swap the items spots
         else
         {
-            InventoryItem drugItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-            InventoryItem currentItem = transform.GetComponentInChildren<InventoryItem>();
-            Transform temp = transform;
-            currentItem.transform.SetParent(drugItem.parentAfterDrag);
-            drugItem.parentAfterDrag = temp;
+            InventoryItem droppedItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+            InventoryItem existingItem = transform.GetComponentInChildren<InventoryItem>();
+
+            if (droppedItem.item == existingItem.item && existingItem.count < existingItem.item.maxStackSize) {
+                if(droppedItem.count + existingItem.count > existingItem.item.maxStackSize) {
+                    int difference = existingItem.item.maxStackSize - existingItem.count;
+                    existingItem.count += difference;
+                    droppedItem.count -= difference;
+                }
+                else {
+                    existingItem.count = existingItem.count + droppedItem.count;
+                    Destroy(droppedItem.gameObject);
+
+                }
+                existingItem.RefreshCount();
+                droppedItem.RefreshCount();
+            }
+            else {
+                Transform temp = transform;
+                existingItem.transform.SetParent(droppedItem.parentAfterDrag);
+                droppedItem.parentAfterDrag = temp;
+            }
+
         }
 
         onDropCall?.Invoke();
