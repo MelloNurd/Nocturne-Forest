@@ -216,13 +216,14 @@ public class InventoryManager : MonoBehaviour
     }
 
     //puts new item into empty slot
-    public void SpawnNewItem(Item item, InventorySlot slot)
+    public InventoryItem SpawnNewItem(Item item, InventorySlot slot)
     {
         //new game object made from inventoryItemPrefab
         GameObject newItemGO = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         //sets details about item
         inventoryItem.InitializeItem(item);
+        return inventoryItem;
     }
 
     //if function(true) item is used otherwise just tells what item is in slot

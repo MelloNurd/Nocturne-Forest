@@ -30,14 +30,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         RefreshCount();
     }
 
-    private void OnDisable() {
-        InventoryManager.currentInstance.draggingItem = null;
-    }
-
-    private void OnDestroy() {
-        InventoryManager.currentInstance.draggingItem = null;
-    }
-
     //changes the count number on item stack
     public void RefreshCount()
     {

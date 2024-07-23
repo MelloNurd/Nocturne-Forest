@@ -3229,6 +3229,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4094143920300385481, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4513003156565302353, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_Name
       value: Inventory UI

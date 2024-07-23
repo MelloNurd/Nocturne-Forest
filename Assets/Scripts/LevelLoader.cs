@@ -10,6 +10,10 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] Animator animator;
     public float transitionTime = 1f;
 
+    private void Awake() {
+        animator.gameObject.SetActive(true);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         StartCoroutine(loadLevel(scene));

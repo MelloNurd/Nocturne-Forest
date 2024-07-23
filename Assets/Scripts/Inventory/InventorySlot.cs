@@ -45,14 +45,28 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
 
     private void Update() {
+        // Checks if right click is pressed AND we're dragging an item already (draggingItem != null) AND the mouse is over this slot
         if(Input.GetMouseButtonDown(1) && InventoryManager.currentInstance.draggingItem && IsMouseOver()) {
-            if(transform.childCount <= 0) {
-                // No items in right-clicked box
-                //InventoryManager.currentInstance.SpawnNewItem()
+            Debug.Log("eee");
+            if(transform.childCount <= 0) { // If no items are in this slot
+                InventoryItem newItem = InventoryManager.currentInstance.SpawnNewItem(InventoryManager.currentInstance.draggingItem.item, this);
+                InventoryManager.currentInstance.draggingItem.count -= 1;
+                onDropCall?.Invoke(); // This might break stuff idk
+                if(newItem) newItem.RefreshCount();
             }
-            else {
-                // Some items in right-clicked box
+            else { // If there are items in this slot
+                InventoryItem existingItem = transform.GetComponentInChildren<InventoryItem>();
+                if (existingItem.count + 1 <= existingItem.item.maxStackSize) {
+                    existingItem.count += 1;
+                    InventoryManager.currentInstance.draggingItem.count -= 1;
+                    
+                    onDropCall?.Invoke(); // This might break stuff idk
+                }
+                existingItem.RefreshCount();
             }
+
+            if (InventoryManager.currentInstance.draggingItem.count <= 0) Destroy(InventoryManager.currentInstance.draggingItem.gameObject);
+            if (InventoryManager.currentInstance.draggingItem) InventoryManager.currentInstance.draggingItem.RefreshCount();
         }
     }
 
@@ -78,16 +92,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             InventoryItem existingItem = transform.GetComponentInChildren<InventoryItem>();
 
             if (droppedItem.item == existingItem.item) { // If the items are the same, we want to try merging the stacks
-                if (existingItem.count < existingItem.item.maxStackSize) {
-                    if (droppedItem.count + existingItem.count > existingItem.item.maxStackSize) {
+                if (existingItem.count < existingItem.item.maxStackSize) { // If the existing item slot is not full
+                    if (droppedItem.count + existingItem.count > existingItem.item.maxStackSize) { // If we have more items than the maxStackSize
                         int difference = existingItem.item.maxStackSize - existingItem.count;
                         existingItem.count += difference;
                         droppedItem.count -= difference;
                     }
-                    else {
+                    else { // If we don't have more items than maxStackSize, simply increase count of existing slot
                         existingItem.count = existingItem.count + droppedItem.count;
                         Destroy(droppedItem.gameObject);
-
                     }
                     existingItem.RefreshCount();
                     droppedItem.RefreshCount();
