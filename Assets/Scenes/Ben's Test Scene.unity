@@ -253,16 +253,20 @@ PrefabInstance:
       value: 1.6875
       objectReference: {fileID: 0}
     - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 1b5a384765b6c1e4ab83f8b4ea955f57, type: 3}
-    - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1299973502312432647, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.1875
+      objectReference: {fileID: 0}
+    - target: {fileID: 1299973502312432647, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.1875
       objectReference: {fileID: 0}
     - target: {fileID: 1309704528964462450, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2513,16 +2517,20 @@ PrefabInstance:
       value: 1.6875
       objectReference: {fileID: 0}
     - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 1b5a384765b6c1e4ab83f8b4ea955f57, type: 3}
-    - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1224346567676781820, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1299973502312432647, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.1875
+      objectReference: {fileID: 0}
+    - target: {fileID: 1299973502312432647, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.1875
       objectReference: {fileID: 0}
     - target: {fileID: 1309704528964462450, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
       propertyPath: m_LocalPosition.x
