@@ -16,6 +16,12 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [HideInInspector] public int count = 1;
     [HideInInspector] public Transform parentAfterDrag;
 
+    Player player;
+
+    private void Awake() {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
+
     //set's item's details
     public void InitializeItem(Item newItem)
     {

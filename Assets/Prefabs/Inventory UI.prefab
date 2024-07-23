@@ -644,13 +644,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventorySlotPrefab: {fileID: 9000435140228021285, guid: 8dbab68d0fbd2284c91d2a6101e3e402, type: 3}
   inventoryItemPrefab: {fileID: 8957634044052052241, guid: 20b5071784fe0724c825c11b92f7232e, type: 3}
-  inventoryObj: {fileID: 8855503360375590813}
-  pedestalUIobj: {fileID: 0}
+  playerInventoryObj: {fileID: 0}
+  shopInventoryObj: {fileID: 0}
+  pedestalMenuObj: {fileID: 0}
   draggingItem: 0
   showAreas: 0
   dropArea: {fileID: 3540322096919145486}
   trashArea: {fileID: 5185737705547910226}
-  dropRange: 3
+  dropRange: 2
   dropStrength: 1.5
   dropDuration: 0.6
   pickupablePrefab: {fileID: 1315593998461436275, guid: 9838a1874713e024696acb464125294a, type: 3}

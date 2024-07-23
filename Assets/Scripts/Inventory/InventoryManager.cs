@@ -18,6 +18,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager currentInstance; // There should only ever be one InventoryManager per scene, so we are doing this for easy access.
 
     int numHotbarSlots;
+    [SerializeField] GameObject hotbarCover; // This is just to block mouse dragging from the hotbar when the inventory is not opened
+
     public GameObject inventorySlotPrefab;
     public GameObject inventoryItemPrefab;
 
@@ -92,6 +94,7 @@ public class InventoryManager : MonoBehaviour
         if (player.itemOpened == itemOpening) state = InventoryOpening.Closing; // If any inventories are open, we want to close inventories
 
         player.itemOpened = itemOpening; // This gets initialized to true. Closing will set it to false.
+        hotbarCover.SetActive(false);
         switch (state) {
             case InventoryOpening.PlayerInventory:
                 playerInventoryObj.SetActive(true);
@@ -136,6 +139,7 @@ public class InventoryManager : MonoBehaviour
                 pedestalMenuObj.SetActive(false);
 
                 player.itemOpened = null;
+                hotbarCover.SetActive(true);
                 break;
             default:
                 break;
