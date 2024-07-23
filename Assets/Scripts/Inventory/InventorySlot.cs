@@ -54,19 +54,21 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             InventoryItem droppedItem = eventData.pointerDrag.GetComponent<InventoryItem>();
             InventoryItem existingItem = transform.GetComponentInChildren<InventoryItem>();
 
-            if (droppedItem.item == existingItem.item && existingItem.count < existingItem.item.maxStackSize) {
-                if(droppedItem.count + existingItem.count > existingItem.item.maxStackSize) {
-                    int difference = existingItem.item.maxStackSize - existingItem.count;
-                    existingItem.count += difference;
-                    droppedItem.count -= difference;
-                }
-                else {
-                    existingItem.count = existingItem.count + droppedItem.count;
-                    Destroy(droppedItem.gameObject);
+            if (droppedItem.item == existingItem.item) {
+                if (existingItem.count < existingItem.item.maxStackSize) {
+                    if (droppedItem.count + existingItem.count > existingItem.item.maxStackSize) {
+                        int difference = existingItem.item.maxStackSize - existingItem.count;
+                        existingItem.count += difference;
+                        droppedItem.count -= difference;
+                    }
+                    else {
+                        existingItem.count = existingItem.count + droppedItem.count;
+                        Destroy(droppedItem.gameObject);
 
+                    }
+                    existingItem.RefreshCount();
+                    droppedItem.RefreshCount();
                 }
-                existingItem.RefreshCount();
-                droppedItem.RefreshCount();
             }
             else {
                 Transform temp = transform;
