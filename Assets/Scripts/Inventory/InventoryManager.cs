@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
     List<InventorySlot> inventorySlots = new List<InventorySlot>();
     List<InventorySlot> hotbarSlots = new List<InventorySlot>();
 
-    public bool draggingItem;
+    public InventoryItem draggingItem = null;
 
     public bool showAreas;
     [SerializeField] GameObject dropArea;
@@ -216,7 +216,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     //puts new item into empty slot
-    void SpawnNewItem(Item item, InventorySlot slot)
+    public void SpawnNewItem(Item item, InventorySlot slot)
     {
         //new game object made from inventoryItemPrefab
         GameObject newItemGO = Instantiate(inventoryItemPrefab, slot.transform);

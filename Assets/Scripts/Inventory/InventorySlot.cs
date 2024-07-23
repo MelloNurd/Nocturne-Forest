@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -13,9 +14,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public UnityEvent onDropCall;
     public UnityEvent onItemLeave;
 
+    PointerEventData eventData;
+    List<RaycastResult> raysastResults = new List<RaycastResult>();
+
     private void Awake()
     {
         Deselect();
+        eventData = new PointerEventData(EventSystem.current);
     }
 
     //sets active slot to the active slot color
@@ -39,6 +44,24 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         return transform.childCount <= 0; // Returns true if there are no children
     }
 
+    private void Update() {
+        if(Input.GetMouseButtonDown(1) && InventoryManager.currentInstance.draggingItem && IsMouseOver()) {
+            if(transform.childCount <= 0) {
+                // No items in right-clicked box
+                //InventoryManager.currentInstance.SpawnNewItem()
+            }
+            else {
+                // Some items in right-clicked box
+            }
+        }
+    }
+
+    private bool IsMouseOver() {
+        eventData.position = Input.mousePosition;
+        EventSystem.current.RaycastAll(eventData, raysastResults);
+        return raysastResults.Any(x => x.gameObject == gameObject);
+    }
+
     //if item's icon is dropped on slot, set as new slot
     public void OnDrop(PointerEventData eventData)
     {
@@ -54,7 +77,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             InventoryItem droppedItem = eventData.pointerDrag.GetComponent<InventoryItem>();
             InventoryItem existingItem = transform.GetComponentInChildren<InventoryItem>();
 
-            if (droppedItem.item == existingItem.item) {
+            if (droppedItem.item == existingItem.item) { // If the items are the same, we want to try merging the stacks
                 if (existingItem.count < existingItem.item.maxStackSize) {
                     if (droppedItem.count + existingItem.count > existingItem.item.maxStackSize) {
                         int difference = existingItem.item.maxStackSize - existingItem.count;

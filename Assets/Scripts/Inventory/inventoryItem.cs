@@ -31,11 +31,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
 
     private void OnDisable() {
-        InventoryManager.currentInstance.draggingItem = false;
+        InventoryManager.currentInstance.draggingItem = null;
     }
 
     private void OnDestroy() {
-        InventoryManager.currentInstance.draggingItem = false;
+        InventoryManager.currentInstance.draggingItem = null;
     }
 
     //changes the count number on item stack
@@ -60,7 +60,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
 
-        InventoryManager.currentInstance.draggingItem = true;
+        InventoryManager.currentInstance.draggingItem = this;
     }
 
     //moves item's icon when being dragged in inventory
@@ -79,6 +79,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         image.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
 
-        InventoryManager.currentInstance.draggingItem = false;
+        InventoryManager.currentInstance.draggingItem = null;
     }
 }
