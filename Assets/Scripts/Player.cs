@@ -301,11 +301,13 @@ public class Player : MonoBehaviour
         currentState = PlayerStates.Rolling; // Changes state to rolling and disables further rolling
         canRoll = false;
 
+        animator.SetBool("Roll", true);
         yield return new WaitForSeconds(rollLengthSeconds); // Waits for rollLengthSeconds
 
         currentState = PlayerStates.Dynamic; // Changes state back to Dynamic
-
+        animator.SetBool("Roll", false);
         yield return new WaitForSeconds(rollCooldownSeconds); // Waits for rollCooldownSeconds
+        
 
         canRoll = true; // Re-enables rolling
     }

@@ -67,6 +67,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = Input.mousePosition + Vector3.forward;
+        /*if (Input.GetMouseButtonDown(1)) // Right-click
+        {
+            Debug.Log("Right-click detected during drag");
+            DropOneItem();
+        }*/
     }
 
     //drops item's icon and either snaps into a slot or goes back to original slot
@@ -78,7 +83,31 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         //    Debug.Log(hit.collider.gameObject.name);
         image.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
-
         InventoryManager.currentInstance.draggingItem = null;
     }
+
+   /* private void DropOneItem()
+    {
+        if (count > 1)
+        {
+            count--;
+            RefreshCount();
+
+            // Create a new InventoryItem for the single item
+            GameObject newItemObject = Instantiate(gameObject, parentAfterDrag);
+            InventoryItem newItem = newItemObject.GetComponent<InventoryItem>();
+            newItem.InitializeItem(item);
+            newItem.count = 1;
+            newItem.RefreshCount();
+
+            // Snap the new item to the nearest valid slot
+            image.raycastTarget = true;
+            newItem.transform.SetParent(parentAfterDrag);
+        }
+        else
+        {
+            image.raycastTarget = true;
+            transform.SetParent(parentAfterDrag);
+        }
+    }*/
 }
