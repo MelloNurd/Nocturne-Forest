@@ -84,7 +84,7 @@ public class Pedestal : Interactable
 
         childSpriteRenderer = transform.Find("Item").GetComponent<SpriteRenderer>();
 
-        childSpriteRenderer.transform.DOLocalMove(Vector2.up, 0.8f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Goto(Random.Range(0, 0.8f), true);
+        childSpriteRenderer.transform.DOLocalMove(new Vector2(childSpriteRenderer.transform.localPosition.x, 0.8f), 0.8f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Goto(Random.Range(0, 0.8f), true);
 
         if (sellItem == null) childSpriteRenderer.sprite = null;
 
