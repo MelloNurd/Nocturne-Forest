@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     [Header("General")]
     public bool canPickup = true;
     public bool canOpenInventory = true;
-    public bool inventoryOpen = false;
+    public GameObject itemOpened = null;
     public PlayerStates currentState = PlayerStates.Dynamic;
 
     [Header("Combat")]
@@ -127,7 +127,7 @@ public class Player : MonoBehaviour
     {
         if (currentState != PlayerStates.Rolling) { // Updates moveDirection as long as the player is not rolling (moveDirection is locked when rolling)
             moveDirection = move.ReadValue<Vector2>();
-            if(IsMoving())
+            if(IsMoving() && itemOpened == null)
             {
                 animator.SetFloat("XInput", moveDirection.x);
                 animator.SetFloat("YInput", moveDirection.y);
@@ -141,6 +141,15 @@ public class Player : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        TryMove();
+    }
+
+    void TryMove() {
+        if (itemOpened != null) { // Don't let the player move if they have an opened inventory
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         // These are the different movement codes. Different states will move at different speeds.
         switch (currentState) {
             case PlayerStates.Dynamic: // Code for when player is in "Dynamic" state
@@ -220,17 +229,20 @@ public class Player : MonoBehaviour
     }
 
     private void OnInteract(InputAction.CallbackContext context) { // Function is called when the interact input button is pressed
-        if (!canPickup || inventoryManager.inventoryObj.activeSelf) return;
+        if (!canPickup) return;
+        if(itemOpened != null) { // We close inventory if any inventories are open. This way, pressing the Interact button will close the inventory too.
+            inventoryManager.ToggleInventory(InventoryManager.InventoryOpening.Closing, gameObject);
+            return;
+        }
 
-        Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask); // Gets all interactable objects within the interactionRange of the player into a collider array
+        Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask).OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray(); // Gets all interactable objects within the interactionRange of the player into a collider array
 
         // The stuff below might be good for an interface if I ever end up wanting to do that
+        GameObject closestInteractable = interacted.Length > 0 ? interacted[0].gameObject : null;
+        if (closestInteractable == null) return;
 
-        // This stuff is using some weird formats, but basically we are checking if the interacted list contains anything on the layer "Interactable. Then, we only want the closest one.
-        if (interacted.FirstOrDefault(x => x.gameObject.layer == 6)) { // Layer 6 is "Interactable"
-            GameObject closestInteractable = interacted.OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray()[0].gameObject;
-
-            if (closestInteractable.TryGetComponent(out Pedestal itemPedestal)) itemPedestal.OpenPedestal(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+        if (closestInteractable.TryGetComponent(out Interactable interactable)) {
+            interactable.Interact();
             return;
         }
 
@@ -243,8 +255,8 @@ public class Player : MonoBehaviour
     private void OnInventory(InputAction.CallbackContext context) {
         if (!canOpenInventory) return;
 
-        inventoryOpen = !inventoryOpen;
-        inventoryManager.inventoryObj.SetActive(inventoryOpen);
+        if(itemOpened == null) inventoryManager.ToggleInventory(InventoryManager.InventoryOpening.PlayerInventory, gameObject);
+        else inventoryManager.ToggleInventory(InventoryManager.InventoryOpening.Closing, gameObject);
     }
 
     #endregion

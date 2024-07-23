@@ -98,7 +98,7 @@ public class Pickupable : MonoBehaviour
 
     public void OnItemSpawn() { // This is called at the end of the "jump" animation when an item drops
         canPickup = true;
-        transform.Find("Sprite").DOLocalMove(Vector2.up * 0.4f, 0.8f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo); // Plays the "bouncing" animation. 
+        //transform.Find("Sprite").DOLocalMove(Vector2.up * 0.4f, 0.8f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo); // Plays the "bouncing" animation. 
         // To give the animation an offset, use .Goto(Random.Range(0, 0.8f), true) to the line above. This can make it look strange though.
     }
 }

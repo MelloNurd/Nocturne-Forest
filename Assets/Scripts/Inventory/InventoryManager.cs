@@ -7,15 +7,32 @@ using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
+    public enum InventoryOpening {
+        PlayerInventory,
+        ShopInventory,
+        ItemPedestal,
+        PotionCrafting,
+        Closing
+    }
+
     public static InventoryManager currentInstance; // There should only ever be one InventoryManager per scene, so we are doing this for easy access.
 
     int numHotbarSlots;
     public GameObject inventorySlotPrefab;
     public GameObject inventoryItemPrefab;
-    [HideInInspector] public GameObject inventoryObj;
-    public GameObject pedestalUIobj;
+
+    [HideInInspector] public GameObject playerInventoryObj;
+    [HideInInspector] public GameObject shopInventoryObj;
+    [HideInInspector] public GameObject pedestalMenuObj;
+
     List<InventorySlot> inventorySlots = new List<InventorySlot>();
     List<InventorySlot> hotbarSlots = new List<InventorySlot>();
+
+    public bool draggingItem;
+
+    public bool showAreas;
+    [SerializeField] GameObject dropArea;
+    [SerializeField] GameObject trashArea;
 
     [Header("Item Dropping")]
     public float dropRange = 2f; // Maximum distance a dropped item will drop from the player
@@ -24,9 +41,8 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject pickupablePrefab;
 
-    public bool draggingItem;
-
-    GameObject player;
+    GameObject playerObj;
+    Player player;
 
     //at start no slot set "active" nothing stopping play from just clicking a number
     int selectedSlot = -1;
@@ -35,8 +51,12 @@ public class InventoryManager : MonoBehaviour
         currentInstance = this;
         InitializeInventorySlots();
 
-        inventoryObj = transform.Find("PlayerInventory").gameObject;
-        player = GameObject.FindGameObjectWithTag("Player");
+        playerInventoryObj = transform.Find("PlayerInventory").gameObject;
+        shopInventoryObj = transform.Find("ShopInventory").gameObject;
+        pedestalMenuObj = transform.Find("PedestalMenu").gameObject;
+
+        playerObj = GameObject.FindGameObjectWithTag("Player");
+        player = playerObj.GetComponent<Player>();
     }
 
     private void Start() {
@@ -66,6 +86,60 @@ public class InventoryManager : MonoBehaviour
         // Iniitializes hotbar slots
         hotbarSlots.AddRange(transform.Find("HotBar").GetComponentsInChildren<InventorySlot>()); // Adds all the InventorySlots from the Hotbar to the list
         numHotbarSlots = hotbarSlots.Count;
+    }
+
+    public void ToggleInventory(InventoryOpening state, GameObject itemOpening) {
+        if (player.itemOpened == itemOpening) state = InventoryOpening.Closing; // If any inventories are open, we want to close inventories
+
+        player.itemOpened = itemOpening; // This gets initialized to true. Closing will set it to false.
+        switch (state) {
+            case InventoryOpening.PlayerInventory:
+                playerInventoryObj.SetActive(true);
+                playerInventoryObj.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                dropArea.SetActive(true);
+                trashArea.SetActive(true);
+                break;
+            case InventoryOpening.ShopInventory:
+                playerInventoryObj.SetActive(true);
+                playerInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -200);
+
+                shopInventoryObj.SetActive(true);
+                shopInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 200);
+                break;
+            case InventoryOpening.ItemPedestal:
+                playerInventoryObj.SetActive(true);
+                playerInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, -200);
+
+                shopInventoryObj.SetActive(true);
+                shopInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, 200);
+
+                pedestalMenuObj.SetActive(true);
+                break;
+            case InventoryOpening.PotionCrafting:
+                playerInventoryObj.SetActive(true);
+                playerInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, -200);
+
+                shopInventoryObj.SetActive(true);
+                shopInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, 200);
+                break;
+            case InventoryOpening.Closing:
+                dropArea.SetActive(false);
+                trashArea.SetActive(false);
+                playerInventoryObj.SetActive(false);
+
+                shopInventoryObj.SetActive(false);
+
+                foreach(InventorySlot slot in pedestalMenuObj.GetComponentsInChildren<InventorySlot>()) {
+                    slot.gameObject.SetActive(false);
+                }
+                pedestalMenuObj.SetActive(false);
+
+                player.itemOpened = null;
+                break;
+            default:
+                break;
+        }
     }
 
     //code for changing slot
@@ -111,7 +185,7 @@ public class InventoryManager : MonoBehaviour
     public void DropItem(Item item, int count = 1) {
         for(int i =0; i < count; i++)
         {
-            GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, player.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
+            GameObject droppedItem = ObjectPoolManager.SpawnObject(pickupablePrefab, playerObj.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
             Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
             pickupScript.UpdatePickupableObj(item);
             pickupScript.canPickup = false;
@@ -120,7 +194,7 @@ public class InventoryManager : MonoBehaviour
             droppedItem.transform.localScale = originalSize * 0.5f;
 
             // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
-            droppedItem.transform.DOJump(player.transform.position + (Vector3)Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
+            droppedItem.transform.DOJump(playerObj.transform.position + (Vector3)Random.insideUnitCircle * dropRange, dropStrength, 1, dropDuration).onComplete = pickupScript.OnItemSpawn;
             droppedItem.transform.DOScale(originalSize, dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
         }
     }

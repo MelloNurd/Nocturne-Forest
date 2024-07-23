@@ -12,8 +12,6 @@ public class Pedestal : Interactable
 {
     SpriteRenderer childSpriteRenderer;
 
-    public static Pedestal openedPedestal;
-
     Shop shop;
 
     [SerializeField] GameObject pedestalUI;
@@ -33,24 +31,14 @@ public class Pedestal : Interactable
     }
 
     public void OpenPedestal() {
-        if (openedPedestal == this) { // When you try to open the pedestal you already have opened
-            ClosePedestal();
-            return;
-        }
-        else if(openedPedestal != null) {
-            openedPedestal.ClosePedestal();
-        }
-
-        openedPedestal = this;
-        pedestalUI.SetActive(true);
+        InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.ItemPedestal, gameObject);
         pedestalSlotObj.SetActive(true);
         UpdatePedestalUI();
     }
 
     public void ClosePedestal() {
-        pedestalUI.SetActive(false);
+        InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.Closing, gameObject);
         pedestalSlotObj.SetActive(false);
-        openedPedestal = null;
     }
 
     public void UpdatePedestalItem() {
@@ -75,7 +63,8 @@ public class Pedestal : Interactable
     }
 
     public void UpdatePedestalPrice() {
-        openedPedestal.sellPrice = int.Parse(pedestalPriceField.text);
+        if (!player.itemOpened.TryGetComponent(out Pedestal _pedestal)) return;
+        _pedestal.sellPrice = int.Parse(pedestalPriceField.text);
         shop.UpdateItem(this);
     }
 
@@ -100,9 +89,9 @@ public class Pedestal : Interactable
         if (sellItem == null) childSpriteRenderer.sprite = null;
 
         // This is really ugly
-        pedestalSlotObj = Instantiate(inventorySlotPrefab, pedestalUI.transform.GetChild(0).Find("SlotPosition").position, Quaternion.identity);
+        pedestalSlotObj = Instantiate(inventorySlotPrefab, pedestalUI.transform.Find("SlotPosition").position, Quaternion.identity);
         pedestalSlotObj.name = gameObject.name + " Slot";
-        pedestalSlotObj.transform.SetParent(pedestalUI.transform.GetChild(0));
+        pedestalSlotObj.transform.SetParent(pedestalUI.transform);
         pedestalSlotObj.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
 
         pedestalUISlot = pedestalSlotObj.GetComponent<InventorySlot>();
@@ -111,7 +100,7 @@ public class Pedestal : Interactable
 
         pedestalSlotObj.SetActive(false);
 
-        pedestalPriceField = pedestalUI.transform.GetChild(0).GetChild(2).GetComponent<TMP_InputField>();
+        pedestalPriceField = pedestalUI.transform.GetChild(2).GetComponent<TMP_InputField>();
 
         shop = GameObject.FindGameObjectWithTag("Shop").GetComponent<Shop>();
     }
@@ -123,9 +112,9 @@ public class Pedestal : Interactable
 
     protected override void Update() {
         base.Update();
-        if (openedPedestal == this && Vector2.Distance(player.transform.position, transform.position) > 3)
-        {
-            ClosePedestal();
-        }
+        //if (player.itemOpened == gameObject && Vector2.Distance(player.transform.position, transform.position) > 3)
+        //{
+        //    ClosePedestal();
+        //}
     }
 }

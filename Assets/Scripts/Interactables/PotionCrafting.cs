@@ -18,6 +18,6 @@ public class PotionCrafting : Interactable {
     }
 
     public override void Interact() {
-        // do nothing
+        Debug.Log("potion crafting opened");
     }
 }

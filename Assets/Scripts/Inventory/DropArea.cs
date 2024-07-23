@@ -39,7 +39,8 @@ public class DropArea : MonoBehaviour, IDropHandler
         translucentColor = new Color(0, 0, 0, 0.5f);
         clearColor = new Color(0, 0, 0, 0);
 
-        HideArea(0);
+        areaImage.color = clearColor;
+        iconImage.color = clearColor;
     }
 
     private void Update() {

@@ -22,6 +22,6 @@ public class ShopChest : Interactable
     }
 
     public override void Interact() {
-        // do nothing
+        InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.ShopInventory, gameObject);
     }
 }
