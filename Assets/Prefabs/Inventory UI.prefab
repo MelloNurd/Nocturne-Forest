@@ -1634,7 +1634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &833461444203129751
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1709,6 +1709,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addedIngredients: []
+  cauldronImage: {fileID: 0}
+  blueWaterSprite: {fileID: 0}
+  greenWaterSprite: {fileID: 0}
 --- !u!1 &4140742966005765633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,10 +1995,10 @@ RectTransform:
   - {fileID: 3213984777181028212}
   - {fileID: 6553497792755426905}
   - {fileID: 8374017361487164852}
+  - {fileID: 833461444203129751}
   - {fileID: 1903284447970081096}
   - {fileID: 6620377846463221564}
   - {fileID: 4487685936891027479}
-  - {fileID: 833461444203129751}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2081,6 +2084,13 @@ MonoBehaviour:
   globalCraftingRecipes:
   - {fileID: 11400000, guid: f417e1d963060d64a89e1218f90a1bcf, type: 2}
   - {fileID: 11400000, guid: 6a3d9afc17a4f90499dfc7844c329fe6, type: 2}
+  globalItemList:
+  - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
+  - {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}
+  - {fileID: 11400000, guid: f581887e22a05b943b2c58070fe5c1f1, type: 2}
+  - {fileID: 11400000, guid: e4bda56ecfa3eec468c09d00dfed0680, type: 2}
+  - {fileID: 11400000, guid: 0352dfae4e694ba4d9a7b714a59653b2, type: 2}
+  - {fileID: 11400000, guid: d979ed7e6be999549891912887295618, type: 2}
   hotbarCover: {fileID: 3619593208042036831}
   inventorySlotPrefab: {fileID: 9000435140228021285, guid: 8dbab68d0fbd2284c91d2a6101e3e402, type: 3}
   inventoryItemPrefab: {fileID: 8957634044052052241, guid: 20b5071784fe0724c825c11b92f7232e, type: 3}
@@ -2088,7 +2098,7 @@ MonoBehaviour:
   shopInventoryObj: {fileID: 0}
   pedestalMenuObj: {fileID: 0}
   cauldronCraftingObj: {fileID: 0}
-  draggingItem: 0
+  draggingItem: {fileID: 0}
   showAreas: 0
   dropArea: {fileID: 3540322096919145486}
   trashArea: {fileID: 5185737705547910226}

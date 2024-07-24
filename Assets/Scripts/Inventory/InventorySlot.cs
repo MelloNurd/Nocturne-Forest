@@ -36,19 +36,21 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
 
     public InventoryItem GetItemInSlot() {
-        if (transform.childCount <= 0) return null; // If there are no children, return null
-        else return GetComponentInChildren<InventoryItem>(); // If there are children, return any InventoryItem component in children (possible to be null as well)
+        if(IsEmptySlot()) return null;
+        else return transform.GetComponentInChildren<InventoryItem>();
     }
 
     public bool IsEmptySlot() {
-        return transform.childCount <= 0; // Returns true if there are no children
+        return transform.childCount <= 0;    
     }
 
     private void Update() {
-        // Checks if right click is pressed AND we're dragging an item already (draggingItem != null) AND the mouse is over this slot
-        if(Input.GetMouseButtonDown(1) && InventoryManager.currentInstance.draggingItem && IsMouseOver()) {
-            Debug.Log("eee");
-            if(transform.childCount <= 0) { // If no items are in this slot
+        // Checks if right click is pressed AND we're dragging an item already (draggingItem != null) AND the mouse is over this slot AND the draggingItem's original slot was not this slot
+        if(Input.GetMouseButtonDown(1) && InventoryManager.currentInstance.draggingItem && IsMouseOver() && InventoryManager.currentInstance.draggingItem.slot != this) {
+            Debug.Log(InventoryManager.currentInstance.draggingItem.name);
+            Debug.Log(IsMouseOver());
+            Debug.Log(InventoryManager.currentInstance.draggingItem.slot.name);
+            if(IsEmptySlot()) { // If no items are in this slot
                 InventoryItem newItem = InventoryManager.currentInstance.SpawnNewItem(InventoryManager.currentInstance.draggingItem.item, this);
                 InventoryManager.currentInstance.draggingItem.count -= 1;
                 onDropCall?.Invoke(); // This might break stuff idk
@@ -65,7 +67,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 existingItem.RefreshCount();
             }
 
-            if (InventoryManager.currentInstance.draggingItem.count <= 0) Destroy(InventoryManager.currentInstance.draggingItem.gameObject);
+            if (InventoryManager.currentInstance.draggingItem.count <= 0) {
+                if (InventoryManager.currentInstance.draggingItem.slot != null) InventoryManager.currentInstance.draggingItem.slot.GetComponent<Image>().color = Color.white;
+                Destroy(InventoryManager.currentInstance.draggingItem.gameObject);
+            }
             if (InventoryManager.currentInstance.draggingItem) InventoryManager.currentInstance.draggingItem.RefreshCount();
         }
     }
@@ -80,7 +85,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         //if slot is empty then put item into slot
-        if (transform.childCount <= 0)
+        if (IsEmptySlot())
         {
             InventoryItem invItem = eventData.pointerDrag.GetComponent<InventoryItem>();
             invItem.parentAfterDrag = transform;
@@ -100,6 +105,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                     }
                     else { // If we don't have more items than maxStackSize, simply increase count of existing slot
                         existingItem.count = existingItem.count + droppedItem.count;
+                        if (InventoryManager.currentInstance.draggingItem.slot != null) InventoryManager.currentInstance.draggingItem.slot.GetComponent<Image>().color = Color.white;
                         Destroy(droppedItem.gameObject);
                     }
                     existingItem.RefreshCount();

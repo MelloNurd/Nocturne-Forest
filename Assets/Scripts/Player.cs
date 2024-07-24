@@ -112,6 +112,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         currentHealth = maxHealth;
+
+        //Time.timeScale = Time.timeScale / 2;
     }
 
     private void Start() {
@@ -210,7 +212,7 @@ public class Player : MonoBehaviour
     #region InputCalls
 
     private void OnAttack(InputAction.CallbackContext context) { // Function is called when the attack input button is pressed
-        if (currentState != PlayerStates.Dynamic || !canAttack) return;
+        if (currentState != PlayerStates.Dynamic || !canAttack || itemOpened != null) return;
 
         Vector2 facingDir = GetDirectionFacing();
         attackArea.transform.right = facingDir;
@@ -235,14 +237,11 @@ public class Player : MonoBehaviour
             return;
         }
 
-        Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask).OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray(); // Gets all interactable objects within the interactionRange of the player into a collider array
+        // Gets all interactable/pickupables in range and orders it by closest to player
+        Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask).OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray();
 
-        // The stuff below might be good for an interface if I ever end up wanting to do that
-        GameObject closestInteractable = interacted.Length > 0 ? interacted[0].gameObject : null;
-        if (closestInteractable == null) return;
-
-        if (closestInteractable.TryGetComponent(out Interactable interactable)) {
-            interactable.Interact();
+        if(Interactable.nextInteract != null) { // If there is a highlighted interactable, interact with it and ignore the pickupables
+            Interactable.nextInteract.Interact();
             return;
         }
 

@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
 
 public class Pedestal : Interactable
@@ -28,6 +29,38 @@ public class Pedestal : Interactable
     public override void Interact() {
         if (!canInteract) return;
         OpenPedestal();
+    }
+
+    private void OnDisable() {
+        SaveInventory();
+    }
+
+    private void OnEnable() {
+        StartCoroutine(LoadInventory());
+    }
+
+    void SaveInventory() {
+        string saveValue = (sellItem == null ? "" : sellItem.name) + ';' + count + ';' + sellPrice;
+        PlayerPrefs.SetString(SceneManager.GetActiveScene().name + gameObject.name, saveValue);
+    }
+
+    IEnumerator LoadInventory() {
+        yield return new WaitForSeconds(0.1f); // Have to wait for InventoryManager
+        string data = PlayerPrefs.GetString(SceneManager.GetActiveScene().name + gameObject.name, "");
+        if (!string.IsNullOrEmpty(data)) {
+            if (pedestalUISlot.GetItemInSlot() != null) {
+                Debug.LogWarning("Unable to load for pedestal: " + gameObject.name + ". Item already detected in slot!");
+            }
+            else {
+                sellPrice = int.Parse(data.Split(';')[2]);
+
+                if (InventoryManager.currentInstance.itemLookup.TryGetValue(data.Split(';')[0], out Item _item)) {
+                    InventoryItem newItem = InventoryManager.currentInstance.SpawnNewItem(_item, pedestalUISlot);
+                    newItem.count = count;
+                    UpdatePedestalItem();
+                }
+            }
+        }
     }
 
     public void OpenPedestal() {
@@ -69,6 +102,7 @@ public class Pedestal : Interactable
     }
 
     public void ClearItem() {
+        if (pedestalUISlot.transform.childCount > 0) Destroy(pedestalUISlot.transform.GetChild(0).gameObject);
         shop.RemoveItem(this);
         sellItem = null;
         count = 0;

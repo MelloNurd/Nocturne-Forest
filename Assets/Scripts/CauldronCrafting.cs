@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CauldronCrafting : MonoBehaviour
 {
     public List<Item> addedIngredients = new List<Item>();
+
+    [SerializeField] Image cauldronImage;
+
+    [SerializeField] Sprite blueWaterSprite;
+    [SerializeField] Sprite greenWaterSprite;
     
     InventorySlot inputSlot;
 
@@ -35,10 +41,12 @@ public class CauldronCrafting : MonoBehaviour
 
     public void AddItemToIngredients(Item item) {
         addedIngredients.Add(item);
+        cauldronImage.sprite = greenWaterSprite;
     }
 
     public void ClearIngredients() {
         addedIngredients.Clear();
+        cauldronImage.sprite = blueWaterSprite;
     }
 
     public void TryCraft() {

@@ -37,7 +37,7 @@ public class DropArea : MonoBehaviour, IDropHandler
 
         opaqueColor = Color.white;
         translucentColor = new Color(0, 0, 0, 0.5f);
-        clearColor = new Color(0, 0, 0, 0);
+        clearColor = Color.clear;
 
         areaImage.color = clearColor;
         iconImage.color = clearColor;
@@ -75,7 +75,10 @@ public class DropArea : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         InventoryItem drugItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-        if(!trash)
+        if (drugItem.slot != null) {
+            drugItem.slot.GetComponent<Image>().color = Color.white;
+        }
+        if (!trash)
         {
             inventoryManager.DropItem(drugItem.item, drugItem.count);
         }

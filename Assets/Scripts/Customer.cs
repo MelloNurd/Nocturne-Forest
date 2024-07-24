@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,9 +9,17 @@ public class Customer : MonoBehaviour
 {
     Shop shop;
 
+    GameObject playerObj;
+
+    Rigidbody2D rb;
+
+    [SerializeField] ShopCheckout checkout;
+
     public enum CustomerStates {
+        Thinking, // This is basically just idle
         Browsing,
         Buying,
+        ReadyToPurchase,
         Leaving
     }
     public CustomerStates currentState;
@@ -31,6 +40,21 @@ public class Customer : MonoBehaviour
     public int money;
 
     bool shopHasItem;
+
+    int walkCycles;
+    int maxWalkCycles;
+
+    List<GameObject> pedestals = new List<GameObject>();
+
+    public float moveSpeed = 0.04f;
+    Vector3 currDestination;
+    Vector3 walkDir;
+
+    Vector3 doorPos;
+    Vector3 buyPos = new Vector3(2.5f, 0, 0);
+    Vector3 buyLinePos = new Vector3(2.5f, -1.6f, 0);
+
+    SpriteRenderer itemSpriteRenderer;
 
     /**
      * just gonna jot some ideas down for all of this
@@ -55,11 +79,130 @@ public class Customer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        itemSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
         shop = GameObject.FindGameObjectWithTag("Shop").GetComponent<Shop>();
 
         money = Random.Range(20, 100);
 
+        playerObj = GameObject.FindGameObjectWithTag("Player");
+
+        rb = GetComponent<Rigidbody2D>();
+
+        doorPos = transform.position;
+
+        currentState = CustomerStates.Thinking;
+        StartCoroutine(StartBrowsing());
+
+        walkCycles = 0;
+        maxWalkCycles = Random.Range(2, 6);
+
+        checkout.canInteract = false;
+    }
+
+    IEnumerator StartBrowsing() {
+        yield return new WaitForSeconds(Random.Range(0.6f, 2.5f));
+        pedestals = GameObject.FindGameObjectsWithTag("Pedestal").ToList().FindAll(x => x.GetComponent<Pedestal>().sellItem != null);
         CheckForItems();
+        if (pedestals.Count <= 0) {
+            currDestination = doorPos;
+            currentState = CustomerStates.Leaving;
+        }
+        else {
+            currDestination = GetNewPos();
+            currentState = CustomerStates.Browsing;
+        }
+    }
+
+    private void Update() {
+        walkDir = (currDestination - transform.position).normalized;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate() {
+        switch (currentState) {
+            case CustomerStates.Thinking:
+                break;
+            case CustomerStates.Browsing:
+                transform.position += walkDir * moveSpeed;
+                if (Vector3.Distance(transform.position, currDestination) < 0.1f) {
+                    if(walkCycles < maxWalkCycles) {
+                        StartCoroutine(SetDestination());
+                    }
+                    else {
+                        if(customerPurchasingState == PurchasingState.WillBuy) {
+                            currDestination = buyLinePos;
+                            currentState = CustomerStates.Buying;
+                            itemSpriteRenderer.sprite = itemToBuy.item.image;
+                            itemToBuy.pedestal.ClearItem();
+                            // GRAB ITEM
+                        }
+                        else {
+                            currDestination = doorPos;
+                            currentState = CustomerStates.Leaving;
+                        }
+                    }
+                }
+                break;
+            case CustomerStates.Buying:
+                transform.position += walkDir * moveSpeed;
+                if (Vector3.Distance(transform.position, currDestination) < 0.1f) {
+                    if (currDestination == buyLinePos) currDestination = buyPos;
+                    else {
+                        currentState = CustomerStates.ReadyToPurchase;
+                        checkout.canInteract = true;
+                    }
+                }
+                break;
+            case CustomerStates.ReadyToPurchase:
+                break;
+            case CustomerStates.Leaving:
+                transform.position += walkDir * moveSpeed;
+                if (Vector3.Distance(transform.position, currDestination) < 0.1f) {
+                    if (currDestination == buyLinePos) currDestination = doorPos;
+                    else {
+                        gameObject.SetActive(false);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    IEnumerator SetDestination() {
+        currentState = CustomerStates.Thinking;
+        Vector3 newPos = GetNewPos();
+
+        if (walkCycles + 1 >= maxWalkCycles && (customerPurchasingState == PurchasingState.WillBuy || customerPurchasingState == PurchasingState.TooExpensive)) {
+            newPos = itemToBuy.pedestal.transform.position + Vector3.down;
+        }
+        else if (pedestals.Count > 1) {
+            int cutoff = 0; // Only doing this in case of infinite loops. Had a few during testing but shouldn't happen anymore, leaving just in case.
+            while(currDestination == newPos && cutoff < 50) {
+                newPos = GetNewPos();
+                cutoff++;
+            }
+        }
+        else {
+            walkCycles += maxWalkCycles; // If there is only one pedestal, customer doesn't need to browse...
+        }
+
+        yield return new WaitForSeconds(Random.Range(2.5f, 5f));
+        currentState = CustomerStates.Browsing;
+        currDestination = newPos;
+        walkCycles++;
+    }
+
+    Vector3 GetNewPos() {
+        return pedestals[Random.Range(0, pedestals.Count)].transform.position + Vector3.down;
+    }
+
+    public void OnCheckout() {
+        itemSpriteRenderer.sortingOrder = 2;
+        itemSpriteRenderer.transform.localPosition = new Vector2(0, -itemSpriteRenderer.transform.position.y);
+        currDestination = buyLinePos;
+        currentState = CustomerStates.Leaving;
     }
 
     void CheckForItems() {
@@ -79,6 +222,12 @@ public class Customer : MonoBehaviour
             if (desiredItems.Intersect(shop.GetItemsInShopItems()).Any()) {
                 shopHasItem = true;
                 desiredItems = desiredItems.Intersect(shop.GetItemsInShopItems()).ToList();
+                foreach(Item item in desiredItems) {
+                    Debug.Log("desired item list: " + item.name);
+                }
+                foreach (ShopItem item in shop.GetShopItems()) {
+                    Debug.Log("shop item list: " + item.item.name);
+                }
             }
 
             // If the shop DOES have an item that the customer wants to buy
@@ -118,23 +267,6 @@ public class Customer : MonoBehaviour
                 break;
             case PurchasingState.WontBuy:
                 Debug.Log("Customer will not make a purchase. They want to buy " + itemToBuy.item.name + ".");
-                break;
-            default:
-                break;
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F)) CheckForItems();
-
-        switch (currentState) {
-            case CustomerStates.Browsing:
-                break;
-            case CustomerStates.Buying:
-                break;
-            case CustomerStates.Leaving:
                 break;
             default:
                 break;

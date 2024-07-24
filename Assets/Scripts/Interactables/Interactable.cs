@@ -23,7 +23,7 @@ public abstract class Interactable : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Awake()
     {
-        
+        gameObject.layer = LayerMask.NameToLayer("Interactable");
     }
 
     protected virtual void Start() {
@@ -36,8 +36,8 @@ public abstract class Interactable : MonoBehaviour
     protected virtual void Update()
     {
         playerDist = Vector2.Distance(transform.position, playerObj.transform.position);
-        if (nextInteract != null && playerDist < nextInteract.playerDist) nextInteract = this;
-        else if (isInRange && nextInteract == null) nextInteract = this;
+        if (nextInteract != null && playerDist < nextInteract.playerDist && canInteract) nextInteract = this;
+        else if (isInRange && nextInteract == null && canInteract) nextInteract = this;
         isInRange = playerDist <= player.interactionRange;
         if (canInteract) {
             if (!IsOutlined() && nextInteract == this && isInRange) {
@@ -45,6 +45,7 @@ public abstract class Interactable : MonoBehaviour
             }
             else if (IsOutlined() && (nextInteract != this || !isInRange)) {
                 DisableOutline();
+                nextInteract = null;
             }
         }
 

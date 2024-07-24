@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager currentInstance; // There should only ever be one InventoryManager per scene, so we are doing this for easy access.
 
     public List<Recipe> globalCraftingRecipes = new List<Recipe>();
+    public List<Item> globalItemList = new List<Item>();
+
+    public Dictionary<string, Item> itemLookup = new Dictionary<string, Item>(); // A dictionary where you can get an Item object from the item's name
 
     int numHotbarSlots;
     [SerializeField] GameObject hotbarCover; // This is just to block mouse dragging from the hotbar when the inventory is not opened
@@ -30,7 +34,8 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public GameObject pedestalMenuObj;
     [HideInInspector] public GameObject cauldronCraftingObj;
 
-    List<InventorySlot> inventorySlots = new List<InventorySlot>();
+    List<InventorySlot> shopInventorySlots = new List<InventorySlot>();
+    List<InventorySlot> playerInventorySlots = new List<InventorySlot>();
     List<InventorySlot> hotbarSlots = new List<InventorySlot>();
 
     public InventoryItem draggingItem = null;
@@ -54,7 +59,6 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake() {
         currentInstance = this;
-        InitializeInventorySlots();
 
         playerInventoryObj = transform.Find("PlayerInventory").gameObject;
         shopInventoryObj = transform.Find("ShopInventory").gameObject;
@@ -63,6 +67,10 @@ public class InventoryManager : MonoBehaviour
 
         playerObj = GameObject.FindGameObjectWithTag("Player");
         player = playerObj.GetComponent<Player>();
+
+        foreach(Item item in globalItemList) { // Initialize itemLookup dictionary
+            itemLookup.Add(item.name, item);
+        }
     }
 
     public static List<Recipe> GetAllCauldronRecipes() {
@@ -70,6 +78,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     private void Start() {
+        InitializeInventorySlots();
         ChangeSelectedSlot(0); // Automatically picks the first slot on start
     }
 
@@ -86,16 +95,100 @@ public class InventoryManager : MonoBehaviour
                 ChangeSelectedSlot(number - 1);
             }
         }
+
+        //if (Input.GetKeyDown(KeyCode.U)) {
+        //    Debug.Log("Saving Inventory...");
+        //    SaveInventory();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.I)) {
+        //    Debug.Log("Loading Inventory...");
+        //    LoadInventory();
+        //}
+    }
+
+    private void OnDisable() {
+        SaveInventory();
+    }
+
+    private void OnEnable() {
+        LoadInventory();
+    }
+
+    void SaveInventory() {
+        // Basically, we're gonna try to do it by every single slot. Loop through them, load data based on the slot name.
+        // If this is too slow, we're gonna have to basically index every slot that is not empty and save the item plus its slot into the saved string.
+
+        foreach(InventorySlot slot in shopInventorySlots) {
+            InventoryItem item = slot.GetItemInSlot();
+            if (item == null) PlayerPrefs.DeleteKey("Shop" + slot.gameObject.name); // If no item in slot, delete anything saved for slot
+            else PlayerPrefs.SetString("Shop" + slot.gameObject.name, item.item.name + ";" + item.count); // Otherwise, save what is in slot
+        }
+
+        foreach (InventorySlot slot in playerInventorySlots) {
+            InventoryItem item = slot.GetItemInSlot();
+            if (item == null) PlayerPrefs.DeleteKey("Player" + slot.gameObject.name);
+            else PlayerPrefs.SetString("Player" + slot.gameObject.name, item.item.name + ";" + item.count);
+        }
+
+        foreach (InventorySlot slot in hotbarSlots) {
+            InventoryItem item = slot.GetItemInSlot();
+            if (item == null) PlayerPrefs.DeleteKey(slot.gameObject.name);
+            else PlayerPrefs.SetString(slot.gameObject.name, item.item.name + ";" + item.count);
+        }
+    }
+
+    void LoadInventory() {
+        foreach (InventorySlot slot in shopInventorySlots) {
+            string data = PlayerPrefs.GetString("Shop" + slot.gameObject.name, "");
+            if (string.IsNullOrEmpty(data)) continue;
+
+            string itemToSpawn = data.Split(';')[0];
+            int amount = int.Parse(data.Split(';')[1]);
+
+            if (itemLookup.TryGetValue(itemToSpawn, out Item _item)) {
+                InventoryItem newItem = SpawnNewItem(_item, slot);
+                newItem.SetCount(amount);
+            }
+        }
+
+        foreach (InventorySlot slot in playerInventorySlots) {
+            string data = PlayerPrefs.GetString("Player" + slot.gameObject.name, "");
+            if (string.IsNullOrEmpty(data)) continue;
+
+            string itemToSpawn = data.Split(';')[0];
+            int amount = int.Parse(data.Split(';')[1]);
+
+            if (itemLookup.TryGetValue(itemToSpawn, out Item _item)) {
+                InventoryItem newItem = SpawnNewItem(_item, slot);
+                newItem.SetCount(amount);
+            }
+        }
+
+        foreach (InventorySlot slot in hotbarSlots) {
+            string data = PlayerPrefs.GetString(slot.gameObject.name, "");
+            if (string.IsNullOrEmpty(data)) continue;
+
+            string itemToSpawn = data.Split(';')[0];
+            int amount = int.Parse(data.Split(';')[1]);
+
+            if (itemLookup.TryGetValue(itemToSpawn, out Item _item)) {
+                InventoryItem newItem = SpawnNewItem(_item, slot);
+                newItem.SetCount(amount);
+            }
+        }
     }
 
     void InitializeInventorySlots() {
+        shopInventorySlots.AddRange(transform.Find("ShopInventory").GetComponentsInChildren<InventorySlot>()); // Adds all the InventorySlots from the Hotbar to the list
+        
         // Initializes inventory slots
-        inventorySlots.AddRange(transform.Find("HotBar").GetComponentsInChildren<InventorySlot>()); // Adds all the InventorySlots from the Hotbar to the list
-        inventorySlots.AddRange(transform.Find("PlayerInventory").GetComponentsInChildren<InventorySlot>()); // Adds all the InvetorySlots from the PlayerInventory to the list
+        playerInventorySlots.AddRange(transform.Find("PlayerInventory").GetComponentsInChildren<InventorySlot>()); // Adds all the InvetorySlots from the PlayerInventory to the list
 
         // Iniitializes hotbar slots
         hotbarSlots.AddRange(transform.Find("HotBar").GetComponentsInChildren<InventorySlot>()); // Adds all the InventorySlots from the Hotbar to the list
         numHotbarSlots = hotbarSlots.Count;
+
+        LoadInventory();
     }
 
     public void ToggleInventory(InventoryOpening state, GameObject itemOpening) {
@@ -174,21 +267,42 @@ public class InventoryManager : MonoBehaviour
     //adds item to inventory or stack when possible
     public bool AddItem(Item item)
     {
-        // Checks if slot has the same item with lower count than max
-        foreach (InventorySlot slot in inventorySlots) {
+        // Check hotbar slots for a slot that contains the pickup item
+        foreach (InventorySlot slot in hotbarSlots) {
             if (slot.IsEmptySlot()) continue; // Skips it if it was an empty slot
 
             // Checks if it has InventoryItem and is not a full stack
             InventoryItem inventoryItem = slot.GetItemInSlot();
-            if(inventoryItem != null && inventoryItem.item == item && inventoryItem.count < inventoryItem.item.maxStackSize) {
+            if (inventoryItem != null && inventoryItem.item == item && inventoryItem.count < inventoryItem.item.maxStackSize) {
                 inventoryItem.count++;
                 inventoryItem.RefreshCount();
                 return true;
             }
         }
 
+        // If no hotbar slots found, do the same for the playerInventory slots
+        foreach (InventorySlot slot in playerInventorySlots) {
+            if (slot.IsEmptySlot()) continue; // Skips it if it was an empty slot
+
+            // Checks if it has InventoryItem and is not a full stack
+            InventoryItem inventoryItem = slot.GetItemInSlot();
+            if (inventoryItem != null && inventoryItem.item == item && inventoryItem.count < inventoryItem.item.maxStackSize) {
+                inventoryItem.count++;
+                inventoryItem.RefreshCount();
+                return true;
+            }
+        }
+
+        // No existing slots with item found in inventory
+
         // Finds empty slot to put item into
-        InventorySlot newSlot = inventorySlots.Find(slot => slot.IsEmptySlot()); // Finds the first slot in the list where slot.IsEmptySlot() is true
+        InventorySlot newSlot = hotbarSlots.Find(slot => slot.IsEmptySlot()); // Finds the first slot in the list where slot.IsEmptySlot() is true
+        if (newSlot != null) { // If one was successfully found
+            SpawnNewItem(item, newSlot);
+            return true;
+        }
+
+        newSlot = playerInventorySlots.Find(slot => slot.IsEmptySlot()); // Finds the first slot in the list where slot.IsEmptySlot() is true
         if (newSlot != null) { // If one was successfully found
             SpawnNewItem(item, newSlot);
             return true;

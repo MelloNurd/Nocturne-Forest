@@ -8,6 +8,7 @@ TagManager:
   - EnemyAttack
   - Shop
   - DropAreas
+  - Pedestal
   layers:
   - Default
   - TransparentFX

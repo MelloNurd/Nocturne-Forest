@@ -3,7 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+<<<<<<< Updated upstream
 using static Player;
+=======
+>>>>>>> Stashed changes
 
 public class SoldierEnemy : EnemyBase
 {
