@@ -178,10 +178,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3690a2b0b5b6ae24097c426c55bfa7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseKnockback: 1
-  itemDrops: {fileID: 0}
   maxHealth: 20
   currentHealth: 20
+  attackDamage: 5
+  baseKnockback: 1
+  attackKnockback: 1
+  itemDrops: {fileID: 0}
+  animator: {fileID: 1947510550524955552}
   currentState: 1
   moveSpeed: 0.1
   playerDistanceCutoff: 1.25
@@ -288,6 +291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6839829870027471708}
   - component: {fileID: 6351141706926647690}
+  - component: {fileID: 1947510550524955552}
   m_Layer: 0
   m_Name: EnemyBody
   m_TagString: Untagged
@@ -351,8 +355,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.17601842, g: 0.4188679, b: 0.10353149, a: 1}
+  m_Sprite: {fileID: 1863307637, guid: 580195751fe1752499d2c6ca9b47bd65, type: 3}
+  m_Color: {r: 0.836478, g: 0.836478, b: 0.836478, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -362,3 +366,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1947510550524955552
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7504680090831429885}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 822362b9265256d448be6f67c49c1f25, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
