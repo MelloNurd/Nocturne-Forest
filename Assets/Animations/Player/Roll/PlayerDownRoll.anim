@@ -21,15 +21,6 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-<<<<<<< Updated upstream:Assets/Animations/Player/Roll/PlayerDownRoll.anim
-      value: {fileID: -1265596989, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-    - time: 0.1
-      value: {fileID: -1199555495, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-    - time: 0.2
-      value: {fileID: -1034710833, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-    - time: 0.3
-      value: {fileID: -1225109437, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-=======
       value: {fileID: 1585771071, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
     - time: 0.033333335
       value: {fileID: -1628637728, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
@@ -37,7 +28,6 @@ AnimationClip:
       value: {fileID: -1628637728, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
     - time: 0.1
       value: {fileID: -143682596, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
->>>>>>> Stashed changes:Assets/Animations/Player/Roll/DownRoll.anim
     attribute: m_Sprite
     path: 
     classID: 212
@@ -60,17 +50,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-<<<<<<< Updated upstream:Assets/Animations/Player/Roll/PlayerDownRoll.anim
-    - {fileID: -1265596989, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-    - {fileID: -1199555495, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-    - {fileID: -1034710833, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-    - {fileID: -1225109437, guid: c87c40835640c014b812ac3a6f1ca33a, type: 3}
-=======
     - {fileID: 1585771071, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
     - {fileID: -1628637728, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
     - {fileID: -1628637728, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
     - {fileID: -143682596, guid: 51a62017a27ec4246963457a67a9232b, type: 3}
->>>>>>> Stashed changes:Assets/Animations/Player/Roll/DownRoll.anim
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

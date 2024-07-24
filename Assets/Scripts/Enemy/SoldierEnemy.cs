@@ -3,10 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-<<<<<<< Updated upstream
-using static Player;
-=======
->>>>>>> Stashed changes
 
 public class SoldierEnemy : EnemyBase
 {
@@ -220,7 +216,6 @@ public class SoldierEnemy : EnemyBase
         attackArea.transform.right = facingDir;
 
         Vector2 posOffset = facingDir * 0.85f;
-        if (facingDir == Vector2.right || facingDir == Vector2.left) posOffset += new Vector2(0, 0.2f);
         attackArea.transform.localPosition = posOffset;
 
         if (playerDist <= attackRange && canAttack) { // If the player is within the attack range and the enemy can attack
@@ -325,24 +320,9 @@ public class SoldierEnemy : EnemyBase
 
     private Vector2 GetDirectionFacing()
     {
-        Debug.Log(animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
-        // This is ugly, and I'd have done a switch statement instead, but this is just because we're going to have many different animations for each state, so we're just checking the names for key terms...
-        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Up"))
-        {
-            return Vector2.up;
-        }
-        else if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Right"))
-        {
-            return Vector2.right;
-        }
-        else if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Down"))
-        {
-            return Vector2.down;
-        }
-        else if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Left"))
-        {
-            return Vector2.left;
-        }
-        return Vector2.zero;
+        if (rb.velocity == Vector2.zero) return Vector2.zero;
+
+        if(Mathf.Abs(rb.velocity.y) > Mathf.Abs(rb.velocity.x)) return Mathf.Sign(rb.velocity.y) == 1 ? Vector2.up : Vector2.down;
+        return Mathf.Sign(rb.velocity.x) == 1 ? Vector2.right : Vector2.left;
     }
 }
