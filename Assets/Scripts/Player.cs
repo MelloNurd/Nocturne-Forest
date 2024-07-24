@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
             // Player was hit
             float knockbackMultipler = 1f;
 
-            Vector3 knockbackDir = (collision.transform.position - transform.position).normalized;
+            Vector3 knockbackDir = (transform.position - collision.transform.position).normalized;
 
             float damage = 0f;
 
