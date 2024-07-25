@@ -42,8 +42,8 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     public virtual void Die() {
-        List<Item> drops = itemDrops.RollDrops();
-        if(drops.Count > 0) {
+        if (itemDrops != null) {
+            List<Item> drops = itemDrops.RollDrops();
             foreach (Item item in itemDrops.RollDrops()) {
                 DropItem(item);
             }

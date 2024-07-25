@@ -13,6 +13,7 @@ public class InventoryManager : MonoBehaviour
         ShopInventory,
         ItemPedestal,
         PotionCrafting,
+        DoorMenu,
         Closing
     }
 
@@ -23,6 +24,8 @@ public class InventoryManager : MonoBehaviour
 
     public Dictionary<string, Item> itemLookup = new Dictionary<string, Item>(); // A dictionary where you can get an Item object from the item's name
 
+    public int playerCash;
+    
     int numHotbarSlots;
     [SerializeField] GameObject hotbarCover; // This is just to block mouse dragging from the hotbar when the inventory is not opened
 
@@ -33,6 +36,7 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public GameObject shopInventoryObj;
     [HideInInspector] public GameObject pedestalMenuObj;
     [HideInInspector] public GameObject cauldronCraftingObj;
+    [HideInInspector] public GameObject doorMenuObj;
 
     List<InventorySlot> shopInventorySlots = new List<InventorySlot>();
     List<InventorySlot> playerInventorySlots = new List<InventorySlot>();
@@ -64,6 +68,7 @@ public class InventoryManager : MonoBehaviour
         shopInventoryObj = transform.Find("ShopInventory").gameObject;
         pedestalMenuObj = transform.Find("PedestalMenu").gameObject;
         cauldronCraftingObj = transform.Find("PotionCrafting").gameObject;
+        doorMenuObj = transform.Find("DoorMenu").gameObject;
 
         playerObj = GameObject.FindGameObjectWithTag("Player");
         player = playerObj.GetComponent<Player>();
@@ -115,21 +120,27 @@ public class InventoryManager : MonoBehaviour
     }
 
     void SaveInventory() {
+        // Player's Money
+        PlayerPrefs.SetInt("player-money", playerCash);
+
         // Basically, we're gonna try to do it by every single slot. Loop through them, load data based on the slot name.
         // If this is too slow, we're gonna have to basically index every slot that is not empty and save the item plus its slot into the saved string.
 
-        foreach(InventorySlot slot in shopInventorySlots) {
+        // Shop's Chest Inventory
+        foreach (InventorySlot slot in shopInventorySlots) {
             InventoryItem item = slot.GetItemInSlot();
             if (item == null) PlayerPrefs.DeleteKey("Shop" + slot.gameObject.name); // If no item in slot, delete anything saved for slot
             else PlayerPrefs.SetString("Shop" + slot.gameObject.name, item.item.name + ";" + item.count); // Otherwise, save what is in slot
         }
 
+        // Players's Inventory
         foreach (InventorySlot slot in playerInventorySlots) {
             InventoryItem item = slot.GetItemInSlot();
             if (item == null) PlayerPrefs.DeleteKey("Player" + slot.gameObject.name);
             else PlayerPrefs.SetString("Player" + slot.gameObject.name, item.item.name + ";" + item.count);
         }
 
+        // Players's Hotbar
         foreach (InventorySlot slot in hotbarSlots) {
             InventoryItem item = slot.GetItemInSlot();
             if (item == null) PlayerPrefs.DeleteKey(slot.gameObject.name);
@@ -138,6 +149,12 @@ public class InventoryManager : MonoBehaviour
     }
 
     void LoadInventory() {
+        // Player's Money
+        int money = PlayerPrefs.GetInt("player-money", -1);
+        if (money != -1) playerCash = money;
+        else Debug.LogWarning("Unable to load player's money!");
+
+        // Shop's Chest Inventory
         foreach (InventorySlot slot in shopInventorySlots) {
             string data = PlayerPrefs.GetString("Shop" + slot.gameObject.name, "");
             if (string.IsNullOrEmpty(data)) continue;
@@ -151,6 +168,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
+        // Players's Inventory
         foreach (InventorySlot slot in playerInventorySlots) {
             string data = PlayerPrefs.GetString("Player" + slot.gameObject.name, "");
             if (string.IsNullOrEmpty(data)) continue;
@@ -164,6 +182,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
+        // Players's Hotbar
         foreach (InventorySlot slot in hotbarSlots) {
             string data = PlayerPrefs.GetString(slot.gameObject.name, "");
             if (string.IsNullOrEmpty(data)) continue;
@@ -229,6 +248,9 @@ public class InventoryManager : MonoBehaviour
 
                 cauldronCraftingObj.SetActive(true);
                 break;
+            case InventoryOpening.DoorMenu:
+                doorMenuObj.SetActive(true);
+                break;
             case InventoryOpening.Closing:
                 dropArea.SetActive(false);
                 trashArea.SetActive(false);
@@ -242,6 +264,8 @@ public class InventoryManager : MonoBehaviour
                 pedestalMenuObj.SetActive(false);
 
                 cauldronCraftingObj.SetActive(false);
+
+                doorMenuObj.SetActive(false);
 
                 player.itemOpened = null;
                 hotbarCover.SetActive(true);

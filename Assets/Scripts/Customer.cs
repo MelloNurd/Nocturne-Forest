@@ -37,8 +37,6 @@ public class Customer : MonoBehaviour
 
     public int itemsLookedAt;
 
-    public int money;
-
     bool shopHasItem;
 
     int walkCycles;
@@ -55,6 +53,10 @@ public class Customer : MonoBehaviour
     Vector3 buyLinePos = new Vector3(2.5f, -1.6f, 0);
 
     SpriteRenderer itemSpriteRenderer;
+    SpriteRenderer bubbleSpriteRenderer;
+    [SerializeField] Sprite thinkingSprite;
+    [SerializeField] Sprite emptyBubbleSprite;
+    [SerializeField] Sprite tooExpensiveSprite;
 
     /**
      * just gonna jot some ideas down for all of this
@@ -79,29 +81,27 @@ public class Customer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        itemSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        itemSpriteRenderer = transform.Find("Item").GetComponent<SpriteRenderer>();
+        bubbleSpriteRenderer = transform.Find("SpeechBubble").GetComponent<SpriteRenderer>();
 
         shop = GameObject.FindGameObjectWithTag("Shop").GetComponent<Shop>();
-
-        money = Random.Range(20, 100);
-
         playerObj = GameObject.FindGameObjectWithTag("Player");
 
         rb = GetComponent<Rigidbody2D>();
 
         doorPos = transform.position;
+    }
 
+    private void OnEnable() {
         currentState = CustomerStates.Thinking;
         StartCoroutine(StartBrowsing());
 
         walkCycles = 0;
-        maxWalkCycles = Random.Range(2, 6);
-
-        checkout.canInteract = false;
+        maxWalkCycles = Random.Range(2, 5);
     }
 
     IEnumerator StartBrowsing() {
-        yield return new WaitForSeconds(Random.Range(0.6f, 2.5f));
+        yield return new WaitForSeconds(Random.Range(0.6f, 2f));
         pedestals = GameObject.FindGameObjectsWithTag("Pedestal").ToList().FindAll(x => x.GetComponent<Pedestal>().sellItem != null);
         CheckForItems();
         if (pedestals.Count <= 0) {
@@ -130,7 +130,7 @@ public class Customer : MonoBehaviour
                         StartCoroutine(SetDestination());
                     }
                     else {
-                        if(customerPurchasingState == PurchasingState.WillBuy) {
+                        if (customerPurchasingState == PurchasingState.WillBuy) {
                             currDestination = buyLinePos;
                             currentState = CustomerStates.Buying;
                             itemSpriteRenderer.sprite = itemToBuy.item.image;
@@ -140,6 +140,13 @@ public class Customer : MonoBehaviour
                         else {
                             currDestination = doorPos;
                             currentState = CustomerStates.Leaving;
+                            bubbleSpriteRenderer.sprite = emptyBubbleSprite;
+                            if (customerPurchasingState == PurchasingState.TooExpensive) {
+                                bubbleSpriteRenderer.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = tooExpensiveSprite;
+                            }
+                            else if (customerPurchasingState == PurchasingState.WontBuy) {
+                                bubbleSpriteRenderer.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = itemToBuy.item.image;
+                            }
                         }
                     }
                 }
@@ -187,7 +194,9 @@ public class Customer : MonoBehaviour
         else {
             walkCycles += maxWalkCycles; // If there is only one pedestal, customer doesn't need to browse...
         }
-
+        Debug.Log("before think");
+        StartCoroutine(ThinkIcon());
+        Debug.Log("after think");
         yield return new WaitForSeconds(Random.Range(2.5f, 5f));
         currentState = CustomerStates.Browsing;
         currDestination = newPos;
@@ -198,11 +207,19 @@ public class Customer : MonoBehaviour
         return pedestals[Random.Range(0, pedestals.Count)].transform.position + Vector3.down;
     }
 
+    IEnumerator ThinkIcon() {
+        bubbleSpriteRenderer.sprite = thinkingSprite;
+        yield return new WaitForSeconds(0.8f);
+        bubbleSpriteRenderer.sprite = null;
+    }
+
     public void OnCheckout() {
+        checkout.canInteract = false;
         itemSpriteRenderer.sortingOrder = 2;
         itemSpriteRenderer.transform.localPosition = new Vector2(0, -itemSpriteRenderer.transform.position.y);
         currDestination = buyLinePos;
         currentState = CustomerStates.Leaving;
+        InventoryManager.currentInstance.playerCash += itemToBuy.price;
     }
 
     void CheckForItems() {

@@ -27,7 +27,7 @@ public class Pedestal : Interactable
     public int count;
 
     public override void Interact() {
-        if (!canInteract) return;
+        if (!canInteract || shop.IsCustomerShopping()) return;
         OpenPedestal();
     }
 

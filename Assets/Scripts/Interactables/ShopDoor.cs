@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShopDoor : Interactable
 {
+    [SerializeField] Shop shop;
+
     protected override void Awake() {
         base.Awake();
     }
@@ -19,6 +21,19 @@ public class ShopDoor : Interactable
     }
 
     public override void Interact() {
-        // do nothing
+        InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.DoorMenu, gameObject);
+    }
+
+    public void OpenCloseShop() {
+        if (shop.isShopOpen) CloseShop();
+        else OpenShop();
+    }
+
+    void OpenShop() {
+        shop.isShopOpen = true;
+    }
+
+    void CloseShop() {
+        shop.isShopOpen = false;
     }
 }
