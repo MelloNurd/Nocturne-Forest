@@ -1,7 +1,9 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +13,18 @@ public class CauldronCrafting : MonoBehaviour
 
     [SerializeField] Image cauldronImage;
 
+    [SerializeField] Image movingItem;
+
     [SerializeField] Sprite blueWaterSprite;
     [SerializeField] Sprite greenWaterSprite;
     
     InventorySlot inputSlot;
 
+    Sequence sequence;
+
     private void Awake() {
         inputSlot = transform.Find("InventorySlot").GetComponent<InventorySlot>();
+        movingItem.rectTransform.localScale = Vector3.one * 0.5f;
     }
 
     public void AddInputItemToIngredients() {
@@ -27,19 +34,24 @@ public class CauldronCrafting : MonoBehaviour
     IEnumerator AddInputItem() {
         yield return new WaitForSeconds(0.1f); // Have to wait a second for the InventorySlot to register its item
         InventoryItem newItem = inputSlot.GetItemInSlot();
+        Debug.Log("test");
+        movingItem.sprite = newItem.item.image;
+        movingItem.rectTransform.position = inputSlot.transform.position;
+        movingItem.rectTransform.localScale = Vector3.one * 0.5f;
+        if (sequence.IsActive()) sequence.Kill();
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f));
+        sequence.Append(movingItem.rectTransform.DOMove(cauldronImage.rectTransform.position, 0.5f));
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f));
+        sequence.Play();
         if (newItem != null) {
             Destroy(inputSlot.transform.GetChild(0).gameObject);
 
-            AddItemToIngredients(newItem.item);
-
-            Debug.Log("Current ingredients: ");
-            foreach (Item item in addedIngredients) {
-                Debug.Log(item.name);
-            }
+            StartCoroutine(AddItemToIngredients(newItem.item));
         }
     }
 
-    public void AddItemToIngredients(Item item) {
+    public IEnumerator AddItemToIngredients(Item item) {
+        yield return new WaitForSeconds(0.5f);
         addedIngredients.Add(item);
         cauldronImage.sprite = greenWaterSprite;
     }
@@ -53,20 +65,31 @@ public class CauldronCrafting : MonoBehaviour
         if (addedIngredients.Count <= 0) return;
 
         Recipe currentRecipe = InventoryManager.GetAllCauldronRecipes().FirstOrDefault(x => CompareIngredientLists(x.craftingIngredients, addedIngredients));
-        if(currentRecipe == null) {
-            Debug.Log("Invalid recipe.");
+
+        if (currentRecipe == null) {
             InventoryManager.itemLookup.TryGetValue("Vile Concoction", out Item crafted);
-            if (crafted != null) CraftItem(crafted);
+            movingItem.sprite = crafted.image;
+            if (crafted != null) StartCoroutine(CraftItem(crafted));
         }
         else {
-            Debug.Log("Found recipe! Player will craft: " + currentRecipe.craftedItem.name);
             InventoryManager.itemLookup.TryGetValue(currentRecipe.craftedItem.name, out Item crafted);
-            if (crafted != null) CraftItem(crafted);
-            ClearIngredients();
+            movingItem.sprite = crafted.image;
+            if (crafted != null) StartCoroutine(CraftItem(crafted));
         }
+
+        movingItem.rectTransform.position = cauldronImage.rectTransform.position;
+        movingItem.rectTransform.localScale = Vector3.one * 0.5f;
+        if (sequence.IsActive()) sequence.Kill();
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f));
+        sequence.Append(movingItem.rectTransform.DOMove(inputSlot.transform.position, 0.5f));
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f));
+        sequence.Play();
+
+        ClearIngredients();
     }
 
-    void CraftItem(Item outputItem) {
+    IEnumerator CraftItem(Item outputItem) {
+        yield return new WaitForSeconds(0.5f);
         InventoryManager.currentInstance.SpawnNewItem(outputItem, inputSlot);
     }
 

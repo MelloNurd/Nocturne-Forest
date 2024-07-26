@@ -78,7 +78,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5769100550633567492, guid: e7028c761ec2056428f786380bee0a2a, type: 3}
   projectileCount: 1
   projectileSpread: 30
-  showRadiusSizes: 1
+  showRadiusSizes: 0
 --- !u!50 &9156526688074381366
 Rigidbody2D:
   serializedVersion: 4
