@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c5a4fe16bb43d43880f07a41b5d0ec, type: 3}
+  m_Name: Monster Tooth
+  m_EditorClassIdentifier: 
+  image: {fileID: 335830314, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
+  type: 0
+  maxStackSize: 16
+  marketPrice: 8

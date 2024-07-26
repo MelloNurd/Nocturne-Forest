@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using static UnityEditor.Progress;
+using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class InventoryManager : MonoBehaviour
     public List<Recipe> globalCraftingRecipes = new List<Recipe>();
     public List<Item> globalItemList = new List<Item>();
 
-    public Dictionary<string, Item> itemLookup = new Dictionary<string, Item>(); // A dictionary where you can get an Item object from the item's name
+    public static Dictionary<string, Item> itemLookup = new Dictionary<string, Item>(); // A dictionary where you can get an Item object from the item's name
 
     public int playerCash;
     
@@ -31,6 +32,8 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject inventorySlotPrefab;
     public GameObject inventoryItemPrefab;
+    public GameObject itemTitleObj;
+    Tween titleTween;
 
     [HideInInspector] public GameObject playerInventoryObj;
     [HideInInspector] public GameObject shopInventoryObj;
@@ -100,15 +103,6 @@ public class InventoryManager : MonoBehaviour
                 ChangeSelectedSlot(number - 1);
             }
         }
-
-        //if (Input.GetKeyDown(KeyCode.U)) {
-        //    Debug.Log("Saving Inventory...");
-        //    SaveInventory();
-        //}
-        //else if (Input.GetKeyDown(KeyCode.I)) {
-        //    Debug.Log("Loading Inventory...");
-        //    LoadInventory();
-        //}
     }
 
     private void OnDisable() {
@@ -117,6 +111,14 @@ public class InventoryManager : MonoBehaviour
 
     private void OnEnable() {
         LoadInventory();
+    }
+
+    public void HideItemTitle() {
+        titleTween = itemTitleObj.GetComponent<TMP_Text>().DOColor(Color.clear, 0.5f).SetDelay(0.8f);
+    }
+    public void KillHideItemTitle() {
+        itemTitleObj.GetComponent<TMP_Text>().color = Color.white;
+        titleTween.Kill();
     }
 
     void SaveInventory() {

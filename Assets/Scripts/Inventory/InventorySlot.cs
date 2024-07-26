@@ -11,8 +11,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public Image image;
     public Color selectedColor, notSelectedColor;
 
+    //public InventoryItem itemInSlot;
+
     public UnityEvent onDropCall;
     public UnityEvent onItemLeave;
+    public UnityEvent onDisableCall;
 
     PointerEventData eventData;
     List<RaycastResult> raysastResults = new List<RaycastResult>();
@@ -47,9 +50,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     private void Update() {
         // Checks if right click is pressed AND we're dragging an item already (draggingItem != null) AND the mouse is over this slot AND the draggingItem's original slot was not this slot
         if(Input.GetMouseButtonDown(1) && InventoryManager.currentInstance.draggingItem && IsMouseOver() && InventoryManager.currentInstance.draggingItem.slot != this) {
-            Debug.Log(InventoryManager.currentInstance.draggingItem.name);
-            Debug.Log(IsMouseOver());
-            Debug.Log(InventoryManager.currentInstance.draggingItem.slot.name);
             if(IsEmptySlot()) { // If no items are in this slot
                 InventoryItem newItem = InventoryManager.currentInstance.SpawnNewItem(InventoryManager.currentInstance.draggingItem.item, this);
                 InventoryManager.currentInstance.draggingItem.count -= 1;
@@ -125,5 +125,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void OnItemLeave() {
         onItemLeave?.Invoke();
+    }
+
+    private void OnDisable() {
+        onDisableCall?.Invoke();
     }
 }

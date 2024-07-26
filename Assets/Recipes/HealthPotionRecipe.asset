@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: HealthPotionRecipe
   m_EditorClassIdentifier: 
   craftedItem: {fileID: 11400000, guid: e4bda56ecfa3eec468c09d00dfed0680, type: 2}
+  craftedAmount: 1
   craftingWorkstation: 0
   craftingIngredients:
+  - {fileID: 11400000, guid: 83361ce46693b234f9946abeca2b6590, type: 2}
   - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
-  - {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}

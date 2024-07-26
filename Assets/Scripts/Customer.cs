@@ -79,7 +79,7 @@ public class Customer : MonoBehaviour
     **/
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         itemSpriteRenderer = transform.Find("Item").GetComponent<SpriteRenderer>();
         bubbleSpriteRenderer = transform.Find("SpeechBubble").GetComponent<SpriteRenderer>();
@@ -98,6 +98,12 @@ public class Customer : MonoBehaviour
 
         walkCycles = 0;
         maxWalkCycles = Random.Range(2, 5);
+
+        itemSpriteRenderer.sortingOrder = -1;
+        itemSpriteRenderer.transform.localPosition = new Vector2(0, 0.4f);
+        itemSpriteRenderer.sprite = null;
+        bubbleSpriteRenderer.sprite = null;
+        bubbleSpriteRenderer.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = null;
     }
 
     IEnumerator StartBrowsing() {
@@ -134,7 +140,7 @@ public class Customer : MonoBehaviour
                             currDestination = buyLinePos;
                             currentState = CustomerStates.Buying;
                             itemSpriteRenderer.sprite = itemToBuy.item.image;
-                            itemToBuy.pedestal.ClearItem();
+                            itemToBuy.pedestal.ClearItem(true);
                             // GRAB ITEM
                         }
                         else {
@@ -194,9 +200,7 @@ public class Customer : MonoBehaviour
         else {
             walkCycles += maxWalkCycles; // If there is only one pedestal, customer doesn't need to browse...
         }
-        Debug.Log("before think");
         StartCoroutine(ThinkIcon());
-        Debug.Log("after think");
         yield return new WaitForSeconds(Random.Range(2.5f, 5f));
         currentState = CustomerStates.Browsing;
         currDestination = newPos;
@@ -215,11 +219,13 @@ public class Customer : MonoBehaviour
 
     public void OnCheckout() {
         checkout.canInteract = false;
+        checkout.DisableOutline();
         itemSpriteRenderer.sortingOrder = 2;
         itemSpriteRenderer.transform.localPosition = new Vector2(0, -itemSpriteRenderer.transform.position.y);
         currDestination = buyLinePos;
         currentState = CustomerStates.Leaving;
         InventoryManager.currentInstance.playerCash += itemToBuy.price;
+        shop.numCustomersBought++;
     }
 
     void CheckForItems() {
@@ -239,12 +245,6 @@ public class Customer : MonoBehaviour
             if (desiredItems.Intersect(shop.GetItemsInShopItems()).Any()) {
                 shopHasItem = true;
                 desiredItems = desiredItems.Intersect(shop.GetItemsInShopItems()).ToList();
-                foreach(Item item in desiredItems) {
-                    Debug.Log("desired item list: " + item.name);
-                }
-                foreach (ShopItem item in shop.GetShopItems()) {
-                    Debug.Log("shop item list: " + item.item.name);
-                }
             }
 
             // If the shop DOES have an item that the customer wants to buy
@@ -253,7 +253,7 @@ public class Customer : MonoBehaviour
                 itemToBuy = shop.GetShopItems().First(x => x.item == desiredItems[Random.Range(0, desiredItems.Count)]);
 
                 // If the item is priced too high
-                if (itemToBuy.price > itemToBuy.item.marketPrice) customerPurchasingState = PurchasingState.TooExpensive;
+                if (itemToBuy.price > itemToBuy.item.marketPrice * itemToBuy.pedestal.count) customerPurchasingState = PurchasingState.TooExpensive;
             }
             // If the shop DOES NOT have an item that the customer wants to buy
             else {

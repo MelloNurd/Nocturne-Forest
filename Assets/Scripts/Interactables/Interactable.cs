@@ -58,11 +58,11 @@ public abstract class Interactable : MonoBehaviour
         return spriteRenderer.sharedMaterial == outlineMat;
     }
 
-    void EnableOutline() {
+    public void EnableOutline() {
         spriteRenderer.sharedMaterial = outlineMat;
     }
 
-    void DisableOutline() {
+    public void DisableOutline() {
         spriteRenderer.sharedMaterial = normalMat;
     }
 }

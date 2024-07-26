@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Health Potion
   m_EditorClassIdentifier: 
   image: {fileID: -245716656, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
-  type: 1
+  usage: 1
   maxStackSize: 4
-  marketPrice: 10
+  marketPrice: 40
+  useAmount: 5
+  deleteOnUse: 1

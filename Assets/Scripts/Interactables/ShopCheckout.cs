@@ -21,6 +21,7 @@ public class ShopCheckout : Interactable
     }
 
     public override void Interact() {
+        if (!canInteract) return;
         customer.OnCheckout();
     }
 }

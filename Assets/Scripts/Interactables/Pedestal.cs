@@ -27,7 +27,7 @@ public class Pedestal : Interactable
     public int count;
 
     public override void Interact() {
-        if (!canInteract || shop.IsCustomerShopping()) return;
+        if (!canInteract || (shop.IsCustomerShopping() && shop.ShopHasItem(this))) return;
         OpenPedestal();
     }
 
@@ -54,7 +54,7 @@ public class Pedestal : Interactable
             else {
                 sellPrice = int.Parse(data.Split(';')[2]);
 
-                if (InventoryManager.currentInstance.itemLookup.TryGetValue(data.Split(';')[0], out Item _item)) {
+                if (InventoryManager.itemLookup.TryGetValue(data.Split(';')[0], out Item _item)) {
                     InventoryItem newItem = InventoryManager.currentInstance.SpawnNewItem(_item, pedestalUISlot);
                     newItem.count = count;
                     UpdatePedestalItem();
@@ -75,7 +75,19 @@ public class Pedestal : Interactable
     }
 
     public void UpdatePedestalItem() {
-        StartCoroutine(SetItem()); // I don't know why, but this is running too early for the item to be updated in the hiearchy, so we are waiting 0.1 seconds.
+        if (sellItem != null) shop.RemoveItem(this); // This happens when swapping the item
+
+        InventoryItem item = pedestalUISlot.GetItemInSlot();
+        if (item == null || item.item == null) return;
+        else {
+            Debug.Log(item.item);
+            sellItem = item.item;
+            shop.AddItemToShop(this);
+        }
+
+        count = item.count;
+        childSpriteRenderer.sprite = item.item.image;
+        //StartCoroutine(SetItem()); // I don't know why, but this is running too early for the item to be updated in the hiearchy, so we are waiting 0.1 seconds.
     }
 
     IEnumerator SetItem() {
@@ -84,25 +96,30 @@ public class Pedestal : Interactable
         if (sellItem != null) shop.RemoveItem(this); // This happens when swapping the item
         
         InventoryItem item = pedestalUISlot.GetItemInSlot();
-        if (item == null) {
+        if (item == null || item.item == null) {
             Debug.LogError("Unable to set item for pedestal: " + gameObject.name);
         }
         else {
+            Debug.Log(item.item);
             sellItem = item.item;
-            count = item.count;
-            childSpriteRenderer.sprite = item.item.image;
-            shop.AddItem(this);
+            shop.AddItemToShop(this);
         }
+        count = item.count;
+        childSpriteRenderer.sprite = item.item.image;
     }
 
     public void UpdatePedestalPrice() {
         if (!player.itemOpened.TryGetComponent(out Pedestal _pedestal)) return;
         _pedestal.sellPrice = int.Parse(pedestalPriceField.text);
-        shop.UpdateItem(this);
+        if(_pedestal.sellItem != null) shop.UpdateItem(this);
     }
 
     public void ClearItem() {
-        if (pedestalUISlot.transform.childCount > 0) Destroy(pedestalUISlot.transform.GetChild(0).gameObject);
+        ClearItem(false);
+    }
+    public void ClearItem(bool clearItem) {
+        Debug.Log("clear test");
+        if (clearItem && pedestalUISlot.transform.childCount > 0) Destroy(pedestalUISlot.transform.GetChild(0).gameObject);
         shop.RemoveItem(this);
         sellItem = null;
         count = 0;
@@ -129,7 +146,7 @@ public class Pedestal : Interactable
         pedestalSlotObj.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
 
         pedestalUISlot = pedestalSlotObj.GetComponent<InventorySlot>();
-        pedestalUISlot.onDropCall.AddListener(UpdatePedestalItem);
+        pedestalUISlot.onDisableCall.AddListener(UpdatePedestalItem);
         pedestalUISlot.onItemLeave.AddListener(ClearItem);
 
         pedestalSlotObj.SetActive(false);
@@ -146,6 +163,11 @@ public class Pedestal : Interactable
 
     protected override void Update() {
         base.Update();
+
+        if (pedestalSlotObj.activeSelf && shop.ShopHasItem(this) && shop.IsCustomerShopping())
+        {
+            ClosePedestal();
+        }
         //if (player.itemOpened == gameObject && Vector2.Distance(player.transform.position, transform.position) > 3)
         //{
         //    ClosePedestal();

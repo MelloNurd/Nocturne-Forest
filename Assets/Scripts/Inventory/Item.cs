@@ -8,22 +8,17 @@ using UnityEngine.Tilemaps;
 public class Item : ScriptableObject
 {
     public Sprite image; 
-    public ItemType type;
+    public ItemAction usage = ItemAction.Ingredient;
     //public Vector2Int range = new Vector2Int(5, 4);
     public int maxStackSize = 1;
-    public int marketPrice;
-   
+    public int marketPrice = 10;
+    public int useAmount; // This is a generic int that we can use for things like healing amounts
+    public bool deleteOnUse = true;
 }
 
-public enum ItemType
+public enum ItemAction
 {
     Ingredient,
-    Utility
+    Heal,
+    Key
 }
-
-// This will be better implemented as an interface
-//public enum ActionType
-//{
-//    Dig,
-//    Grab
-//}

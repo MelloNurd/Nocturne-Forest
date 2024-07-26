@@ -5,9 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.Events;
-using Unity.VisualScripting;
+using DG.Tweening;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     [Header("UI")]
     public Image image;
@@ -23,8 +23,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     bool canDrag;
 
+    TMP_Text itemTitle;
+
     private void Awake() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        countText.raycastTarget = false;
+        itemTitle = InventoryManager.currentInstance.itemTitleObj.GetComponent<TMP_Text>();
+        itemTitle.raycastTarget = false;
     }
 
     private void Update() {
@@ -75,6 +80,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     //moves item's icon when being dragged in inventory
     public void OnDrag(PointerEventData eventData)
     {
+        Debug.Log(gameObject.name);
         if (eventData.button != 0 || !canDrag) return; // We only care about left click
 
         transform.position = Input.mousePosition + Vector3.forward;
@@ -105,28 +111,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         image.raycastTarget = true;
     }
 
-    /* private void DropOneItem()
-     {
-         if (count > 1)
-         {
-             count--;
-             RefreshCount();
-
-             // Create a new InventoryItem for the single item
-             GameObject newItemObject = Instantiate(gameObject, parentAfterDrag);
-             InventoryItem newItem = newItemObject.GetComponent<InventoryItem>();
-             newItem.InitializeItem(item);
-             newItem.count = 1;
-             newItem.RefreshCount();
-
-             // Snap the new item to the nearest valid slot
-             image.raycastTarget = true;
-             newItem.transform.SetParent(parentAfterDrag);
-         }
-         else
-         {
-             image.raycastTarget = true;
-             transform.SetParent(parentAfterDrag);
-         }
-     }*/
+    public void OnPointerClick(PointerEventData eventData) {
+        if (eventData.button != 0) return;
+        InventoryManager.currentInstance.KillHideItemTitle();
+        InventoryManager.currentInstance.itemTitleObj.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().position + Vector3.up * 70;
+        itemTitle.text = item.name;
+        InventoryManager.currentInstance.HideItemTitle();
+    }
 }

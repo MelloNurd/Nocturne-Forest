@@ -15,4 +15,4 @@ MonoBehaviour:
   image: {fileID: -1243920363, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
   type: 0
   maxStackSize: 16
-  marketPrice: 10
+  marketPrice: 8

@@ -50,14 +50,24 @@ public class CauldronCrafting : MonoBehaviour
     }
 
     public void TryCraft() {
+        if (addedIngredients.Count <= 0) return;
+
         Recipe currentRecipe = InventoryManager.GetAllCauldronRecipes().FirstOrDefault(x => CompareIngredientLists(x.craftingIngredients, addedIngredients));
         if(currentRecipe == null) {
             Debug.Log("Invalid recipe.");
+            InventoryManager.itemLookup.TryGetValue("Vile Concoction", out Item crafted);
+            if (crafted != null) CraftItem(crafted);
         }
         else {
             Debug.Log("Found recipe! Player will craft: " + currentRecipe.craftedItem.name);
+            InventoryManager.itemLookup.TryGetValue(currentRecipe.craftedItem.name, out Item crafted);
+            if (crafted != null) CraftItem(crafted);
             ClearIngredients();
         }
+    }
+
+    void CraftItem(Item outputItem) {
+        InventoryManager.currentInstance.SpawnNewItem(outputItem, inputSlot);
     }
 
     bool CompareIngredientLists(List<Item> A, List<Item> B) {

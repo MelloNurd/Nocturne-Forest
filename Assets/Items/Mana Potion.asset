@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mana Potion
   m_EditorClassIdentifier: 
   image: {fileID: -807172001, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
-  type: 1
+  usage: 0
   maxStackSize: 4
-  marketPrice: 30
+  marketPrice: 35
+  useAmount: 5

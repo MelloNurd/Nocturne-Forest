@@ -6,6 +6,7 @@ using UnityEngine;
 public class Recipe : ScriptableObject
 {
     public Item craftedItem = null;
+    public int craftedAmount = 1;
     public Workstation craftingWorkstation = Workstation.Cauldron;
     public List<Item> craftingIngredients = new List<Item>();
 }

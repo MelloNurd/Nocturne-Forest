@@ -10,6 +10,7 @@ public class Pickupable : MonoBehaviour
     public Item item;
 
     public bool canPickup = true;
+    public bool oneTimePickup = false;
 
     public int stackSize = 1; // not yet implemented
 
@@ -41,6 +42,14 @@ public class Pickupable : MonoBehaviour
     private void Start() {
         DisableOutline();
         playerInventory = InventoryManager.currentInstance;
+    }
+
+    private void OnEnable() {
+        UpdateSprite();
+    }
+
+    public void UpdateSprite() {
+        if (item != null) childSpriteRenderer.sprite = item.image;
     }
 
     public void OnDrop(Item _item) {
@@ -88,7 +97,8 @@ public class Pickupable : MonoBehaviour
         if (!canPickup || !isInRange) return;
 
         playerInventory.AddItem(item);
-        ObjectPoolManager.ReturnObjectToPool(gameObject);
+        if (oneTimePickup) Destroy(gameObject);
+        else ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 
     public void UpdatePickupableObj(Item newItem) {

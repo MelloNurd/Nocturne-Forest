@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Key
   m_EditorClassIdentifier: 
   image: {fileID: 941113030, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
-  type: 1
+  usage: 2
   maxStackSize: 1
-  marketPrice: 1
+  marketPrice: -1
+  useAmount: 0
+  deleteOnUse: 1

@@ -44,8 +44,9 @@ public class Player : MonoBehaviour
     private InputAction attack;
     private InputAction roll;
     private InputAction interact;
+    private InputAction useItem;
     private InputAction openInv;
-    
+
     Vector2 moveDirection = Vector2.zero; // Vector which will be based on the movement inputs
 
     public float interactionRange = 2f;
@@ -84,6 +85,10 @@ public class Player : MonoBehaviour
 
         interact = playerControls.Player.Interact;
         interact.performed += OnInteract;
+        interact.Enable();
+
+        interact = playerControls.Player.Use;
+        interact.performed += OnItemUse;
         interact.Enable();
 
         openInv = playerControls.Player.OpenInventory;
@@ -248,6 +253,27 @@ public class Player : MonoBehaviour
         // If there have not been any Interactables, then we look for Pickupables.
         foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
             if (objCol.TryGetComponent(out Pickupable pickupable)) pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+        }
+    }
+
+    private void OnItemUse(InputAction.CallbackContext context) {
+        Item usedItem = inventoryManager.GetSelectedItem(false);
+        if (usedItem == null) return;
+
+        Debug.Log(usedItem.usage);
+        switch(usedItem.usage) {
+            case ItemAction.Heal:
+                currentHealth += usedItem.useAmount;
+                if (currentHealth > maxHealth) currentHealth = maxHealth;
+                if(usedItem.deleteOnUse) inventoryManager.GetSelectedItem(true);
+                break;
+            case ItemAction.Key:
+
+                break;
+            case ItemAction.Ingredient:
+                break;
+            default:
+                break;
         }
     }
 
