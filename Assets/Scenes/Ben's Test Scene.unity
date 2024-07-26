@@ -1708,6 +1708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkout: {fileID: 1431801506}
+  animator: {fileID: 0}
   currentState: 0
   customerPurchasingState: 0
   desiredItemsPool: {fileID: 11400000, guid: 9733ef90348d71e469316d525666378d, type: 2}
@@ -4333,7 +4334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4094143920300385481, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4453389078373987192, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_Color.b

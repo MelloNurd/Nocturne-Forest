@@ -282,20 +282,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pedestalUI: {fileID: 0}
-  items:
-  - item: {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
-    price: 5
-    pedestal: {fileID: 597690205}
-  - item: {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}
-    price: 10
-    pedestal: {fileID: 1592863902}
-  - item: {fileID: 11400000, guid: f581887e22a05b943b2c58070fe5c1f1, type: 2}
-    price: 2
-    pedestal: {fileID: 2146030452}
+  items: []
   customer: {fileID: 690323838}
   numCustomersCame: 0
   numCustomersBought: 0
-  isShopOpen: 1
+  isShopOpen: 0
 --- !u!4 &57621420
 Transform:
   m_ObjectHideFlags: 0
@@ -3434,17 +3425,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
---- !u!114 &1592863902 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4091040944984502256, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
-  m_PrefabInstance: {fileID: 1484233286}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52bda5a0014701b4c87c0fe241752798, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1673650140
 GameObject:
   m_ObjectHideFlags: 0
@@ -4570,17 +4550,6 @@ PrefabInstance:
       addedObject: {fileID: 2092701626}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
---- !u!114 &2146030452 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4091040944984502256, guid: 488fd769a79e51d4fb8b16529603136d, type: 3}
-  m_PrefabInstance: {fileID: 255189330}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52bda5a0014701b4c87c0fe241752798, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &951756752021421284
 PrefabInstance:
   m_ObjectHideFlags: 0
