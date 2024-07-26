@@ -15,6 +15,8 @@ public class Customer : MonoBehaviour
 
     [SerializeField] ShopCheckout checkout;
 
+    [SerializeField] Animator animator;
+
     public enum CustomerStates {
         Thinking, // This is basically just idle
         Browsing,
@@ -93,6 +95,7 @@ public class Customer : MonoBehaviour
     }
 
     private void OnEnable() {
+        animator.SetInteger("PersonType", 1);
         currentState = CustomerStates.Thinking;
         StartCoroutine(StartBrowsing());
 
@@ -122,6 +125,8 @@ public class Customer : MonoBehaviour
 
     private void Update() {
         walkDir = (currDestination - transform.position).normalized;
+        //animator.SetFloat("XInput", walkDir.x);
+        //animator.SetFloat("YInput", walkDir.y);
     }
 
     // Update is called once per frame
@@ -212,6 +217,8 @@ public class Customer : MonoBehaviour
     }
 
     IEnumerator ThinkIcon() {
+        //animator.SetFloat("XInput", 0);
+        //animator.SetFloat("YInput", 1);
         bubbleSpriteRenderer.sprite = thinkingSprite;
         yield return new WaitForSeconds(0.8f);
         bubbleSpriteRenderer.sprite = null;
