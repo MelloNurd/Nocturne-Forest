@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
     {
         if (currentState != PlayerStates.Rolling) { // Updates moveDirection as long as the player is not rolling (moveDirection is locked when rolling)
             moveDirection = move.ReadValue<Vector2>();
-            if(IsMoving() && itemOpened == null)
+            if(IsMoving() && itemOpened == null && currentState != PlayerStates.Attacking)
             {
                 animator.SetFloat("XInput", moveDirection.x);
                 animator.SetFloat("YInput", moveDirection.y);
