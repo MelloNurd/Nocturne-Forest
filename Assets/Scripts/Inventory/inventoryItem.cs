@@ -13,11 +13,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Image image;
     public TMP_Text countText;
 
-    [HideInInspector] public Item item;
-    [HideInInspector] public int count = 1;
+    public Item item;
+    public int count = 1;
     [HideInInspector] public Transform parentAfterDrag;
 
     [HideInInspector] public InventorySlot slot;
+
+    Color slotColor;
 
     Player player;
 
@@ -30,6 +32,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         countText.raycastTarget = false;
         itemTitle = InventoryManager.currentInstance.itemTitleObj.GetComponent<TMP_Text>();
         itemTitle.raycastTarget = false;
+        slotColor = Color.white;
     }
 
     private void Update() {
@@ -66,9 +69,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         image.raycastTarget = false;
 
         slot = transform.parent.GetComponent<InventorySlot>();
-        if(slot != null) {
+        if (slot != null) {
+            slotColor = slot.GetComponent<Image>().color;
             slot.OnItemLeave();
-            slot.GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f);
+            slot.GetComponent<Image>().color = new Color(slotColor.r, slotColor.b, slotColor.g, slotColor.a * 0.5f);
         }
 
         parentAfterDrag = transform.parent;
@@ -80,7 +84,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     //moves item's icon when being dragged in inventory
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log(gameObject.name);
         if (eventData.button != 0 || !canDrag) return; // We only care about left click
 
         transform.position = Input.mousePosition + Vector3.forward;
@@ -102,7 +105,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         //    Debug.Log(hit.collider.gameObject.name);
 
         if (slot != null) {
-            slot.GetComponent<Image>().color = Color.white;
+            slot.GetComponent<Image>().color = slotColor;
         }
         transform.SetParent(parentAfterDrag);
 

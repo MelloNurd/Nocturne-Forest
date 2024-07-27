@@ -14,6 +14,7 @@ public class InventoryManager : MonoBehaviour
         ShopInventory,
         ItemPedestal,
         PotionCrafting,
+        ShopBook,
         DoorMenu,
         Closing
     }
@@ -33,12 +34,17 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventorySlotPrefab;
     public GameObject inventoryItemPrefab;
     public GameObject itemTitleObj;
+    public TMP_Text playerCashText;
+    public TMP_Text openCloseShopText;
+
     Tween titleTween;
 
     [HideInInspector] public GameObject playerInventoryObj;
+    [HideInInspector] public GameObject hotbarObj;
     [HideInInspector] public GameObject shopInventoryObj;
     [HideInInspector] public GameObject pedestalMenuObj;
     [HideInInspector] public GameObject cauldronCraftingObj;
+    [HideInInspector] public GameObject shopBookObj;
     [HideInInspector] public GameObject doorMenuObj;
 
     List<InventorySlot> shopInventorySlots = new List<InventorySlot>();
@@ -68,9 +74,11 @@ public class InventoryManager : MonoBehaviour
         currentInstance = this;
 
         playerInventoryObj = transform.Find("PlayerInventory").gameObject;
+        hotbarObj = transform.Find("HotBar").gameObject;
         shopInventoryObj = transform.Find("ShopInventory").gameObject;
         pedestalMenuObj = transform.Find("PedestalMenu").gameObject;
         cauldronCraftingObj = transform.Find("PotionCrafting").gameObject;
+        shopBookObj = transform.Find("ShopBookMenu").gameObject;
         doorMenuObj = transform.Find("DoorMenu").gameObject;
 
         playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -155,6 +163,7 @@ public class InventoryManager : MonoBehaviour
         int money = PlayerPrefs.GetInt("player-money", -1);
         if (money != -1) playerCash = money;
         else Debug.LogWarning("Unable to load player's money!");
+        playerCashText.text = '$' + playerCash.ToString();
 
         // Shop's Chest Inventory
         foreach (InventorySlot slot in shopInventorySlots) {
@@ -250,10 +259,17 @@ public class InventoryManager : MonoBehaviour
 
                 cauldronCraftingObj.SetActive(true);
                 break;
+            case InventoryOpening.ShopBook:
+                hotbarObj.SetActive(false);
+
+                shopBookObj.SetActive(true);
+                break;
             case InventoryOpening.DoorMenu:
                 doorMenuObj.SetActive(true);
                 break;
             case InventoryOpening.Closing:
+                hotbarObj.SetActive(true);
+
                 dropArea.SetActive(false);
                 trashArea.SetActive(false);
                 playerInventoryObj.SetActive(false);
@@ -266,6 +282,8 @@ public class InventoryManager : MonoBehaviour
                 pedestalMenuObj.SetActive(false);
 
                 cauldronCraftingObj.SetActive(false);
+
+                shopBookObj.SetActive(false);
 
                 doorMenuObj.SetActive(false);
 
@@ -345,6 +363,7 @@ public class InventoryManager : MonoBehaviour
             Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
             pickupScript.UpdatePickupableObj(item);
             pickupScript.canPickup = false;
+            pickupScript.playerDropped = true;
 
             Vector3 originalSize = droppedItem.transform.localScale;
             droppedItem.transform.localScale = originalSize * 0.5f;

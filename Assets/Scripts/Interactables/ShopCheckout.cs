@@ -23,5 +23,6 @@ public class ShopCheckout : Interactable
     public override void Interact() {
         if (!canInteract) return;
         customer.OnCheckout();
+        PlayerPrefs.SetInt("total_items_sold", PlayerPrefs.GetInt("total_items_sold", 0) + 1);
     }
 }

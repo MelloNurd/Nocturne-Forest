@@ -1,13 +1,16 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static UnityEditor.Progress;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Pedestal : Interactable
 {
@@ -53,6 +56,7 @@ public class Pedestal : Interactable
             }
             else {
                 sellPrice = int.Parse(data.Split(';')[2]);
+                count = int.Parse(data.Split(';')[1]);
 
                 if (InventoryManager.itemLookup.TryGetValue(data.Split(';')[0], out Item _item)) {
                     InventoryItem newItem = InventoryManager.currentInstance.SpawnNewItem(_item, pedestalUISlot);
@@ -80,10 +84,11 @@ public class Pedestal : Interactable
         InventoryItem item = pedestalUISlot.GetItemInSlot();
         if (item == null || item.item == null) return;
         else {
-            Debug.Log(item.item);
             sellItem = item.item;
             shop.AddItemToShop(this);
         }
+
+        Debug.Log(item.count);
 
         count = item.count;
         childSpriteRenderer.sprite = item.item.image;
@@ -110,7 +115,7 @@ public class Pedestal : Interactable
 
     public void UpdatePedestalPrice() {
         if (!player.itemOpened.TryGetComponent(out Pedestal _pedestal)) return;
-        _pedestal.sellPrice = int.Parse(pedestalPriceField.text);
+        int.TryParse(pedestalPriceField.text, out _pedestal.sellPrice);
         if(_pedestal.sellItem != null) shop.UpdateItem(this);
     }
 
@@ -144,6 +149,7 @@ public class Pedestal : Interactable
         pedestalSlotObj.name = gameObject.name + " Slot";
         pedestalSlotObj.transform.SetParent(pedestalUI.transform);
         pedestalSlotObj.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
+        pedestalSlotObj.GetComponent<Image>().color = Color.clear;
 
         pedestalUISlot = pedestalSlotObj.GetComponent<InventorySlot>();
         pedestalUISlot.onDisableCall.AddListener(UpdatePedestalItem);

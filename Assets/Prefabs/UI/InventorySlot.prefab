@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1452628641, guid: 83cf2892b8db6aa4c9d16efff42dd0fd, type: 3}
+  m_Sprite: {fileID: 580024595, guid: debaf6c73691f3f4387a029c1a6c9014, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -114,11 +114,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 4201348062023199069}
-  selectedColor: {r: 1, g: 0.9622641, b: 0.5330188, a: 1}
+  selectedColor: {r: 1, g: 0.89155906, b: 0.58679235, a: 0.9137255}
   notSelectedColor: {r: 1, g: 1, b: 1, a: 1}
   onDropCall:
     m_PersistentCalls:
       m_Calls: []
   onItemLeave:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisableCall:
     m_PersistentCalls:
       m_Calls: []

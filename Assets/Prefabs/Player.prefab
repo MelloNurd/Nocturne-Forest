@@ -69,7 +69,7 @@ MonoBehaviour:
   rollLengthSeconds: 0.15
   rollCooldownSeconds: 1
   rollSpeedModifier: 3.5
-  showRadiusSizes: 1
+  showRadiusSizes: 0
 --- !u!114 &4630779527530026524
 MonoBehaviour:
   m_ObjectHideFlags: 0

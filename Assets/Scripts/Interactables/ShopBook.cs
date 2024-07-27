@@ -18,6 +18,8 @@ public class ShopBook : Interactable {
     }
 
     public override void Interact() {
-        // do nothing
+        if (!canInteract) return;
+
+        InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.ShopBook, gameObject);
     }
 }

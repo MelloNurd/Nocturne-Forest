@@ -104,7 +104,7 @@ public class Customer : MonoBehaviour
         maxWalkCycles = Random.Range(2, 5);
 
         itemSpriteRenderer.sortingOrder = -1;
-        itemSpriteRenderer.transform.localPosition = new Vector2(0, 0.4f);
+        itemSpriteRenderer.transform.localPosition = new Vector2(0, 0.3f);
         itemSpriteRenderer.sprite = null;
         bubbleSpriteRenderer.sprite = null;
         bubbleSpriteRenderer.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = null;
@@ -200,7 +200,7 @@ public class Customer : MonoBehaviour
         Vector3 newPos = GetNewPos();
 
         if (walkCycles + 1 >= maxWalkCycles && (customerPurchasingState == PurchasingState.WillBuy || customerPurchasingState == PurchasingState.TooExpensive)) {
-            newPos = itemToBuy.pedestal.transform.position + Vector3.down;
+            newPos = itemToBuy.pedestal.transform.position + Vector3.down * 0.3f;
         }
         else if (pedestals.Count > 1) {
             int cutoff = 0; // Only doing this in case of infinite loops. Had a few during testing but shouldn't happen anymore, leaving just in case.
@@ -222,7 +222,7 @@ public class Customer : MonoBehaviour
     }
 
     Vector3 GetNewPos() {
-        return pedestals[Random.Range(0, pedestals.Count)].transform.position + Vector3.down;
+        return pedestals[Random.Range(0, pedestals.Count)].transform.position + Vector3.down*0.3f;
     }
 
     IEnumerator ThinkIcon() {
@@ -239,6 +239,7 @@ public class Customer : MonoBehaviour
         currDestination = buyLinePos;
         currentState = CustomerStates.Leaving;
         InventoryManager.currentInstance.playerCash += itemToBuy.price;
+        InventoryManager.currentInstance.playerCashText.text = '$' + InventoryManager.currentInstance.playerCash.ToString();
         shop.numCustomersBought++;
     }
 
@@ -267,7 +268,9 @@ public class Customer : MonoBehaviour
                 itemToBuy = shop.GetShopItems().First(x => x.item == desiredItems[Random.Range(0, desiredItems.Count)]);
 
                 // If the item is priced too high
-                if (itemToBuy.price > itemToBuy.item.marketPrice * itemToBuy.pedestal.count) customerPurchasingState = PurchasingState.TooExpensive;
+                int stackPrice = itemToBuy.item.marketPrice * itemToBuy.pedestal.count;
+                if (stackPrice <= 0) stackPrice = 1; // There is some bug I can't track where the count is 0. Doing this just in case.
+                if (itemToBuy.price > stackPrice) customerPurchasingState = PurchasingState.TooExpensive;
             }
             // If the shop DOES NOT have an item that the customer wants to buy
             else {
@@ -284,7 +287,9 @@ public class Customer : MonoBehaviour
                     itemToBuy = shop.GetShopItems().ToList()[Random.Range(0, shop.GetShopItems().Count)];
 
                     // If the item is priced too high
-                    if (itemToBuy.price > itemToBuy.item.marketPrice) customerPurchasingState = PurchasingState.TooExpensive;
+                    int stackPrice = itemToBuy.item.marketPrice * itemToBuy.pedestal.count;
+                    if (stackPrice <= 0) stackPrice = 1; // There is some bug I can't track where the count is 0. Doing this just in case.
+                    if (itemToBuy.price > stackPrice) customerPurchasingState = PurchasingState.TooExpensive;
                 }
             }
         }

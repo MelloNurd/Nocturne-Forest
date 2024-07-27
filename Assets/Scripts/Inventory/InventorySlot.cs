@@ -61,7 +61,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 if (existingItem.count + 1 <= existingItem.item.maxStackSize) {
                     existingItem.count += 1;
                     InventoryManager.currentInstance.draggingItem.count -= 1;
-                    
                     onDropCall?.Invoke(); // This might break stuff idk
                 }
                 existingItem.RefreshCount();

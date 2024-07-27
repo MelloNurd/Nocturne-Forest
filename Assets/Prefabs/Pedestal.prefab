@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1224346567676781820}
   - component: {fileID: 1299973502312432647}
   - component: {fileID: 4091040944984502256}
+  - component: {fileID: 298018184394923710}
   m_Layer: 6
   m_Name: Pedestal
   m_TagString: Pedestal
@@ -152,6 +153,33 @@ MonoBehaviour:
   sellItem: {fileID: 0}
   sellPrice: 1
   count: 0
+--- !u!50 &298018184394923710
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719478253164164256}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &3337773603326410329
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae2d7b343773594784ccee1d8cc3a4e, type: 3}
   m_Name: GreaterHealthPotionRecipe 1
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 11400000, guid: e4bda56ecfa3eec468c09d00dfed0680, type: 2}
+  craftedItem: {fileID: 11400000, guid: 25e5e5c440cb0a64b9d481661c01018a, type: 2}
   craftedAmount: 1
   craftingWorkstation: 0
   craftingIngredients:
   - {fileID: 11400000, guid: dd045025c529f4b43a53e85842e8af52, type: 2}
   - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
+  showRecipeInBook: 1

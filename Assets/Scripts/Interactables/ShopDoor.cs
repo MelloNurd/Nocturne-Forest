@@ -21,6 +21,8 @@ public class ShopDoor : Interactable
     }
 
     public override void Interact() {
+        if (!canInteract) return;
+
         InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.DoorMenu, gameObject);
     }
 
@@ -30,10 +32,12 @@ public class ShopDoor : Interactable
     }
 
     void OpenShop() {
+        InventoryManager.currentInstance.openCloseShopText.text = "Close  Shop";
         shop.isShopOpen = true;
     }
 
     void CloseShop() {
+        InventoryManager.currentInstance.openCloseShopText.text = "Open  Shop";
         shop.isShopOpen = false;
     }
 }

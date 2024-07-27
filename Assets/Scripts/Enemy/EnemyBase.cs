@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyTypes {
+    Golbin
+}
+
 public abstract class EnemyBase : MonoBehaviour
 {
+    EnemyTypes enemyType;
+
     [Header("Combat")]
     public float maxHealth = 20f;
     public float currentHealth;
@@ -42,6 +48,9 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     public virtual void Die() {
+        string playerPrefsKey = enemyType.ToString() + "_killed";
+        PlayerPrefs.SetInt(playerPrefsKey, PlayerPrefs.GetInt(playerPrefsKey, 0) + 1);
+        PlayerPrefs.SetInt("total_enemies_killed", PlayerPrefs.GetInt("total_enemies_killed", 0) + 1);
         if (itemDrops != null) {
             List<Item> drops = itemDrops.RollDrops();
             foreach (Item item in itemDrops.RollDrops()) {

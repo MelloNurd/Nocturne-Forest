@@ -12,6 +12,8 @@ public class Pickupable : MonoBehaviour
     public bool canPickup = true;
     public bool oneTimePickup = false;
 
+    [HideInInspector] public bool playerDropped = false;
+
     public int stackSize = 1; // not yet implemented
 
     GameObject player;
@@ -95,6 +97,8 @@ public class Pickupable : MonoBehaviour
 
     public void Pickup() {
         if (!canPickup || !isInRange) return;
+
+        if(!playerDropped) PlayerPrefs.SetInt("total_items_collected", PlayerPrefs.GetInt("total_items_collected", 0) + 1);
 
         playerInventory.AddItem(item);
         if (oneTimePickup) Destroy(gameObject);
