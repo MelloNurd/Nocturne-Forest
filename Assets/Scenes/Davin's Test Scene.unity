@@ -1626,7 +1626,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &690323836
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1710,6 +1710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkout: {fileID: 1431801506}
   animator: {fileID: 690323839}
+  numTypesCustomers: 4
   currentState: 0
   customerPurchasingState: 0
   desiredItemsPool: {fileID: 11400000, guid: 9733ef90348d71e469316d525666378d, type: 2}
@@ -4568,7 +4569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6140301126427888329, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.51
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: 6140301126427888329, guid: a2f5856db6ee1a44198b0468089bed5d, type: 3}
       propertyPath: m_LocalPosition.y

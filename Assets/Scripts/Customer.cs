@@ -16,6 +16,7 @@ public class Customer : MonoBehaviour
     [SerializeField] ShopCheckout checkout;
 
     [SerializeField] Animator animator;
+    public int numTypesCustomers = 1;
 
     public enum CustomerStates {
         Thinking, // This is basically just idle
@@ -95,7 +96,7 @@ public class Customer : MonoBehaviour
     }
 
     private void OnEnable() {
-        animator.SetInteger("PersonType", 1);
+        animator.SetInteger("PersonType", Random.Range(1, numTypesCustomers+1));
         currentState = CustomerStates.Thinking;
         StartCoroutine(StartBrowsing());
 
@@ -125,8 +126,12 @@ public class Customer : MonoBehaviour
 
     private void Update() {
         walkDir = (currDestination - transform.position).normalized;
-        //animator.SetFloat("XInput", walkDir.x);
-        //animator.SetFloat("YInput", walkDir.y);
+        if(currentState != CustomerStates.Thinking)
+        {
+            animator.SetFloat("XInput", walkDir.x);
+            animator.SetFloat("YInput", walkDir.y);
+        }
+
     }
 
     // Update is called once per frame
@@ -179,6 +184,8 @@ public class Customer : MonoBehaviour
                 if (Vector3.Distance(transform.position, currDestination) < 0.1f) {
                     if (currDestination == buyLinePos) currDestination = doorPos;
                     else {
+                        animator.SetTrigger("Reset");
+                        animator.ResetTrigger("Reset");
                         gameObject.SetActive(false);
                     }
                 }
@@ -205,6 +212,8 @@ public class Customer : MonoBehaviour
         else {
             walkCycles += maxWalkCycles; // If there is only one pedestal, customer doesn't need to browse...
         }
+        animator.SetFloat("XInput", 0f);
+        animator.SetFloat("YInput", 1f);
         StartCoroutine(ThinkIcon());
         yield return new WaitForSeconds(Random.Range(2.5f, 5f));
         currentState = CustomerStates.Browsing;
@@ -217,8 +226,6 @@ public class Customer : MonoBehaviour
     }
 
     IEnumerator ThinkIcon() {
-        //animator.SetFloat("XInput", 0);
-        //animator.SetFloat("YInput", 1);
         bubbleSpriteRenderer.sprite = thinkingSprite;
         yield return new WaitForSeconds(0.8f);
         bubbleSpriteRenderer.sprite = null;
