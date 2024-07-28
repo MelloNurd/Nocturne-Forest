@@ -53,7 +53,7 @@ public class Customer : MonoBehaviour
 
     Vector3 doorPos;
     Vector3 buyPos = new Vector3(2.5f, 0, 0);
-    Vector3 buyLinePos = new Vector3(2.5f, -1.6f, 0);
+    Vector3 buyLinePos = new Vector3(2.5f, -0.9f, 0);
 
     SpriteRenderer itemSpriteRenderer;
     SpriteRenderer bubbleSpriteRenderer;

@@ -6,6 +6,7 @@ public abstract class Interactable : MonoBehaviour
 {
     public static Interactable nextInteract; // This will be the object that the player has in range to interact. Only one Interactable can be interacted with at a time.
 
+    [Header("Interactable")]
     public bool canInteract = true;
     protected bool isInRange;
 

@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour
 {
@@ -27,6 +29,8 @@ public class Player : MonoBehaviour
     public PlayerStates currentState = PlayerStates.Dynamic;
 
     [Header("Combat")]
+    GameObject healthBar;
+    Tween healthTween;
     [SerializeField] float maxHealth = 20f;
     public float currentHealth = 20f;
     public float attackDamage = 5f;
@@ -87,9 +91,9 @@ public class Player : MonoBehaviour
         interact.performed += OnInteract;
         interact.Enable();
 
-        interact = playerControls.Player.Use;
-        interact.performed += OnItemUse;
-        interact.Enable();
+        useItem = playerControls.Player.Use;
+        useItem.performed += OnItemUse;
+        useItem.Enable();
 
         openInv = playerControls.Player.OpenInventory;
         openInv.performed += OnInventory;
@@ -103,6 +107,8 @@ public class Player : MonoBehaviour
         attack.Disable();
         roll.Disable();
         interact.Disable();
+        useItem.Disable();
+        openInv.Disable();
     }
 
     private void Awake() 
@@ -117,6 +123,9 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         currentHealth = maxHealth;
+
+        healthBar = transform.Find("HealthBarOBJ").Find("HealthBarParent").gameObject;
+        healthBar.transform.parent.localScale = Vector2.right;
 
         //Time.timeScale = Time.timeScale / 2;
     }
@@ -182,9 +191,10 @@ public class Player : MonoBehaviour
 
             float damage = 0f;
 
-            if (collision.TryGetComponent(out EnemyBase enemy)) {
+            if (collision.transform.parent.TryGetComponent(out EnemyBase enemy)) {
                 knockbackMultipler = enemy.attackKnockback;
                 damage = enemy.attackDamage;
+                Debug.Log("enemy base found");
             }
             else if (collision.TryGetComponent(out Projectile projectile)) {
                 knockbackMultipler = projectile.attackKnockback;
@@ -198,20 +208,38 @@ public class Player : MonoBehaviour
     }
 
     void TakeDamage(float damage) {
-        if ((currentHealth -= damage) <= 0) {
-            Die();
-        }
+        // The order of stuff is a little confusing here because we need to subtract damage, clamp to zero if below, set the health bar, THEN check if its below zero to die...
+        currentHealth -= damage;
+        if(currentHealth <= 0) currentHealth = 0;
+        Debug.Log(damage);
+
+        UpdateHealthBar();
+
+        if (currentHealth <= 0)  Die(); 
     }
 
     void Die() {
+        healthTween.Kill();
         currentHealth = 0;
         Debug.Log("holy moly the player died!");
+    }
+
+    public void UpdateHealthBar() {
+        if (!gameObject || !gameObject.activeSelf) return;
+
+        healthBar.transform.localScale = new Vector2((currentHealth / maxHealth) * 0.54f, 1);
+        healthTween.Kill();
+        healthBar.transform.parent.localScale = Vector2.one;
+        healthTween = healthBar.transform.parent.DOScale(Vector2.right, 0.2f).SetDelay(3f);
     }
 
     public void Knockback(Vector3 dir, float knockbackPower = 1f) {
         currentState = PlayerStates.Static;
         float distance = baseKnockback * knockbackPower * 1.6f;
-        transform.DOJump(transform.position + dir * distance, distance * 0.16f, 1, distance * 0.16f).SetEase(Ease.Linear).onComplete = () => { currentState = PlayerStates.Dynamic; };
+        Vector3 knockedBackPos = transform.position + dir * distance;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, Vector2.Distance(transform.position, knockedBackPos), LayerMask.GetMask("Terrain"));
+        if (hit.collider != null) knockedBackPos = hit.point;
+        transform.DOJump(knockedBackPos, distance * 0.16f, 1, distance * 0.16f).SetEase(Ease.Linear).onComplete = () => { currentState = PlayerStates.Dynamic; };
     }
 
     #region InputCalls
@@ -265,7 +293,14 @@ public class Player : MonoBehaviour
             case ItemAction.Heal:
                 currentHealth += usedItem.useAmount;
                 if (currentHealth > maxHealth) currentHealth = maxHealth;
-                if(usedItem.deleteOnUse) inventoryManager.GetSelectedItem(true);
+                else if (currentHealth <= 0) {
+                    currentHealth = 0;
+                    UpdateHealthBar();
+                    Die();
+                }
+
+                UpdateHealthBar();
+                if (usedItem.deleteOnUse) inventoryManager.GetSelectedItem(true);
                 break;
             case ItemAction.Key:
 

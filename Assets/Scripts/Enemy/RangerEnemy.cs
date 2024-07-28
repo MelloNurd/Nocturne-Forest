@@ -153,7 +153,10 @@ public class RangerEnemy : EnemyBase
         currentState = EnemyStates.Static;
         Vector3 playerDir = (transform.position - player.transform.position).normalized;
         float distance = baseKnockback * knockbackPower*1.6f;
-        transform.DOJump(transform.position + playerDir * distance, distance * 0.16f, 1, distance * 0.16f).SetEase(Ease.Linear).onComplete = ResetMovementState;
+        Vector3 knockedBackPos = transform.position + playerDir * distance; // Get the point we are being knocked back to
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, playerDir, Vector2.Distance(transform.position, knockedBackPos), LayerMask.GetMask("Terrain"));
+        if (hit.collider != null) knockedBackPos = hit.point; // If the knocked back to point is blocked by an object, set it to where it was blocked
+        transform.DOJump(knockedBackPos, distance * 0.16f, 1, distance * 0.16f).SetEase(Ease.Linear).onComplete = ResetMovementState;
     }
 
     void ResetMovementState() { // Using this because we might not know which "passive" state the enemy should switch to when done pursuing

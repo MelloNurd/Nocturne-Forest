@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum EnemyTypes {
-    Golbin
+    Golbin,
+    Slime
 }
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    EnemyTypes enemyType;
+    public EnemyTypes enemyType;
 
     [Header("Combat")]
     public float maxHealth = 20f;
     public float currentHealth;
+    GameObject healthBar;
+    Tween healthTween;
     public float attackDamage = 5f;
     public float baseKnockback = 1f;
     public float attackKnockback = 1f;
@@ -29,6 +32,8 @@ public abstract class EnemyBase : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        healthBar = transform.Find("HealthBarOBJ").Find("HealthBarParent").gameObject;
+        healthBar.transform.parent.localScale = Vector2.right;
     }
 
     protected virtual void Start() {
@@ -41,13 +46,24 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected bool TakeDamage(float damage) {
         if ((currentHealth -= damage) <= 0) {
+            UpdateHealthBar();
             Die();
             return false;
         }
+        UpdateHealthBar();
         return true;
     }
 
+    public void UpdateHealthBar() {
+        if (!gameObject || !gameObject.activeSelf) return;
+        healthBar.transform.localScale = new Vector2((currentHealth / maxHealth) * 0.54f, 1);
+        healthTween.Kill();
+        healthBar.transform.parent.localScale = Vector2.one;
+        healthTween = healthBar.transform.parent.DOScale(Vector2.right, 0.5f).SetDelay(3f);
+    }
+
     public virtual void Die() {
+        healthTween.Kill();
         string playerPrefsKey = enemyType.ToString() + "_killed";
         PlayerPrefs.SetInt(playerPrefsKey, PlayerPrefs.GetInt(playerPrefsKey, 0) + 1);
         PlayerPrefs.SetInt("total_enemies_killed", PlayerPrefs.GetInt("total_enemies_killed", 0) + 1);

@@ -84,8 +84,10 @@ public class InventoryManager : MonoBehaviour
         playerObj = GameObject.FindGameObjectWithTag("Player");
         player = playerObj.GetComponent<Player>();
 
-        foreach(Item item in globalItemList) { // Initialize itemLookup dictionary
-            itemLookup.Add(item.name, item);
+        if (itemLookup.Count <= 0) {
+            foreach (Item item in globalItemList) { // Initialize itemLookup dictionary
+                itemLookup.Add(item.name, item);
+            }
         }
     }
 

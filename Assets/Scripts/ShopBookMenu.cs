@@ -23,6 +23,20 @@ public class ShopBookMenu : MonoBehaviour
 
     List<GameObject> textObjs = new List<GameObject>();
 
+    private void Start() {
+        // We want to load all the enemies slain texts right from the start because it wont ever increase while in the shop.
+        totalSlainText.GetComponent<TMP_Text>().text = "Total Slain: " + PlayerPrefs.GetInt("total_enemies_killed", 0).ToString();
+
+        var enemyTypes = Enum.GetValues(typeof(EnemyTypes));
+        for (int i = 0; i < enemyTypes.Length; i++) {
+            GameObject newText = Instantiate(totalSlainText, totalSlainText.transform.position + Vector3.down * 80 * (i+1), totalSlainText.transform.rotation);
+            newText.transform.SetParent(totalSlainText.transform.parent, true);
+            string enemyTypeName = enemyTypes.GetValue(i).ToString();
+            newText.GetComponent<TMP_Text>().text = enemyTypeName + "s Slain: " + PlayerPrefs.GetInt(enemyTypeName + "_killed", 0).ToString();
+            textObjs.Add(newText);
+        }
+    }
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -34,16 +48,6 @@ public class ShopBookMenu : MonoBehaviour
 
     IEnumerator LoadBook() {
         yield return new WaitForSeconds(0.1f);
-        totalSlainText.GetComponent<TMP_Text>().text = "Total Slain: " + PlayerPrefs.GetInt("total_enemies_killed", 0).ToString();
-
-        var enemyTypes = Enum.GetValues(typeof(EnemyTypes));
-        for (int i = 0; i < enemyTypes.Length; i++) {
-            GameObject newText = Instantiate(totalSlainText, totalSlainText.transform.position + Vector3.down * 80, totalSlainText.transform.rotation);
-            newText.transform.SetParent(totalSlainText.transform.parent, true);
-            string enemyTypeName = enemyTypes.GetValue(i).ToString();
-            newText.GetComponent<TMP_Text>().text = enemyTypeName + "s Slain: " + PlayerPrefs.GetInt(enemyTypeName + "_killed", 0).ToString();
-            textObjs.Add(newText);
-        }
 
         int pageIndex = 0;
         foreach (Recipe recipe in InventoryManager.currentInstance.globalCraftingRecipes) {
@@ -51,7 +55,7 @@ public class ShopBookMenu : MonoBehaviour
 
             GameObject newPage = Instantiate(recipePagePrefab, transform.position + Vector3.down * 50, Quaternion.identity);
             newPage.name = recipe.craftedItem.name + " Recipe Page";
-            newPage.transform.parent = transform.Find("Recipe Chapter");
+            newPage.transform.SetParent(transform.Find("Recipe Chapter"), true);
             if(pageIndex % 2 != 0) newPage.transform.position = new Vector2(newPage.transform.position.x * 1.75f, newPage.transform.position.y);
 
             newPage.transform.Find("Crafted Name").GetComponent<TMP_Text>().text = recipe.craftedItem.name;
@@ -117,8 +121,6 @@ public class ShopBookMenu : MonoBehaviour
             activeChapter.GetChild(activePageIndex).gameObject.SetActive(true);
             if (activeChapter.GetChild(activePageIndex + 1)) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(true);
 
-            Debug.Log("active index: " + activePageIndex);
-            Debug.Log("num pages: " + numPages);
             leftPageFlip.SetActive(true);
             if (activePageIndex >= numPages - 2) rightPageFlip.SetActive(false);
 

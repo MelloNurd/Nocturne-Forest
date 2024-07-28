@@ -18,6 +18,7 @@ public class Pedestal : Interactable
 
     Shop shop;
 
+    [Header("Pedestal")]
     [SerializeField] GameObject pedestalUI;
     [SerializeField] GameObject inventorySlotPrefab;
     GameObject pedestalSlotObj;
@@ -87,8 +88,6 @@ public class Pedestal : Interactable
             sellItem = item.item;
             shop.AddItemToShop(this);
         }
-
-        Debug.Log(item.count);
 
         count = item.count;
         childSpriteRenderer.sprite = item.item.image;
