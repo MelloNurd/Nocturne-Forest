@@ -8,9 +8,20 @@ public enum EnemyTypes {
     Slime
 }
 
+public enum RespawnType {
+    Persistent,
+    Random,
+    OneTime
+}
+
 public abstract class EnemyBase : MonoBehaviour
 {
     public EnemyTypes enemyType;
+
+    [Header("Respawning")]
+    public RespawnType respawningType = RespawnType.Persistent;
+    [Tooltip("This is only affective when using the \"Random\" respawn type.")] [Range(0, 100)] public int respawnChance = 50;
+    [Tooltip("If this is checked, the enemy will respawn even if it has been killed in OneTime respawning.")] public bool overrideOneTime = false;
 
     [Header("Combat")]
     public float maxHealth = 20f;
@@ -37,11 +48,24 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     protected virtual void Start() {
-
+        switch (respawningType) {
+            case RespawnType.Persistent:
+                PlayerPrefs.SetInt(gameObject.scene + "_" + gameObject.name, 0); // Resets the value keeping track of if it died, for OneTime
+                break; // Basically for persistent, do nothing to the gameobject
+            case RespawnType.Random:
+                PlayerPrefs.SetInt(gameObject.scene + "_" + gameObject.name, 0); // Resets the value keeping track of if it died, for OneTime
+                if (Random.Range(1, 101) >= respawnChance) gameObject.SetActive(false);
+                break;
+            case RespawnType.OneTime:
+                int hasDied = PlayerPrefs.GetInt(gameObject.scene + "_" + gameObject.name, 0);
+                if(hasDied != 0 && !overrideOneTime) gameObject.SetActive(false);
+                break;
+            default: break;
+        }
     }
 
     protected virtual void Update() {
-
+        // For now this does nothing, but still need the function as it is virtual    
     }
 
     protected bool TakeDamage(float damage) {
@@ -63,16 +87,26 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     public virtual void Die() {
+        // Kill healthTween in case it's running. This prevents errors.
         healthTween.Kill();
+
+        // Storing if it has been killed or not. Note: Each enemy has to have a different name within the scene for this to work!
+        if(respawningType == RespawnType.OneTime) PlayerPrefs.SetInt(gameObject.scene + "_" + gameObject.name, 1);
+        
+        // Incrementing the enemy's slain numbers
         string playerPrefsKey = enemyType.ToString() + "_killed";
         PlayerPrefs.SetInt(playerPrefsKey, PlayerPrefs.GetInt(playerPrefsKey, 0) + 1);
         PlayerPrefs.SetInt("total_enemies_killed", PlayerPrefs.GetInt("total_enemies_killed", 0) + 1);
+
+        // Run through item drops
         if (itemDrops != null) {
             List<Item> drops = itemDrops.RollDrops();
             foreach (Item item in itemDrops.RollDrops()) {
                 DropItem(item);
             }
         }
+        
+        // Destroy the gameObject
         Destroy(gameObject);
     }
 

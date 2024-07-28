@@ -100,23 +100,20 @@ public class SoldierEnemy : EnemyBase
     protected override void Update()
     {
         base.Update();
-        if (rb.velocity != Vector2.zero)
-        {
+
+        if (rb.velocity != Vector2.zero) {
             animator.SetFloat("XInput", rb.velocity.x);
             animator.SetFloat("YInput", rb.velocity.y);
             animator.SetBool("Walking", true);
         }
-        else
-        {
+        else {
             animator.SetBool("Walking", false);
         }
+
         if (currentState != EnemyStates.Static && currentState != EnemyStates.Charging) { // If the enemy is not static or charging, update the relative player's stats
             playerDir = (playerObj.transform.position - transform.position).normalized; // Direction the player is from the enemy
             playerDist = Vector2.Distance(transform.position, playerObj.transform.position); // Distance the player is from the enemy
         }
-
-        //attackArea.transform.right = playerDir; // Sets the attack area to be in the direction of the player from the enemy
-        //attackArea.transform.localPosition = playerDir; // Sets the attack area to be offset from the enemy slightly (so it doesnt attack inside of the body)
     }
 
     private void FixedUpdate() {
