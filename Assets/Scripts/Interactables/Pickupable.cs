@@ -2,7 +2,6 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Pickupable : MonoBehaviour
@@ -17,8 +16,8 @@ public class Pickupable : MonoBehaviour
 
     public bool canPickup = true;
 
-    [HideInInspector] public bool playerDropped = false;
-    [HideInInspector] public bool droppedItem = false;
+    public bool playerDropped = false;
+    public bool droppedItem = false;
 
     GameObject player;
     float playerDist;
@@ -119,9 +118,10 @@ public class Pickupable : MonoBehaviour
         if (!canPickup || !isInRange) return;
 
         if(!playerDropped) PlayerPrefs.SetInt("total_items_collected", PlayerPrefs.GetInt("total_items_collected", 0) + 1);
-
+        Debug.Log("test");
         playerInventory.AddItem(item);
         if (!ObjectPoolManager.ReturnObjectToPool(gameObject)) { // This returns false if it was not in an object pool (meaning it was placed manually)
+            Debug.Log("test2");
             if (respawningType == RespawnType.OneTime) PlayerPrefs.SetInt(gameObject.scene + "_" + gameObject.name, 1);
             gameObject.SetActive(false);
         }

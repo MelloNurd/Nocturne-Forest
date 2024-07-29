@@ -10,11 +10,11 @@ EditorBuildSettings:
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/Forest.unity
-    guid: c906205909bbe3046a2c3d238c874215
+    guid: c73e4081b4c4398429d3fa47975d2f08
   - enabled: 1
     path: Assets/Scenes/Shop.unity
-    guid: 2aa654b3985e3444ab75472aad58f8b2
-  - enabled: 1
+    guid: 06da1e51cdf5ccc489fdb1bac887f198
+  - enabled: 0
     path: Assets/Scenes/Davin's Test Scene 1.unity
     guid: 6c838fbbb8542984c8829937840f9bd9
   - enabled: 1

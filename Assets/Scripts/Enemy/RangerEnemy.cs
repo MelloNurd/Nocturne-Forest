@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Player;
 
 public class RangerEnemy : EnemyBase
 {
@@ -79,6 +78,7 @@ public class RangerEnemy : EnemyBase
     protected override void Start() {
         base.Start();
         playerObj = player.gameObject;
+        activeRoamPoint = GetNewRoamPoint();
     }
 
     // Update is called once per frame

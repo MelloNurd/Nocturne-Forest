@@ -4,13 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Pedestal : Interactable
 {

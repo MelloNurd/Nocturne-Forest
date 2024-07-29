@@ -1,10 +1,8 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
-using static UnityEditor.Progress;
 using TMPro;
 
 public class InventoryManager : MonoBehaviour

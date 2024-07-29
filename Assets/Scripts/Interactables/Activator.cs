@@ -45,9 +45,6 @@ public class Activator : Interactable
     public override void Interact() {
         if (keyItem != null) {
             Item heldItem = InventoryManager.currentInstance.GetSelectedItem(false);
-            Debug.Log(keyItem);
-            Debug.Log(heldItem);
-            Debug.Log(keyItem == heldItem);
             if (heldItem != null) {
                 if (heldItem != keyItem) {
                     hintTextObj.text = hintText;
