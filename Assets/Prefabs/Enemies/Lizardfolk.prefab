@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7048337025124392769}
   - component: {fileID: 8623314314539977938}
+  - component: {fileID: 3408514458138489497}
   m_Layer: 0
   m_Name: EnemyBody
   m_TagString: Untagged
@@ -168,6 +169,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3408514458138489497
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385828050090547536}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: f44b709348406d549b3baa1a178c426c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3736841656379105691
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8461972139019999673
 Transform:
   m_ObjectHideFlags: 0
@@ -344,6 +366,7 @@ MonoBehaviour:
   attackKnockback: 1
   itemDrops: {fileID: 11400000, guid: 9733ef90348d71e469316d525666378d, type: 2}
   currentState: 1
+  animator: {fileID: 3408514458138489497}
   moveSpeed: 2
   playerDistanceCutoff: 9
   canRoam: 1

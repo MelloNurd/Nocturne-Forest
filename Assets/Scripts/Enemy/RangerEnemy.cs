@@ -29,6 +29,8 @@ public class RangerEnemy : EnemyBase
     Vector2 playerDir;
     float playerDist;
 
+    [SerializeField] Animator animator;
+
     [Header("Movement")]
     [SerializeField] float moveSpeed = 2f; // The base speed of the enemy
 
@@ -83,6 +85,18 @@ public class RangerEnemy : EnemyBase
     protected override void Update()
     {
         base.Start();
+
+        if (rb.velocity != Vector2.zero)
+        {
+            animator.SetFloat("XInput", rb.velocity.x);
+            animator.SetFloat("YInput", rb.velocity.y);
+            animator.SetBool("Walking", true);
+        }
+        else
+        {
+            animator.SetBool("Walking", false);
+        }
+
         if (currentState != EnemyStates.Static) { // If the enemy is not static or charging, update the relative player's stats
             playerDir = (playerObj.transform.position - transform.position).normalized; // Direction the player is from the enemy
             playerDist = Vector2.Distance(transform.position, playerObj.transform.position); // Distance the player is from the enemy
@@ -178,13 +192,15 @@ public class RangerEnemy : EnemyBase
     }
 
     IEnumerator Attack() {
+        animator.SetFloat("XInput", playerDir.x);
+        animator.SetFloat("YInput", playerDir.y);
         currentState = EnemyStates.Attacking; // Sets state to attack and disables further attacking
         canAttack = false;
-
+        animator.SetBool("Attacking", true);
         yield return new WaitForSeconds(attackDelaySeconds); // Waits for attackDelaySeconds
         ShootProjectiles(); // Enables attack area
         yield return new WaitForSeconds(attackLengthSeconds); // Waits for attackLengthSeconds
-
+        animator.SetBool("Attacking", false);
         ResetMovementState(); // Changes state back to "passive"
 
         yield return new WaitForSeconds(attackCooldownSeconds); // Waits for attackCooldownSeconds
