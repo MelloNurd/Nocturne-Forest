@@ -26,4 +26,9 @@ public class LevelLoader : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(scene);
     }
+
+    public void triggerTransition()
+    {
+        StartCoroutine(loadLevel(scene));
+    }
 }

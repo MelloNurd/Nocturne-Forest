@@ -60,13 +60,13 @@ public class Player : MonoBehaviour
     [SerializeField] float moveSpeed = 2f; // The base speed of the player
 
     [Header("Attacking")]
-    [SerializeField] bool canAttack = true;
+    [SerializeField] public bool canAttack = true;
     [SerializeField] float attackDelaySeconds = 0.2f; // The amount of time from attacking (clicking) until the attack hitbox activates
     [SerializeField] float attackLengthSeconds = 0.2f; // The length of time that the attack hitbox is active
     [SerializeField] float attackSpeedModifier = 0.2f; // Multiplicative modifier of moveSpeed while attacking
 
     [Header("Rolling")]
-    [SerializeField] bool canRoll = true;
+    [SerializeField] public bool canRoll = true;
     [SerializeField] float rollLengthSeconds = 0.15f; // The length of time that the roll occurs
     [SerializeField] float rollCooldownSeconds = 1f; // The length of time until the player can roll again
     [SerializeField] float rollSpeedModifier = 3.5f; // Multiplicative modifier of moveSpeed while rolling
