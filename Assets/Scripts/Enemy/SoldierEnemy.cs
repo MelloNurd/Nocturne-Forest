@@ -188,7 +188,7 @@ public class SoldierEnemy : EnemyBase
         Vector3 playerDir = (transform.position - player.transform.position).normalized;
         float distance = baseKnockback * knockbackPower * 1.6f;
         Vector3 knockedBackPos = transform.position + playerDir * distance; // Get the point we are being knocked back to
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, playerDir, Vector2.Distance(transform.position, knockedBackPos), LayerMask.GetMask("Terrain"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, playerDir, Vector2.Distance(transform.position, knockedBackPos), LayerMask.GetMask("Terrain", "Interactable"));
         if (hit.collider != null) knockedBackPos = hit.point; // If the knocked back to point is blocked by an object, set it to where it was blocked
         transform.DOJump(knockedBackPos, distance * 0.16f, 1, distance * 0.16f).SetEase(Ease.Linear).onComplete = ResetMovementState;
     }
@@ -268,7 +268,7 @@ public class SoldierEnemy : EnemyBase
 
     Vector2 GetNewPatrolPoint() {
         if(patrolPoints.Count <= 0) { // If there are no patrol points in the list
-            Debug.LogError("No patrol points loaded!");
+            Debug.LogWarning("No patrol points loaded for: " + gameObject.name);
             return Vector2.zero;
         }
 

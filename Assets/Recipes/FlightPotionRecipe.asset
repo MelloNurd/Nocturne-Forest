@@ -20,4 +20,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c1de4942633e5884f872802c96c38307, type: 2}
   - {fileID: 11400000, guid: c1de4942633e5884f872802c96c38307, type: 2}
   - {fileID: 11400000, guid: c1de4942633e5884f872802c96c38307, type: 2}
-  showRecipeInBook: 1
+  showRecipeInBook: 0

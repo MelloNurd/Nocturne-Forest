@@ -235,7 +235,7 @@ public class Player : MonoBehaviour
         currentState = PlayerStates.Static;
         float distance = baseKnockback * knockbackPower * 1.6f;
         Vector3 knockedBackPos = transform.position + dir * distance;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, Vector2.Distance(transform.position, knockedBackPos), LayerMask.GetMask("Terrain"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, Vector2.Distance(transform.position, knockedBackPos), LayerMask.GetMask("Terrain", "Interactable"));
         if (hit.collider != null) knockedBackPos = hit.point;
         transform.DOJump(knockedBackPos, distance * 0.16f, 1, distance * 0.16f).SetEase(Ease.Linear).onComplete = () => { currentState = PlayerStates.Dynamic; };
     }
