@@ -14,9 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowEmptyRolls: 0
   items:
+  - item: {fileID: 11400000, guid: 125845d5bad9b514d811519f797dd920, type: 2}
+    amount: 1
+    weight: 50
+  - item: {fileID: 11400000, guid: 25e5e5c440cb0a64b9d481661c01018a, type: 2}
+    amount: 1
+    weight: 50
+  - item: {fileID: 11400000, guid: 6b39f603d555b074db1d6049bf55b3e7, type: 2}
+    amount: 1
+    weight: 50
   - item: {fileID: 11400000, guid: e4bda56ecfa3eec468c09d00dfed0680, type: 2}
     amount: 1
     weight: 50
+  - item: {fileID: 11400000, guid: d9895cfae6c7b134da9d9b25b0217f8d, type: 2}
+    amount: 1
+    weight: 50
   - item: {fileID: 11400000, guid: d979ed7e6be999549891912887295618, type: 2}
+    amount: 1
+    weight: 50
+  - item: {fileID: 11400000, guid: ca362a6cc4ca1e74085b59349cfcf29a, type: 2}
+    amount: 1
+    weight: 50
+  - item: {fileID: 11400000, guid: 40f2958700a32ef4bb90881822b0c575, type: 2}
+    amount: 1
+    weight: 50
+  - item: {fileID: 11400000, guid: d3cfea99e5e280442a3f8dac55736912, type: 2}
+    amount: 1
+    weight: 50
+  - item: {fileID: 11400000, guid: f979c2ec9ee0eef42987ee4150a2e802, type: 2}
+    amount: 1
+    weight: 50
+  - item: {fileID: 11400000, guid: a760ba5b854aa254f8ab025f4157202c, type: 2}
     amount: 1
     weight: 50

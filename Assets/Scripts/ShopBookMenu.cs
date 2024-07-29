@@ -106,20 +106,24 @@ public class ShopBookMenu : MonoBehaviour
             if(numPages > 1) activeChapter.GetChild(1).gameObject.SetActive(true);
             return;
         }
-        
+
         // Theoretically, activePageIndex will always be an even number (first page), since we won't ever load the second page but not the first..
 
         if(direction >= 0 && activePageIndex < numPages-1) {
             // Disabling current
             activeChapter.GetChild(activePageIndex).gameObject.SetActive(false);
-            if(activeChapter.GetChild(activePageIndex + 1)) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(false);
+            if(activeChapter.transform.childCount > activePageIndex + 1) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(false);
 
             // Going to next page
             activePageIndex += 2;
 
             // Enabling next
             activeChapter.GetChild(activePageIndex).gameObject.SetActive(true);
-            if (activeChapter.GetChild(activePageIndex + 1)) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(true);
+            if (activeChapter.transform.childCount > activePageIndex + 1) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(true);
+
+            Debug.Log(activePageIndex);
+            Debug.Log(activePageIndex+2);
+            Debug.Log(activeChapter.transform.childCount);
 
             leftPageFlip.SetActive(true);
             if (activePageIndex >= numPages - 2) rightPageFlip.SetActive(false);
@@ -128,13 +132,13 @@ public class ShopBookMenu : MonoBehaviour
         else if (direction < 0  && activePageIndex > 1) {
             // Disabling current
             activeChapter.GetChild(activePageIndex).gameObject.SetActive(false);
-            if (activeChapter.GetChild(activePageIndex + 1)) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(false);
+            if (activeChapter.transform.childCount > activePageIndex + 1) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(false);
 
             activePageIndex -= 2;
 
             // Enabling next
             activeChapter.GetChild(activePageIndex).gameObject.SetActive(true);
-            if (activeChapter.GetChild(activePageIndex + 1)) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(true);
+            if (activeChapter.transform.childCount > activePageIndex + 1) activeChapter.GetChild(activePageIndex + 1).gameObject.SetActive(true);
 
             rightPageFlip.SetActive(true);
             if (activePageIndex < 2) leftPageFlip.SetActive(false);

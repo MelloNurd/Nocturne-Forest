@@ -194,7 +194,6 @@ public class Player : MonoBehaviour
             if (collision.transform.parent.TryGetComponent(out EnemyBase enemy)) {
                 knockbackMultipler = enemy.attackKnockback;
                 damage = enemy.attackDamage;
-                Debug.Log("enemy base found");
             }
             else if (collision.TryGetComponent(out Projectile projectile)) {
                 knockbackMultipler = projectile.attackKnockback;
@@ -211,7 +210,6 @@ public class Player : MonoBehaviour
         // The order of stuff is a little confusing here because we need to subtract damage, clamp to zero if below, set the health bar, THEN check if its below zero to die...
         currentHealth -= damage;
         if(currentHealth <= 0) currentHealth = 0;
-        Debug.Log(damage);
 
         UpdateHealthBar();
 

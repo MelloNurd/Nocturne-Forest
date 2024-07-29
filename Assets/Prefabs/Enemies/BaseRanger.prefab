@@ -48,6 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a0b39ca0993fb40b1b258ce1e3b26c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 0
+  respawningType: 0
+  respawnChance: 50
+  overrideOneTime: 0
   maxHealth: 20
   currentHealth: 20
   attackDamage: 5
@@ -70,7 +74,7 @@ MonoBehaviour:
   pursuitDistance: 15
   pursuitLossDistance: 15
   pursueSpeedModifier: 0.9
-  canAttack: 0
+  canAttack: 1
   attackRange: 9
   attackDelaySeconds: 0.2
   attackLengthSeconds: 0.2

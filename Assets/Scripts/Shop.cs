@@ -1,9 +1,12 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
@@ -12,6 +15,12 @@ public class Shop : MonoBehaviour
     public List<ShopItem> items = new List<ShopItem>();
 
     public Customer customer;
+
+    Color dayTimeLight = Color.white;
+    Color nightTimeLight = new Color(0.65f, 0.78f, 1);
+    [SerializeField] Light2D globalLight;
+
+    [SerializeField] Button openCloseButton;
 
     public int numCustomersCame;
     public int numCustomersBought;
@@ -22,24 +31,32 @@ public class Shop : MonoBehaviour
     bool spawningCustomer;
 
     float dayTimer = 0;
+    float dayLength = 150; // in seconds
 
     // Start is called before the first frame update
     void Start()
     {
         dayTimer = 0;
+        globalLight.color = dayTimeLight;
+        globalLight.intensity = 1;
     }
 
     // Update is called once per frame
     void Update() {
         if(isShopOpen) dayTimer += Time.deltaTime;
 
+        globalLight.color = Color.Lerp(dayTimeLight, nightTimeLight, dayTimer/dayLength);
+        globalLight.intensity = Mathf.Lerp(1, 0.25f, dayTimer/dayLength);
+
         // Basically, after the day timer is finished, we check the number of customers that came.
         // If the number of customers that came and bought is less than 3, keep the day going, UNLESS the
         // entire number of customers that came is over 20. This will let the day pass but ensure the player
         // is able to at least make a few sales. But if they aren't making sales and not changing anything,
         // the day should still end eventually (after 20 customers).
-        if (dayTimer >= 21 && (numCustomersBought >= 3 || numCustomersCame >= 20)) {
+        if (dayTimer >= dayLength && (numCustomersBought >= 3 || numCustomersCame >= 20)) {
             StopCoroutine(SpawnCustomer());
+            InventoryManager.currentInstance.openCloseShopText.text = "Open  Shop";
+            openCloseButton.interactable = false;
             isShopOpen = false;
         }
         if (isShopOpen && !IsCustomerShopping() && !spawningCustomer && items.Count > 0) {

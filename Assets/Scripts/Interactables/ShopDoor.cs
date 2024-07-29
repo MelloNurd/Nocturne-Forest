@@ -31,12 +31,12 @@ public class ShopDoor : Interactable
         else OpenShop();
     }
 
-    void OpenShop() {
+    public void OpenShop() {
         InventoryManager.currentInstance.openCloseShopText.text = "Close  Shop";
         shop.isShopOpen = true;
     }
 
-    void CloseShop() {
+    public void CloseShop() {
         InventoryManager.currentInstance.openCloseShopText.text = "Open  Shop";
         shop.isShopOpen = false;
     }

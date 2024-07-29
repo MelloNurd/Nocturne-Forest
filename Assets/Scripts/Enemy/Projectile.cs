@@ -16,6 +16,7 @@ public class Projectile : MonoBehaviour
 
     private void OnEnable() {
         StartCoroutine(TimedDeath());
+        //transform.right = travelDir;
     }
 
     private void OnDisable() {

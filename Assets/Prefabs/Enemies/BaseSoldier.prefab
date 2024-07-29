@@ -244,8 +244,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3690a2b0b5b6ae24097c426c55bfa7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
-  currentHealth: 20
+  enemyType: 0
+  respawningType: 0
+  respawnChance: 50
+  overrideOneTime: 0
+  maxHealth: 15
+  currentHealth: 15
   attackDamage: 5
   baseKnockback: 1
   attackKnockback: 1
@@ -590,7 +594,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 1863307637, guid: 580195751fe1752499d2c6ca9b47bd65, type: 3}
-  m_Color: {r: 0.836478, g: 0.836478, b: 0.836478, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

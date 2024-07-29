@@ -47,7 +47,12 @@ public class ObjectPoolManager : MonoBehaviour
 
             spawnableObj = Instantiate(objectToSpawn, spawnPosition, spawnRotation);
 
-            if(parentObj != null) spawnableObj.transform.SetParent(parentObj.transform);
+
+            if (poolType == PoolType.Pickupables) {
+                spawnableObj.GetComponent<Pickupable>().droppedItem = true;
+            }
+
+            if (parentObj != null) spawnableObj.transform.SetParent(parentObj.transform);
         }
         else {
             spawnableObj.transform.position = spawnPosition;
@@ -72,14 +77,19 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
     
-    public static void ReturnObjectToPool(GameObject obj) {
-        string name = obj.name.Substring(0, obj.name.Length - 7); // Removes "(Clone") from the end of the object's name in the tree
+    public static bool ReturnObjectToPool(GameObject obj) {
+        string name = obj.name; // Removes "(Clone") from the end of the object's name in the tree
+        if(name.Contains("(Clone")) name = obj.name.Substring(0, obj.name.Length - 7);
         PooledObjectInfo pool = ObjectPools.Find(p => p.LookupString == name);
 
-        if (pool == null) Debug.LogWarning("Trying to return a non-pooled object to a pool: " + obj.name);
+        if (pool == null) {
+            return false;
+            //Debug.LogWarning("Trying to return a non-pooled object to a pool: " + obj.name);
+        }
         else {
             obj.SetActive(false);
             pool.InactiveObjects.Add(obj);
+            return true;
         }
     }
 }

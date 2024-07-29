@@ -18,3 +18,6 @@ MonoBehaviour:
   craftingIngredients:
   - {fileID: 11400000, guid: 8e5e31bb00ddd644196db8e879b46fac, type: 2}
   - {fileID: 11400000, guid: c1de4942633e5884f872802c96c38307, type: 2}
+  - {fileID: 11400000, guid: c1de4942633e5884f872802c96c38307, type: 2}
+  - {fileID: 11400000, guid: c1de4942633e5884f872802c96c38307, type: 2}
+  showRecipeInBook: 1

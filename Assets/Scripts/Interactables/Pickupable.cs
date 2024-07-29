@@ -7,14 +7,18 @@ using UnityEngine;
 
 public class Pickupable : MonoBehaviour
 {
+    [Header("Respawning")]
+    [Tooltip("This only applies to pickupables that were not dropped by an enemy/player.")] public RespawnType respawningType = RespawnType.Persistent;
+    [Tooltip("This is only affective when using the \"Random\" respawn type.")][Range(0, 100)] public int respawnChance = 50;
+    [Tooltip("If this is checked, the enemy will respawn even if it has been killed in OneTime respawning.")] public bool overrideOneTime = false;
+
     public Item item;
+    public bool overrideSprite = false; // Set this to true if you want the pickupable in the world to have a different sprite than the Item's sprite
 
     public bool canPickup = true;
-    public bool oneTimePickup = false;
 
     [HideInInspector] public bool playerDropped = false;
-
-    public int stackSize = 1; // not yet implemented
+    [HideInInspector] public bool droppedItem = false;
 
     GameObject player;
     float playerDist;
@@ -44,10 +48,26 @@ public class Pickupable : MonoBehaviour
     private void Start() {
         DisableOutline();
         playerInventory = InventoryManager.currentInstance;
+        if(!droppedItem) {
+            switch (respawningType) {
+                case RespawnType.Persistent:
+                    PlayerPrefs.SetInt(gameObject.scene + "_" + gameObject.name, 0); // Resets the value keeping track of if it died, for OneTime
+                    break; // Basically for persistent, do nothing to the gameobject
+                case RespawnType.Random:
+                    PlayerPrefs.SetInt(gameObject.scene + "_" + gameObject.name, 0); // Resets the value keeping track of if it died, for OneTime
+                    if (Random.Range(1, 101) >= respawnChance) gameObject.SetActive(false);
+                    break;
+                case RespawnType.OneTime:
+                    int hasBeenGrabbed = PlayerPrefs.GetInt(gameObject.scene + "_" + gameObject.name, 0);
+                    if (hasBeenGrabbed != 0 && !overrideOneTime) gameObject.SetActive(false);
+                    break;
+                default: break;
+            }
+        }
     }
 
     private void OnEnable() {
-        UpdateSprite();
+        if(!overrideSprite) UpdateSprite();
     }
 
     public void UpdateSprite() {
@@ -101,8 +121,10 @@ public class Pickupable : MonoBehaviour
         if(!playerDropped) PlayerPrefs.SetInt("total_items_collected", PlayerPrefs.GetInt("total_items_collected", 0) + 1);
 
         playerInventory.AddItem(item);
-        if (oneTimePickup) Destroy(gameObject);
-        else ObjectPoolManager.ReturnObjectToPool(gameObject);
+        if (!ObjectPoolManager.ReturnObjectToPool(gameObject)) { // This returns false if it was not in an object pool (meaning it was placed manually)
+            if (respawningType == RespawnType.OneTime) PlayerPrefs.SetInt(gameObject.scene + "_" + gameObject.name, 1);
+            gameObject.SetActive(false);
+        }
     }
 
     public void UpdatePickupableObj(Item newItem) {

@@ -16,6 +16,7 @@ MonoBehaviour:
   craftedAmount: 1
   craftingWorkstation: 0
   craftingIngredients:
-  - {fileID: 11400000, guid: 547b0a18b4c73ef4491f70c1b9b7459a, type: 2}
   - {fileID: 11400000, guid: e4bda56ecfa3eec468c09d00dfed0680, type: 2}
+  - {fileID: 11400000, guid: 547b0a18b4c73ef4491f70c1b9b7459a, type: 2}
+  - {fileID: 11400000, guid: 547b0a18b4c73ef4491f70c1b9b7459a, type: 2}
   showRecipeInBook: 1

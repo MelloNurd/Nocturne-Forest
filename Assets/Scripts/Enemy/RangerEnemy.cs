@@ -200,7 +200,9 @@ public class RangerEnemy : EnemyBase
         angle -= (projectileSpread * 0.5f) * (projectileCount - 1); // Subtracts from the angle the amount calculated based on bullet count + spread, to get proper bullet distribution
         for (int i = 0; i < projectileCount; i++) { // Spawns a bullet for each count
             bullet = ObjectPoolManager.SpawnObject(projectilePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Projectiles);
-            bullet.GetComponent<Projectile>().travelDir = new Vector2(Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad)).normalized; // Converts the angle (int) to a normalized direction (Vector2)
+            Vector2 travelDir = new Vector2(Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad)).normalized; // Converts the angle (int) to a normalized direction (Vector2)
+            bullet.GetComponent<Projectile>().travelDir = travelDir;
+            bullet.transform.right = travelDir;
             angle += projectileSpread; // Adds the spread for the next bullet to use
         }
     }
