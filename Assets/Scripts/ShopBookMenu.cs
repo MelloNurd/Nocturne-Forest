@@ -42,13 +42,10 @@ public class ShopBookMenu : MonoBehaviour
         itemsSoldText.text = "Items  Sold: " + PlayerPrefs.GetInt("total_items_sold", 0).ToString();
         itemsCollectedText.text = "Items  Collected: " + PlayerPrefs.GetInt("total_items_collected", 0).ToString();
         StartCoroutine(LoadBook());
+    }
 
-        // This is dumb but we're doubling all of the spaces in the text to make it for better readability.
-        Transform loreChapter = transform.Find("Lore Chapter");
-        for(int i = 0; i < loreChapter.childCount; i++) {
-            TMP_Text text = loreChapter.GetChild(i).GetComponentInChildren<TMP_Text>();
-            text.text = text.text.Replace(" ", "  ");
-        }
+    public void ManuallyLoadBook() {
+        StartCoroutine(LoadBook());
     }
 
     IEnumerator LoadBook() {
@@ -108,6 +105,13 @@ public class ShopBookMenu : MonoBehaviour
             pageIndex++;
 
             textObjs.Add(newPage);
+        }
+
+        // This is dumb but we're doubling all of the spaces in the text to make it for better readability.
+        Transform loreChapter = transform.Find("Lore Chapter");
+        for (int i = 0; i < loreChapter.childCount; i++) {
+            TMP_Text text = loreChapter.GetChild(i).GetComponentInChildren<TMP_Text>();
+            text.text = text.text.Replace(" ", "  ");
         }
     }
 
