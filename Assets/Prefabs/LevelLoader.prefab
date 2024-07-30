@@ -218,12 +218,12 @@ GameObject:
   - component: {fileID: 4665116792306268660}
   - component: {fileID: 5913125855139227902}
   m_Layer: 0
-  m_Name: Image
+  m_Name: CrossfadeImg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8613795352488872900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -327,12 +327,12 @@ GameObject:
   - component: {fileID: 5990075936009467505}
   - component: {fileID: 2883229358648388002}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: CircleWipeImg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4550888885221489372
 RectTransform:
   m_ObjectHideFlags: 0
@@ -380,7 +380,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 059f94357e7348a44982eae398f9e953, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8347b9b4b1ec3994fba530a976a9bbdd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -420,6 +420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3733189932538737497}
+  - component: {fileID: 2600466400542788200}
   m_Layer: 0
   m_Name: LevelLoader
   m_TagString: Untagged
@@ -444,3 +445,18 @@ Transform:
   - {fileID: 54275923552765693}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2600466400542788200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062450302263284456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32aac5216aae05746a8f60a4c3abdcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scene: Forest
+  animator: {fileID: 2883229358648388002}
+  transitionTime: 1
