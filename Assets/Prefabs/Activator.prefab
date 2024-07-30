@@ -77,7 +77,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2533479225130438593
 MonoBehaviour:
@@ -267,7 +267,10 @@ MonoBehaviour:
   normalMat: {fileID: 2100000, guid: f9a9b41d09a3c7e49ae9917b6e5cb16a, type: 2}
   outlineMat: {fileID: 2100000, guid: 6932bc608d7992c4494e0be602a2c111, type: 2}
   keyItem: {fileID: 0}
+  saveState: 1
+  resetSaveOnStart: 0
   hintText: 
+  shakeOnFail: 1
   onSuccessfulInteract:
     m_PersistentCalls:
       m_Calls: []

@@ -263,7 +263,7 @@ public class SoldierEnemy : EnemyBase
     }
 
     Vector3 GetNewRoamPoint() {
-        return (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius); // Get a random point in a circle around the enemy, by roamRadius size
+        return (Vector2)transform.localPosition + (UnityEngine.Random.insideUnitCircle * roamRadius); // Get a random point in a circle around the enemy, by roamRadius size
     }
 
     Vector2 GetNewPatrolPoint() {

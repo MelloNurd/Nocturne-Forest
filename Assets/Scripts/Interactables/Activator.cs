@@ -45,15 +45,16 @@ public class Activator : Interactable
     public override void Interact() {
         if (keyItem != null) {
             Item heldItem = InventoryManager.currentInstance.GetSelectedItem(false);
-            if (heldItem != null) {
-                if (heldItem != keyItem) {
-                    hintTextObj.text = hintText;
-                    hintTextObj.color = Color.white;
-                    hintTween.Kill();
-                    if (shakeOnFail) transform.DOShakePosition(0.15f, 0.2f, 50);
-                    hintTween = hintTextObj.DOFade(0, 0.5f).SetDelay(1f);
-                    return;
-                }
+            Debug.Log(heldItem);
+            if (heldItem == null || heldItem != keyItem) {
+                hintTextObj.text = hintText;
+                hintTextObj.color = Color.white;
+                hintTween.Kill();
+                if (shakeOnFail) transform.DOShakePosition(0.15f, 0.2f, 50);
+                hintTween = hintTextObj.DOFade(0, 0.5f).SetDelay(1f);
+                return;
+            }
+            else {
                 if(heldItem.deleteOnUse) InventoryManager.currentInstance.GetSelectedItem(true);
             }
         }
