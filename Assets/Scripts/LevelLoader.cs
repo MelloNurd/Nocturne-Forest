@@ -8,7 +8,8 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] Animator animator;
     public float transitionTime = 1f;
 
-    private void Awake() {
+    private void Start() {
+        Time.timeScale = 1;
         animator.gameObject.SetActive(true);
     }
 
@@ -18,15 +19,17 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(loadLevel(scene));
     }
     
-    IEnumerator loadLevel(string scene)
+    public IEnumerator loadLevel(string scene)
     {
         animator.SetTrigger("Start");
-        yield return new WaitForSeconds(transitionTime);
+        yield return new WaitForSecondsRealtime(transitionTime);
+        animator.ResetTrigger("Start");
         SceneManager.LoadScene(scene);
     }
 
     public void triggerTransition()
     {
+        Time.timeScale = 1;
         StartCoroutine(loadLevel(scene));
     }
 }

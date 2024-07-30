@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Larger Shop.unity
     guid: 06da1e51cdf5ccc489fdb1bac887f198
+  - enabled: 1
+    path: Assets/Scenes/FinalScene.unity
+    guid: 0241d1fe785ec9141ab38eed2e4c8d32
   m_configObjects: {}
