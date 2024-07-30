@@ -165,12 +165,16 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void UpdatePlayerMoneyString() {
+        playerCashText.text = '$' + playerCash.ToString();
+    }
+
     void LoadInventory() {
         // Player's Money
         int money = PlayerPrefs.GetInt("player-money", -1);
         if (money != -1) playerCash = money;
         else Debug.LogWarning("Unable to load player's money!");
-        playerCashText.text = '$' + playerCash.ToString();
+        UpdatePlayerMoneyString();
 
         // Shop's Chest Inventory
         foreach (InventorySlot slot in shopInventorySlots) {

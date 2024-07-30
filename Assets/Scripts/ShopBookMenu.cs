@@ -17,6 +17,16 @@ public class ShopBookMenu : MonoBehaviour
     [SerializeField] GameObject recipePagePrefab;
     [SerializeField] GameObject lorePagePrefab;
 
+    [SerializeField] GameObject healthUpgradeObj;
+    [SerializeField] GameObject speedUpgradeObj;
+    [SerializeField] GameObject attackDmgUpgradeObj;
+
+    int baseCost = 25;
+    int costLevelMultiplier = 18; // Basically... Upgrade Cost = baseCost + (costLevelMultiplier * (level-1))
+
+    Color UpgradeBarColorOff = new Color(0.52f, 0.34f, 0.34f, 0.41f);
+    Color UpgradeBarColorOn = new Color(0.52f, 0.34f, 0.34f, 1);
+
     [SerializeField] List<GameObject> chapters = new List<GameObject>();
 
     List<GameObject> textObjs = new List<GameObject>();
@@ -113,6 +123,10 @@ public class ShopBookMenu : MonoBehaviour
             TMP_Text text = loreChapter.GetChild(i).GetComponentInChildren<TMP_Text>();
             text.text = text.text.Replace(" ", "  ");
         }
+
+        UpgradePlayerHealthVisuals();
+        UpgradePlayerSpeedVisuals();
+        UpgradePlayerDamageVisuals();
     }
 
     private void OnDisable() {
@@ -203,4 +217,101 @@ public class ShopBookMenu : MonoBehaviour
         }
         return -1;
     }
+
+    public void UpgradePlayerStat(int type) {
+        switch ((PlayerUpgrades)type) {
+            case PlayerUpgrades.Health:
+                int upgradeLevel = PlayerPrefs.GetInt("player_stats_health", 1);
+                if (upgradeLevel >= 6) return;
+
+                int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+
+                if (InventoryManager.currentInstance.playerCash < cost) return;
+
+                InventoryManager.currentInstance.playerCash -= cost;
+
+                PlayerPrefs.SetInt("player_stats_health", upgradeLevel + 1);
+                UpgradePlayerHealthVisuals();
+                break;
+            case PlayerUpgrades.Speed:
+                upgradeLevel = PlayerPrefs.GetInt("player_stats_speed", 1);
+                if (upgradeLevel >= 6) return;
+
+                cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+
+                if (InventoryManager.currentInstance.playerCash < cost) return;
+
+                InventoryManager.currentInstance.playerCash -= cost;
+
+                PlayerPrefs.SetInt("player_stats_speed", upgradeLevel + 1);
+                UpgradePlayerSpeedVisuals();
+                break;
+            case PlayerUpgrades.AttackDmg:
+                upgradeLevel = PlayerPrefs.GetInt("player_stats_atkdmg", 1);
+                if (upgradeLevel >= 6) return;
+
+                cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+
+                if (InventoryManager.currentInstance.playerCash < cost) return;
+
+                InventoryManager.currentInstance.playerCash -= cost;
+
+                PlayerPrefs.SetInt("player_stats_atkdmg", upgradeLevel + 1);
+                UpgradePlayerDamageVisuals();
+                break;
+            
+            default:
+                break;
+        }
+        InventoryManager.currentInstance.UpdatePlayerMoneyString();
+    }
+
+    public void UpgradePlayerHealthVisuals() {
+        int upgradeLevel = PlayerPrefs.GetInt("player_stats_health", 1);
+        Debug.Log("health upgrade level: " + upgradeLevel);
+
+        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+        healthUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = "$" + cost;
+
+        Transform barsTransform = healthUpgradeObj.transform.Find("Bars");
+        for(int i = 0; i < barsTransform.childCount; i++) {
+            if (upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
+            else barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOn;
+        }
+    }
+
+    public void UpgradePlayerSpeedVisuals() {
+        int upgradeLevel = PlayerPrefs.GetInt("player_stats_speed", 1);
+        Debug.Log("speed upgrade level: " + upgradeLevel);
+
+        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+        speedUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = "$" + cost;
+
+        Transform barsTransform = speedUpgradeObj.transform.Find("Bars");
+        for (int i = 0; i < barsTransform.childCount; i++) {
+            if (upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
+            else barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOn;
+        }
+    }
+
+    public void UpgradePlayerDamageVisuals() {
+        int upgradeLevel = PlayerPrefs.GetInt("player_stats_atkdmg", 1);
+        Debug.Log("dmg upgrade level: " + upgradeLevel);
+
+        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+        attackDmgUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = "$" + cost;
+
+        Transform barsTransform = attackDmgUpgradeObj.transform.Find("Bars");
+        for (int i = 0; i < barsTransform.childCount; i++) {
+            if(upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
+            else barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOn;
+        }
+    }
+}
+
+[Serializable]
+public enum PlayerUpgrades {
+    Health,
+    Speed,
+    AttackDmg,
 }

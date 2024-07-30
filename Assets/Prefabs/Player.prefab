@@ -68,7 +68,7 @@ MonoBehaviour:
   attackLengthSeconds: 0.2
   attackSpeedModifier: 0.2
   canRoll: 1
-  rollLengthSeconds: 0.15
+  rollLengthSeconds: 0.22
   rollCooldownSeconds: 1
   rollSpeedModifier: 3.5
   showRadiusSizes: 0

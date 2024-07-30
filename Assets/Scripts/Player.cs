@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     [Header("General")]
     public bool canPickup = true;
     public bool canOpenInventory = true;
+    public bool enableUpgradeChanges = true;
     public GameObject itemOpened = null;
     public PlayerStates currentState = PlayerStates.Dynamic;
 
@@ -30,8 +31,10 @@ public class Player : MonoBehaviour
     GameObject healthBar;
     Tween healthTween;
     [SerializeField] float maxHealth = 20f;
-    public float currentHealth = 20f;
+    [SerializeField] float maxHealthUpgradeModifier = 5f;
+    [HideInInspector] public float currentHealth = 20f;
     public float attackDamage = 5f;
+    [SerializeField] float attackDamageUpgradeModifier = 1.2f;
     [Tooltip("Knockback multiplier when hit")] public float baseKnockback; // This is the knockback multiplier the player receives on hit
     [Tooltip("Knockback multiplier when attacking")] public float attackKnockback; // This is the knockback multiplier the player gives on attacl
 
@@ -56,6 +59,7 @@ public class Player : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] float moveSpeed = 2f; // The base speed of the player
+    [SerializeField] float moveSpeedUpgradeModifier = 0.5f;
 
     [Header("Attacking")]
     [SerializeField] public bool canAttack = true;
@@ -120,8 +124,6 @@ public class Player : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
 
-        currentHealth = maxHealth;
-
         healthBar = transform.Find("HealthBarOBJ").Find("HealthBarParent").gameObject;
         healthBar.transform.parent.localScale = Vector2.right;
 
@@ -134,6 +136,19 @@ public class Player : MonoBehaviour
         attackArea.transform.localPosition = facingDir; // Do this once so the attackArea is going to be not centered on the player at the start
 
         inventoryManager = InventoryManager.currentInstance;
+
+        if(enableUpgradeChanges) {
+            int upgradeLevel = PlayerPrefs.GetInt("player_stats_health", 1)-1;
+            maxHealth = maxHealth + (maxHealthUpgradeModifier * upgradeLevel);
+
+            upgradeLevel = PlayerPrefs.GetInt("player_stats_speed", 1) - 1;
+            moveSpeed = moveSpeed + (moveSpeedUpgradeModifier * upgradeLevel);
+
+            upgradeLevel = PlayerPrefs.GetInt("player_stats_atkdmg", 1) - 1;
+            attackDamage = attackDamage + (attackDamageUpgradeModifier * upgradeLevel);
+        }
+
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -300,7 +315,6 @@ public class Player : MonoBehaviour
                 if (usedItem.deleteOnUse) inventoryManager.GetSelectedItem(true);
                 break;
             case ItemAction.Key:
-
                 break;
             case ItemAction.Ingredient:
                 break;

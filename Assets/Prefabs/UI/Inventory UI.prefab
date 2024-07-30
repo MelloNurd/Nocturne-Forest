@@ -2447,6 +2447,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3820664544508172722
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 183377244922376234}
+  m_Layer: 5
+  m_Name: Lore Chapter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &183377244922376234
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820664544508172722}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7428689109292510269}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4014626509092295737
 GameObject:
   m_ObjectHideFlags: 0
@@ -3046,6 +3081,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f979c2ec9ee0eef42987ee4150a2e802, type: 2}
   - {fileID: 11400000, guid: a760ba5b854aa254f8ab025f4157202c, type: 2}
   - {fileID: 11400000, guid: 393ce5795bf3ae144b2546aa2b14b8f7, type: 2}
+  resetRecipeListOnStart: 0
+  resetLoreListOnStart: 0
   playerCash: 0
   hotbarCover: {fileID: 3619593208042036831}
   inventorySlotPrefab: {fileID: 9000435140228021285, guid: 8dbab68d0fbd2284c91d2a6101e3e402, type: 3}
@@ -4056,6 +4093,7 @@ RectTransform:
   - {fileID: 7267889880406759098}
   - {fileID: 8710114422971742664}
   - {fileID: 3069920309869746395}
+  - {fileID: 183377244922376234}
   - {fileID: 5258680929774801525}
   - {fileID: 1087700679056962267}
   - {fileID: 1730922313692543685}
