@@ -15,6 +15,9 @@ public class CauldronCrafting : MonoBehaviour
 
     [SerializeField] Sprite blueWaterSprite;
     [SerializeField] Sprite greenWaterSprite;
+
+    [SerializeField] Button craftButton;
+    [SerializeField] Button emptyButton;
     
     InventorySlot inputSlot;
 
@@ -23,6 +26,7 @@ public class CauldronCrafting : MonoBehaviour
     private void Awake() {
         inputSlot = transform.Find("InventorySlot").GetComponent<InventorySlot>();
         movingItem.rectTransform.localScale = Vector3.one * 0.5f;
+        ClearIngredients();
     }
 
     public void AddInputItemToIngredients() {
@@ -37,6 +41,7 @@ public class CauldronCrafting : MonoBehaviour
         movingItem.rectTransform.position = inputSlot.transform.position;
         movingItem.rectTransform.localScale = Vector3.one * 0.5f;
         if (sequence.IsActive()) sequence.Kill();
+        sequence = DOTween.Sequence();
         sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f).SetUpdate(true));
         sequence.Append(movingItem.rectTransform.DOMove(cauldronImage.rectTransform.position, 0.5f).SetUpdate(true));
         sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f).SetUpdate(true));
@@ -49,18 +54,27 @@ public class CauldronCrafting : MonoBehaviour
     }
 
     public IEnumerator AddItemToIngredients(Item item) {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.75f);
         addedIngredients.Add(item);
         cauldronImage.sprite = greenWaterSprite;
+        craftButton.interactable = true;
+        emptyButton.interactable = true;
     }
 
     public void ClearIngredients() {
         addedIngredients.Clear();
         cauldronImage.sprite = blueWaterSprite;
+        craftButton.interactable = false;
+        emptyButton.interactable = false;
     }
 
     public void TryCraft() {
         if (addedIngredients.Count <= 0) return;
+
+        if(!inputSlot.IsEmptySlot()) {
+            inputSlot.GetComponent<RectTransform>().DOShakeAnchorPos(0.15f, 20f, 50).SetUpdate(true);
+            return;
+        }
 
         Recipe currentRecipe = InventoryManager.GetAllCauldronRecipes().FirstOrDefault(x => CompareIngredientLists(x.craftingIngredients, addedIngredients));
 
@@ -78,6 +92,7 @@ public class CauldronCrafting : MonoBehaviour
         movingItem.rectTransform.position = cauldronImage.rectTransform.position;
         movingItem.rectTransform.localScale = Vector3.one * 0.5f;
         if (sequence.IsActive()) sequence.Kill();
+        sequence = DOTween.Sequence();
         sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f).SetUpdate(true));
         sequence.Append(movingItem.rectTransform.DOMove(inputSlot.transform.position, 0.5f).SetUpdate(true));
         sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f).SetUpdate(true));
@@ -87,7 +102,7 @@ public class CauldronCrafting : MonoBehaviour
     }
 
     IEnumerator CraftItem(Item outputItem) {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.75f);
         InventoryManager.currentInstance.SpawnNewItem(outputItem, inputSlot);
     }
 
