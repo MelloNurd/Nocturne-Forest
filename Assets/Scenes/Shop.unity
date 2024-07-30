@@ -302,6 +302,7 @@ MonoBehaviour:
   customer: {fileID: 690323838}
   globalLight: {fileID: 214637955}
   openCloseButton: {fileID: 1523225560}
+  leaveButton: {fileID: 2120916694}
   numCustomersCame: 0
   numCustomersBought: 0
   isShopOpen: 0
@@ -4479,6 +4480,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 973722278419667253, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 973722278419667253, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -4658,9 +4663,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: resetLoreListOnStart
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: resetRecipeListOnStart
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6210745054826548369, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6772645381509956705, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_Colors.m_DisabledColor.a
@@ -4832,6 +4845,17 @@ MonoBehaviour:
   scene: Forest
   animator: {fileID: 1999861007}
   transitionTime: 1
+--- !u!114 &2120916694 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 973722278419667253, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+  m_PrefabInstance: {fileID: 2120916690}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120916691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &951756752021421284
 PrefabInstance:
   m_ObjectHideFlags: 0

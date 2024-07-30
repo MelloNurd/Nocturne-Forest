@@ -20,6 +20,7 @@ public class Shop : MonoBehaviour
     [SerializeField] Light2D globalLight;
 
     [SerializeField] Button openCloseButton;
+    [SerializeField] Button leaveButton;
 
     public int numCustomersCame;
     public int numCustomersBought;
@@ -56,6 +57,7 @@ public class Shop : MonoBehaviour
             StopCoroutine(SpawnCustomer());
             InventoryManager.currentInstance.openCloseShopText.text = "Open  Shop";
             openCloseButton.interactable = false;
+            leaveButton.interactable = true;
             isShopOpen = false;
         }
         if (isShopOpen && !IsCustomerShopping() && !spawningCustomer && items.Count > 0) {

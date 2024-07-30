@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5651db6ed882e2540a75eef68506af28, type: 3}
+  m_Name: Ogre
+  m_EditorClassIdentifier: 
+  allowEmptyRolls: 0
+  items:
+  - item: {fileID: 11400000, guid: 83361ce46693b234f9946abeca2b6590, type: 2}
+    amount: 2
+    weight: 80
+  - item: {fileID: 11400000, guid: e274678bc36441844aec31beefef1110, type: 2}
+    amount: 1
+    weight: 100
+  - item: {fileID: 11400000, guid: e274678bc36441844aec31beefef1110, type: 2}
+    amount: 1
+    weight: 80
+  - item: {fileID: 11400000, guid: f928eef2d5e07644694af39c362f10e5, type: 2}
+    amount: 1
+    weight: 100
+  - item: {fileID: 11400000, guid: f928eef2d5e07644694af39c362f10e5, type: 2}
+    amount: 1
+    weight: 60
+  - item: {fileID: 11400000, guid: dd058efb9e9089448b7c469671041b52, type: 2}
+    amount: 1
+    weight: 100

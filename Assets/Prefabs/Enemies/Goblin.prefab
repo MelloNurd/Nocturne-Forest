@@ -359,7 +359,7 @@ MonoBehaviour:
   attackDamage: 3
   baseKnockback: 1
   attackKnockback: 1
-  itemDrops: {fileID: 0}
+  itemDrops: {fileID: 11400000, guid: 3f49e369678af4448ae4d24d0d40cd01, type: 2}
   animator: {fileID: 8180105081330678898}
   currentState: 1
   moveSpeed: 1.7

@@ -10,16 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5651db6ed882e2540a75eef68506af28, type: 3}
-  m_Name: Slime
+  m_Name: TUTORIAL
   m_EditorClassIdentifier: 
   allowEmptyRolls: 0
   items:
-  - item: {fileID: 11400000, guid: 547b0a18b4c73ef4491f70c1b9b7459a, type: 2}
+  - item: {fileID: 11400000, guid: 83361ce46693b234f9946abeca2b6590, type: 2}
     amount: 1
     weight: 100
-  - item: {fileID: 11400000, guid: 547b0a18b4c73ef4491f70c1b9b7459a, type: 2}
+  - item: {fileID: 11400000, guid: e274678bc36441844aec31beefef1110, type: 2}
     amount: 1
-    weight: 60
-  - item: {fileID: 11400000, guid: 547b0a18b4c73ef4491f70c1b9b7459a, type: 2}
-    amount: 1
-    weight: 40
+    weight: 100

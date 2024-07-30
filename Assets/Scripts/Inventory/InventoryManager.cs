@@ -14,6 +14,7 @@ public class InventoryManager : MonoBehaviour
         PotionCrafting,
         ShopBook,
         DoorMenu,
+        TutorialBook,
         Closing
     }
 
@@ -22,6 +23,9 @@ public class InventoryManager : MonoBehaviour
     public List<Recipe> globalCraftingRecipes = new List<Recipe>();
     public List<Lore> globalLoreList = new List<Lore>();
     public List<Item> globalItemList = new List<Item>();
+
+    public bool resetRecipeListOnStart = false;
+    public bool resetLoreListOnStart = false;
 
     public static Dictionary<string, Item> itemLookup = new Dictionary<string, Item>(); // A dictionary where you can get an Item object from the item's name
 
@@ -45,6 +49,7 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public GameObject cauldronCraftingObj;
     [HideInInspector] public GameObject shopBookObj;
     [HideInInspector] public GameObject doorMenuObj;
+    [HideInInspector] public GameObject tutorialBookMenu;
 
     List<InventorySlot> shopInventorySlots = new List<InventorySlot>();
     List<InventorySlot> playerInventorySlots = new List<InventorySlot>();
@@ -79,6 +84,7 @@ public class InventoryManager : MonoBehaviour
         cauldronCraftingObj = transform.Find("PotionCrafting").gameObject;
         shopBookObj = transform.Find("ShopBookMenu").gameObject;
         doorMenuObj = transform.Find("DoorMenu").gameObject;
+        tutorialBookMenu = transform.Find("TutorialBook").gameObject;
 
         playerObj = GameObject.FindGameObjectWithTag("Player");
         player = playerObj.GetComponent<Player>();
@@ -211,10 +217,12 @@ public class InventoryManager : MonoBehaviour
 
         // This is kinda different from the inventory stuff so we're just doing it in start
         foreach (Recipe recipe in globalCraftingRecipes) {
+            if (resetRecipeListOnStart) PlayerPrefs.SetInt("RecipePage_" + recipe.name, 0);
             recipe.showRecipeInBook = PlayerPrefs.GetInt("RecipePage_" + recipe.name, 0) != 0;
         }
 
         foreach (Lore lore in globalLoreList) {
+            if (resetLoreListOnStart) PlayerPrefs.SetInt("LorePage_" + lore.name, 0);
             lore.showLoreInBook = PlayerPrefs.GetInt("LorePage_" + lore.name, 0) != 0;
         }
     }
@@ -230,6 +238,10 @@ public class InventoryManager : MonoBehaviour
         numHotbarSlots = hotbarSlots.Count;
 
         LoadInventory();
+    }
+
+    public void OpenTutorialBook() {
+        InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.TutorialBook, gameObject);
     }
 
     public void ToggleInventory(InventoryOpening state, GameObject itemOpening) {
@@ -278,6 +290,10 @@ public class InventoryManager : MonoBehaviour
             case InventoryOpening.DoorMenu:
                 doorMenuObj.SetActive(true);
                 break;
+            case InventoryOpening.TutorialBook:
+                tutorialBookMenu.SetActive(true);
+                hotbarObj.SetActive(false);
+                break;
             case InventoryOpening.Closing:
                 hotbarObj.SetActive(true);
 
@@ -297,6 +313,8 @@ public class InventoryManager : MonoBehaviour
                 shopBookObj.SetActive(false);
 
                 doorMenuObj.SetActive(false);
+
+                tutorialBookMenu.SetActive(false);
 
                 player.itemOpened = null;
                 hotbarCover.SetActive(true);
