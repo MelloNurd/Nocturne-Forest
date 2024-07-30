@@ -296,6 +296,7 @@ public class InventoryManager : MonoBehaviour
                 shopBookObj.SetActive(true);
                 break;
             case InventoryOpening.DoorMenu:
+                Time.timeScale = 1f;
                 doorMenuObj.SetActive(true);
                 break;
             case InventoryOpening.TutorialBook:
