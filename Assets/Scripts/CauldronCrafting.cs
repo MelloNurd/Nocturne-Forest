@@ -37,9 +37,9 @@ public class CauldronCrafting : MonoBehaviour
         movingItem.rectTransform.position = inputSlot.transform.position;
         movingItem.rectTransform.localScale = Vector3.one * 0.5f;
         if (sequence.IsActive()) sequence.Kill();
-        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f));
-        sequence.Append(movingItem.rectTransform.DOMove(cauldronImage.rectTransform.position, 0.5f));
-        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f));
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f).SetUpdate(true));
+        sequence.Append(movingItem.rectTransform.DOMove(cauldronImage.rectTransform.position, 0.5f).SetUpdate(true));
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f).SetUpdate(true));
         sequence.Play();
         if (newItem != null) {
             Destroy(inputSlot.transform.GetChild(0).gameObject);
@@ -78,9 +78,9 @@ public class CauldronCrafting : MonoBehaviour
         movingItem.rectTransform.position = cauldronImage.rectTransform.position;
         movingItem.rectTransform.localScale = Vector3.one * 0.5f;
         if (sequence.IsActive()) sequence.Kill();
-        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f));
-        sequence.Append(movingItem.rectTransform.DOMove(inputSlot.transform.position, 0.5f));
-        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f));
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one, 0.25f).SetUpdate(true));
+        sequence.Append(movingItem.rectTransform.DOMove(inputSlot.transform.position, 0.5f).SetUpdate(true));
+        sequence.Append(movingItem.rectTransform.DOScale(Vector3.one * 0.5f, 0.25f).SetDelay(0.25f).SetUpdate(true));
         sequence.Play();
 
         ClearIngredients();

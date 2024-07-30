@@ -118,7 +118,9 @@ public class Pickupable : MonoBehaviour
         if (!canPickup || !isInRange) return;
 
         if(!playerDropped) PlayerPrefs.SetInt("total_items_collected", PlayerPrefs.GetInt("total_items_collected", 0) + 1);
-        Debug.Log("test");
+
+        if (item.name.ToLower() == "rock" && Random.Range(0, 20) == 0) item = InventoryManager.itemLookup.GetValueOrDefault("Diamond");
+
         playerInventory.AddItem(item);
         if (!ObjectPoolManager.ReturnObjectToPool(gameObject)) { // This returns false if it was not in an object pool (meaning it was placed manually)
             Debug.Log("test2");

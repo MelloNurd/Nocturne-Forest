@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570670678734612960}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6131722989306273145}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 4919622226198089478}
   - component: {fileID: 6572851159133129756}
   - component: {fileID: 8180105081330678898}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 3371456449659576000}
   - component: {fileID: 2469262826888048218}
   - component: {fileID: 3826523406887115838}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackArea
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 2350341487960948571}
   - component: {fileID: 3340480001574779908}
   - component: {fileID: 3557307281121187272}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -463,7 +463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5260949495519161176}
   - component: {fileID: 8437669560215902307}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -547,7 +547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 704107581671860166}
   - component: {fileID: 5603071917104465218}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}

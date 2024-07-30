@@ -1,35 +1,54 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopBookMenu : MonoBehaviour
 {
+    [Header("Book Components")]
     [SerializeField] GameObject leftPageFlip;
     [SerializeField] GameObject rightPageFlip;
+    [SerializeField] List<GameObject> chapters = new List<GameObject>();
 
+    [Header("Stats Page")]
     [SerializeField] TMP_Text itemsSoldText;
     [SerializeField] TMP_Text itemsCollectedText;
+    [SerializeField] TMP_Text recipesCollectedText;
+    [SerializeField] TMP_Text loreCollectedText;
+
     [SerializeField] GameObject totalSlainText;
     [SerializeField] GameObject recipePagePrefab;
     [SerializeField] GameObject lorePagePrefab;
 
+    [Header("Upgrades")]
     [SerializeField] GameObject healthUpgradeObj;
     [SerializeField] GameObject speedUpgradeObj;
     [SerializeField] GameObject attackDmgUpgradeObj;
+    [SerializeField] GameObject shopUpgradeObj;
 
     int baseCost = 25;
     int costLevelMultiplier = 18; // Basically... Upgrade Cost = baseCost + (costLevelMultiplier * (level-1))
+    public bool resetUpgradesOnStart = false;
 
     Color UpgradeBarColorOff = new Color(0.52f, 0.34f, 0.34f, 0.41f);
     Color UpgradeBarColorOn = new Color(0.52f, 0.34f, 0.34f, 1);
 
-    [SerializeField] List<GameObject> chapters = new List<GameObject>();
 
-    List<GameObject> textObjs = new List<GameObject>();
+    List<GameObject> textObjs = new List<GameObject>(); // This is used to store/delete the duplicated text on the various pages
+
+    private void Awake() {
+        if (resetUpgradesOnStart) {
+            PlayerPrefs.SetInt("player_stats_health", 1);
+            PlayerPrefs.SetInt("player_stats_speed", 1);
+            PlayerPrefs.SetInt("player_stats_atkdmg", 1);
+            PlayerPrefs.SetInt("player_stats_shopupg", 1);
+        }
+    }
 
     private void Start() {
         // We want to load all the enemies slain texts right from the start because it wont ever increase while in the shop.
@@ -51,6 +70,12 @@ public class ShopBookMenu : MonoBehaviour
         ChangeChapter(chapters[0]);
         itemsSoldText.text = "Items  Sold: " + PlayerPrefs.GetInt("total_items_sold", 0).ToString();
         itemsCollectedText.text = "Items  Collected: " + PlayerPrefs.GetInt("total_items_collected", 0).ToString();
+
+        recipesCollectedText.text = "Recipes  Collected:\n" +
+            InventoryManager.currentInstance.globalCraftingRecipes.FindAll(x => x.showRecipeInBook).Count + " / " + InventoryManager.currentInstance.globalCraftingRecipes.Count;
+        loreCollectedText.text = "Lore  Collected:\n" + 
+            InventoryManager.currentInstance.globalLoreList.FindAll(x => x.showLoreInBook).Count + " / " + InventoryManager.currentInstance.globalLoreList.Count;
+
         StartCoroutine(LoadBook());
     }
 
@@ -97,11 +122,8 @@ public class ShopBookMenu : MonoBehaviour
         }
 
         pageIndex = 0;
-        Debug.Log(InventoryManager.currentInstance.globalLoreList.FindAll(x => x.showLoreInBook).Count);
         foreach (Lore lore in InventoryManager.currentInstance.globalLoreList.FindAll(x => x.showLoreInBook)) {
             if (String.IsNullOrEmpty(lore.loreText)) continue;
-
-            Debug.Log(lore.name);
 
             GameObject newPage = Instantiate(lorePagePrefab, transform.position + Vector3.up * 15, Quaternion.identity);
             newPage.name = lore.name + " Lore Page";
@@ -127,6 +149,7 @@ public class ShopBookMenu : MonoBehaviour
         UpgradePlayerHealthVisuals();
         UpgradePlayerSpeedVisuals();
         UpgradePlayerDamageVisuals();
+        UpgradeShopVisuals();
     }
 
     private void OnDisable() {
@@ -226,7 +249,10 @@ public class ShopBookMenu : MonoBehaviour
 
                 int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
 
-                if (InventoryManager.currentInstance.playerCash < cost) return;
+                if (InventoryManager.currentInstance.playerCash < cost) {
+                    InventoryManager.currentInstance.playerCashText.rectTransform.DOShakeAnchorPos(0.15f, 20f, 50).SetUpdate(true);
+                    return;
+                }
 
                 InventoryManager.currentInstance.playerCash -= cost;
 
@@ -239,7 +265,10 @@ public class ShopBookMenu : MonoBehaviour
 
                 cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
 
-                if (InventoryManager.currentInstance.playerCash < cost) return;
+                if (InventoryManager.currentInstance.playerCash < cost) {
+                    InventoryManager.currentInstance.playerCashText.rectTransform.DOShakeAnchorPos(0.15f, 20f, 50).SetUpdate(true);
+                    return;
+                }
 
                 InventoryManager.currentInstance.playerCash -= cost;
 
@@ -252,14 +281,32 @@ public class ShopBookMenu : MonoBehaviour
 
                 cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
 
-                if (InventoryManager.currentInstance.playerCash < cost) return;
+                if (InventoryManager.currentInstance.playerCash < cost) {
+                    InventoryManager.currentInstance.playerCashText.rectTransform.DOShakeAnchorPos(0.15f, 20f, 50).SetUpdate(true);
+                    return;
+                }
 
                 InventoryManager.currentInstance.playerCash -= cost;
 
                 PlayerPrefs.SetInt("player_stats_atkdmg", upgradeLevel + 1);
                 UpgradePlayerDamageVisuals();
                 break;
-            
+            case PlayerUpgrades.Shop:
+                upgradeLevel = PlayerPrefs.GetInt("player_stats_shopupg", 1);
+                if (upgradeLevel >= 2) return;
+
+                cost = 1000;
+
+                if (InventoryManager.currentInstance.playerCash < cost) {
+                    InventoryManager.currentInstance.playerCashText.rectTransform.DOShakeAnchorPos(0.15f, 20f, 50).SetUpdate(true);
+                    return;
+                }
+
+                InventoryManager.currentInstance.playerCash -= cost;
+
+                PlayerPrefs.SetInt("player_stats_shopupg", upgradeLevel + 1);
+                UpgradeShopVisuals();
+                break;
             default:
                 break;
         }
@@ -268,44 +315,66 @@ public class ShopBookMenu : MonoBehaviour
 
     public void UpgradePlayerHealthVisuals() {
         int upgradeLevel = PlayerPrefs.GetInt("player_stats_health", 1);
-        Debug.Log("health upgrade level: " + upgradeLevel);
-
-        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
-        healthUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = "$" + cost;
 
         Transform barsTransform = healthUpgradeObj.transform.Find("Bars");
-        for(int i = 0; i < barsTransform.childCount; i++) {
+
+        int maxUpgrades = barsTransform.childCount;
+
+        for (int i = 0; i < maxUpgrades; i++) {
             if (upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
             else barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOn;
         }
+
+        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+        healthUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = upgradeLevel >= maxUpgrades ? "MAX" : "$" + cost;
     }
 
     public void UpgradePlayerSpeedVisuals() {
         int upgradeLevel = PlayerPrefs.GetInt("player_stats_speed", 1);
-        Debug.Log("speed upgrade level: " + upgradeLevel);
-
-        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
-        speedUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = "$" + cost;
 
         Transform barsTransform = speedUpgradeObj.transform.Find("Bars");
-        for (int i = 0; i < barsTransform.childCount; i++) {
+
+        int maxUpgrades = barsTransform.childCount;
+
+        for (int i = 0; i < maxUpgrades; i++) {
             if (upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
             else barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOn;
         }
+
+        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+        speedUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = upgradeLevel >= maxUpgrades ? "MAX" : "$" + cost;
     }
 
     public void UpgradePlayerDamageVisuals() {
         int upgradeLevel = PlayerPrefs.GetInt("player_stats_atkdmg", 1);
-        Debug.Log("dmg upgrade level: " + upgradeLevel);
-
-        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
-        attackDmgUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = "$" + cost;
 
         Transform barsTransform = attackDmgUpgradeObj.transform.Find("Bars");
-        for (int i = 0; i < barsTransform.childCount; i++) {
-            if(upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
+
+        int maxUpgrades = barsTransform.childCount;
+
+        for (int i = 0; i < maxUpgrades; i++) {
+            if (upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
             else barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOn;
         }
+
+        int cost = baseCost + (costLevelMultiplier * (upgradeLevel-1));
+        attackDmgUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = upgradeLevel >= maxUpgrades ? "MAX" : "$" + cost;
+    }
+    public void UpgradeShopVisuals() {
+        int upgradeLevel = PlayerPrefs.GetInt("player_stats_shopupg", 1);
+
+        Transform barsTransform = shopUpgradeObj.transform.Find("Bars");
+
+        int maxUpgrades = barsTransform.childCount;
+
+        for (int i = 0; i < maxUpgrades; i++) {
+            if (upgradeLevel <= i) barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOff;
+            else barsTransform.GetChild(i).GetComponent<Image>().color = UpgradeBarColorOn;
+        }
+
+        // overriding the cost for the shop. lazy way but quick
+        int cost = 1000; // baseCost + (costLevelMultiplier * (upgradeLevel - 1));
+        shopUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = upgradeLevel >= maxUpgrades ? "MAX" : "$" + cost;
     }
 }
 
@@ -314,4 +383,5 @@ public enum PlayerUpgrades {
     Health,
     Speed,
     AttackDmg,
+    Shop,
 }

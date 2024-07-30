@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
@@ -31,7 +32,15 @@ public class Shop : MonoBehaviour
     bool spawningCustomer;
 
     float dayTimer = 0;
-    float dayLength = 150; // in seconds
+    float dayLength = 120; // in seconds
+
+    int largeShopSceneIndex = 3;
+
+    private void Awake() {
+        if(PlayerPrefs.GetInt("player_stats_shopupg", 1) > 1 && SceneManager.GetActiveScene().buildIndex != largeShopSceneIndex) {
+            SceneManager.LoadScene(largeShopSceneIndex);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +52,7 @@ public class Shop : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if(isShopOpen) dayTimer += Time.deltaTime;
+        if(isShopOpen && dayTimer < dayLength) dayTimer += Time.deltaTime;
 
         globalLight.color = Color.Lerp(dayTimeLight, nightTimeLight, dayTimer/dayLength);
         globalLight.intensity = Mathf.Lerp(1, 0.25f, dayTimer/dayLength);

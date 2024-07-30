@@ -251,6 +251,8 @@ public class InventoryManager : MonoBehaviour
     public void ToggleInventory(InventoryOpening state, GameObject itemOpening) {
         if (player.itemOpened == itemOpening) state = InventoryOpening.Closing; // If any inventories are open, we want to close inventories
 
+        Time.timeScale = 0f;
+
         player.itemOpened = itemOpening; // This gets initialized to true. Closing will set it to false.
         hotbarCover.SetActive(false);
         switch (state) {
@@ -278,6 +280,7 @@ public class InventoryManager : MonoBehaviour
                 pedestalMenuObj.SetActive(true);
                 break;
             case InventoryOpening.PotionCrafting:
+                Time.timeScale = 1f;
                 playerInventoryObj.SetActive(true);
                 playerInventoryObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200, -200);
 
@@ -287,6 +290,7 @@ public class InventoryManager : MonoBehaviour
                 cauldronCraftingObj.SetActive(true);
                 break;
             case InventoryOpening.ShopBook:
+                Time.timeScale = 1f;
                 hotbarObj.SetActive(false);
 
                 shopBookObj.SetActive(true);
@@ -299,6 +303,7 @@ public class InventoryManager : MonoBehaviour
                 hotbarObj.SetActive(false);
                 break;
             case InventoryOpening.Closing:
+                Time.timeScale = 1f;
                 hotbarObj.SetActive(true);
 
                 dropArea.SetActive(false);
@@ -324,6 +329,7 @@ public class InventoryManager : MonoBehaviour
                 hotbarCover.SetActive(true);
                 break;
             default:
+                Time.timeScale = 1f;
                 break;
         }
     }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5310954200908431541}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7530242125061665907}
   - component: {fileID: 9020333101907496681}
   - component: {fileID: 8669531736936097403}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackArea
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6495409955153611528}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 7076566869411775415}
   - component: {fileID: 9156526688074381366}
   - component: {fileID: 2436795771861358766}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BaseSoldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6048780421004733235}
   - component: {fileID: 1011448528345021064}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4124146465705495224}
   - component: {fileID: 3793572379814505368}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   - component: {fileID: 6839829870027471708}
   - component: {fileID: 6351141706926647690}
   - component: {fileID: 1947510550524955552}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}

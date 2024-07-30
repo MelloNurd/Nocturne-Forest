@@ -50,8 +50,8 @@ public class Customer : MonoBehaviour
     Vector3 walkDir;
 
     Vector3 doorPos;
-    Vector3 buyPos = new Vector3(2.5f, 0, 0);
-    Vector3 buyLinePos = new Vector3(2.5f, -0.9f, 0);
+    Vector3 buyPos;
+    Vector3 buyLinePos;
 
     SpriteRenderer itemSpriteRenderer;
     SpriteRenderer bubbleSpriteRenderer;
@@ -82,6 +82,9 @@ public class Customer : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        buyPos = new Vector3(checkout.transform.position.x, 0, 0);
+        buyLinePos = new Vector3(checkout.transform.position.x, -0.9f, 0);
+
         itemSpriteRenderer = transform.Find("Item").GetComponent<SpriteRenderer>();
         bubbleSpriteRenderer = transform.Find("SpeechBubble").GetComponent<SpriteRenderer>();
 

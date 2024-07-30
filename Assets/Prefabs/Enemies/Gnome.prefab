@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8465189876864006645}
   - component: {fileID: 3446576433002919839}
   - component: {fileID: 7685871734394668719}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 3182188858938164851}
   - component: {fileID: 7120675401592094626}
   - component: {fileID: 7472332105067698286}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Gnome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2503731809624092576}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6155697196563993584}
   - component: {fileID: 4695834676407633224}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2280293114033884403}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9160970372471598639}
   - component: {fileID: 2541329031152148103}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 7912230310303509155}
   - component: {fileID: 5836257850673319153}
   - component: {fileID: 7216097148615162122}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackArea
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}

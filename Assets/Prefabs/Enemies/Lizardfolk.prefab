@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4182282212551517949}
   - component: {fileID: 1919592893631468004}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7048337025124392769}
   - component: {fileID: 8623314314539977938}
   - component: {fileID: 3408514458138489497}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6988355976523673221}
   - component: {fileID: 8390547288294905441}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1110295694940249989}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 7540769970264597320}
   - component: {fileID: 5789183412706591686}
   - component: {fileID: 7789093990622708447}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lizardfolk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -463,7 +463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2034885383740328524}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

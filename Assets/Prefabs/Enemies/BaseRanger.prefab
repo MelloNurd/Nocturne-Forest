@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3148259845489863397}
   - component: {fileID: 9156526688074381366}
   - component: {fileID: 2436795771861358766}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BaseRanger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3858358359927679094}
   - component: {fileID: 1362445425371367808}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1870798011436212073}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6839829870027471708}
   - component: {fileID: 6351141706926647690}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4734610253212136944}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2928255014283202753}
   - component: {fileID: 6006443690735200793}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

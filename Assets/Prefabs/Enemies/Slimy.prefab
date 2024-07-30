@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3964462397660496683}
   - component: {fileID: 1532051569151607190}
   - component: {fileID: 7424067745562606167}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 6113556394718128004}
   - component: {fileID: 1225511267284796298}
   - component: {fileID: 4843673610100126040}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Slimy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3161894262334676062}
   - component: {fileID: 2677026382305473620}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5830132961389442888}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 8347739871205215745}
   - component: {fileID: 4771541782014952897}
   - component: {fileID: 7603491013882454205}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackArea
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
@@ -514,7 +514,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 106630293357058985}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -547,7 +547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8046274943103240353}
   - component: {fileID: 9031065430623513461}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

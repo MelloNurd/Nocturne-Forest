@@ -117,6 +117,7 @@ public class RangerEnemy : EnemyBase
                 rb.velocity = ((Vector3)activeRoamPoint - transform.position).normalized * moveSpeed * roamSpeedModifier; // Moving in direction of activeRoamPoint
 
                 if (Vector2.Distance(transform.position, activeRoamPoint) < 0.2f) {
+                    if(gameObject.name == "Medusa") Debug.Log("test for raom");
                     StartCoroutine(TryRoam()); // If has reached roam point, try to get a new roam point
                 }
                 break;
@@ -224,12 +225,24 @@ public class RangerEnemy : EnemyBase
     }
 
     Vector3 GetNewRoamPoint() {
-        return (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius); // Get a random point in a circle around the enemy, by roamRadius size
+        Vector3 roamPoint;
+        int threshold = 0;
+        LayerMask mask = LayerMask.GetMask("Terrain", "Interactable");
+
+        do {
+            roamPoint = (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius);
+            threshold++;
+        } while (Physics2D.OverlapCircleAll(roamPoint, 0f, mask).Length > 0 && threshold < 50); // Continue to get a new point until it's not in a collider
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, (roamPoint - transform.position).normalized, Vector2.Distance(transform.position, roamPoint), LayerMask.GetMask("Terrain", "Interactable"));
+        if (hit.collider != null) roamPoint = hit.point;
+
+        return roamPoint; // Get a random point in a circle around the enemy, by roamRadius size
     }
 
     Vector2 GetNewPatrolPoint() {
         if(patrolPoints.Count <= 0) { // If there are no patrol points in the list
-            Debug.LogError("No patrol points loaded!");
+            //Debug.LogError("No patrol points loaded!");
             return Vector2.zero;
         }
 
@@ -255,6 +268,7 @@ public class RangerEnemy : EnemyBase
 
     IEnumerator TryRoam() { // Attempts to get a new roaming point
         canRoam = false;
+        rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(timeBetweenRoam); // Waits for timeBetweenRoam
         activeRoamPoint = GetNewRoamPoint(); // Assigns a new random roaming point
         canRoam = true;
@@ -262,6 +276,7 @@ public class RangerEnemy : EnemyBase
 
     IEnumerator TryPatrol() { // Attempts to get a new patrolling point
         canPatrol = false;
+        rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(timeBetweenPatrol); // Waits for timeBetweenPatrol
         activePatrolPoint = GetNewPatrolPoint(); // Assigns a new patrol point
         canPatrol = true;

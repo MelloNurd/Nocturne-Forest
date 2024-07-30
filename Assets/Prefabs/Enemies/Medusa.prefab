@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7660712911057916434}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3706627013586349769}
   - component: {fileID: 1062328132822127209}
   - component: {fileID: 6354033364011248199}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Medusa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,9 +114,9 @@ MonoBehaviour:
   attackLengthSeconds: 0.2
   attackCooldownSeconds: 2.5
   attackSpeedModifier: 1
-  projectilePrefab: {fileID: 5769100550633567492, guid: e7028c761ec2056428f786380bee0a2a, type: 3}
-  projectileCount: 1
-  projectileSpread: 30
+  projectilePrefab: {fileID: 5769100550633567492, guid: 878800e6ae845ff47b3cead58d80a424, type: 3}
+  projectileCount: 3
+  projectileSpread: 15
   showRadiusSizes: 1
 --- !u!50 &1062328132822127209
 Rigidbody2D:
@@ -190,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1045143353489337946}
   - component: {fileID: 5294506311613914306}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 7564309974201639734}
   - component: {fileID: 1285981426817518417}
   - component: {fileID: 5623074672416838048}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,7 +380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6121413928124292696}
   - component: {fileID: 9069329906403133489}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -463,7 +463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1876981830342851542}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthBarParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

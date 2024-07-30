@@ -55,14 +55,14 @@ public class DropArea : MonoBehaviour, IDropHandler
 
     void ShowArea() { ShowArea(fadeSpeed); }
     void ShowArea(float _fadeSpeed) {
-        areaImage.DOColor(translucentColor, _fadeSpeed);
-        iconImage.DOColor(opaqueColor, _fadeSpeed);
+        areaImage.DOColor(translucentColor, _fadeSpeed).SetUpdate(true);
+        iconImage.DOColor(opaqueColor, _fadeSpeed).SetUpdate(true);
     }
 
     void HideArea() { HideArea(fadeSpeed); }
     void HideArea(float _fadeSpeed) {
-        areaImage.DOColor(clearColor, _fadeSpeed);
-        iconImage.DOColor(clearColor, _fadeSpeed);
+        areaImage.DOColor(clearColor, _fadeSpeed).SetUpdate(true);
+        iconImage.DOColor(clearColor, _fadeSpeed).SetUpdate(true);
     }
 
     private bool IsMouseOver() {

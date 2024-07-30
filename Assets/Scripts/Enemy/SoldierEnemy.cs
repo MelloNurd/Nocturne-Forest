@@ -262,12 +262,24 @@ public class SoldierEnemy : EnemyBase
     }
 
     Vector3 GetNewRoamPoint() {
-        return (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius); // Get a random point in a circle around the enemy, by roamRadius size
+        Vector3 roamPoint;
+        int threshold = 0;
+        LayerMask mask = LayerMask.GetMask("Terrain", "Interactable");
+
+        do {
+            roamPoint = (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius);
+            threshold++;
+        } while (Physics2D.OverlapCircleAll(roamPoint, 0f, mask).Length > 0 && threshold < 50); // Continue to get a new point until it's not in a collider
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, (roamPoint - transform.position).normalized, Vector2.Distance(transform.position, roamPoint), LayerMask.GetMask("Terrain", "Interactable"));
+        if (hit.collider != null) roamPoint = hit.point;
+
+        return roamPoint; // Get a random point in a circle around the enemy, by roamRadius size
     }
 
     Vector2 GetNewPatrolPoint() {
         if(patrolPoints.Count <= 0) { // If there are no patrol points in the list
-            Debug.LogWarning("No patrol points loaded for: " + gameObject.name);
+            //Debug.LogWarning("No patrol points loaded for: " + gameObject.name);
             return Vector2.zero;
         }
 
@@ -292,6 +304,7 @@ public class SoldierEnemy : EnemyBase
     }
     IEnumerator TryRoam() { // Attempts to get a new roaming point
         canRoam = false;
+        rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(timeBetweenRoam); // Waits for timeBetweenRoam
         activeRoamPoint = GetNewRoamPoint(); // Assigns a new random roaming point
         canRoam = true;
@@ -299,6 +312,7 @@ public class SoldierEnemy : EnemyBase
 
     IEnumerator TryPatrol() { // Attempts to get a new patrolling point
         canPatrol = false;
+        rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(timeBetweenPatrol); // Waits for timeBetweenPatrol
         activePatrolPoint = GetNewPatrolPoint(); // Assigns a new patrol point
         canPatrol = true;

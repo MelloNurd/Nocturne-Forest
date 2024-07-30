@@ -15,6 +15,7 @@ public class Activator : Interactable
 
     public string hintText;
     TMP_Text hintTextObj;
+    public float hintLength = 1f;
 
     Tween hintTween;
 
@@ -61,7 +62,7 @@ public class Activator : Interactable
                 hintTextObj.color = Color.white;
                 hintTween.Kill();
                 if (shakeOnFail) transform.DOShakePosition(0.15f, 0.2f, 50);
-                hintTween = hintTextObj.DOFade(0, 0.5f).SetDelay(1f);
+                hintTween = hintTextObj.DOFade(0, 0.5f).SetDelay(hintLength);
                 return;
             }
             else {

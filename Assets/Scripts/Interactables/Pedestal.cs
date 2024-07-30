@@ -46,12 +46,12 @@ public class Pedestal : Interactable
 
     void SaveInventory() {
         string saveValue = (sellItem == null ? "" : sellItem.name) + ';' + count + ';' + sellPrice;
-        PlayerPrefs.SetString(SceneManager.GetActiveScene().name + gameObject.name, saveValue);
+        PlayerPrefs.SetString("PEDESTALS_" + gameObject.name, saveValue);
     }
 
     IEnumerator LoadInventory() {
         yield return new WaitForSeconds(0.1f); // Have to wait for InventoryManager
-        string data = PlayerPrefs.GetString(SceneManager.GetActiveScene().name + gameObject.name, "");
+        string data = PlayerPrefs.GetString("PEDESTALS_" + gameObject.name, "");
         if (!string.IsNullOrEmpty(data)) {
             if (pedestalUISlot.GetItemInSlot() != null) {
                 Debug.LogWarning("Unable to load for pedestal: " + gameObject.name + ". Item already detected in slot!");

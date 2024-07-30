@@ -154,6 +154,9 @@ MonoBehaviour:
   pedestalUI: {fileID: 0}
   items: []
   customer: {fileID: 690323838}
+  globalLight: {fileID: 0}
+  openCloseButton: {fileID: 0}
+  leaveButton: {fileID: 0}
   numCustomersCame: 0
   numCustomersBought: 0
   isShopOpen: 0
@@ -973,6 +976,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkout: {fileID: 0}
+  animator: {fileID: 0}
+  numTypesCustomers: 1
   currentState: 0
   customerPurchasingState: 0
   desiredItemsPool: {fileID: 11400000, guid: 9733ef90348d71e469316d525666378d, type: 2}
