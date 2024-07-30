@@ -93,7 +93,6 @@ public class SoldierEnemy : EnemyBase
 
         activePatrolPoint = GetNewPatrolPoint(); // Initializes the active patrol point to one from the list
         activeRoamPoint = GetNewRoamPoint(); // Initializes the active roam point to a random roam point
-
     }
 
     // Update is called once per frame

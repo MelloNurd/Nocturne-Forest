@@ -269,6 +269,7 @@ public class Player : MonoBehaviour
         // Gets all interactable/pickupables in range and orders it by closest to player
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask).OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray();
 
+        Debug.Log(Interactable.nextInteract);
         if(Interactable.nextInteract != null) { // If there is a highlighted interactable, interact with it and ignore the pickupables
             Interactable.nextInteract.Interact();
             return;

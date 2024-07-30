@@ -3005,6 +3005,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b29013e72b69d6a4bbb7eecde98098f8, type: 2}
   - {fileID: 11400000, guid: 8ef2dcc5947351f4e97022134ba2e10d, type: 2}
   - {fileID: 11400000, guid: 4bade225776332149833643efb9d65f2, type: 2}
+  globalLoreList:
+  - {fileID: 11400000, guid: 924e0796c9a673c4e9dcca09f59b0186, type: 2}
   globalItemList:
   - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
   - {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}
@@ -3985,6 +3987,7 @@ MonoBehaviour:
   itemsCollectedText: {fileID: 2613309511593218892}
   totalSlainText: {fileID: 2093604787927090982}
   recipePagePrefab: {fileID: 2866145052675985840, guid: f6aa969d808996e4a80d0e5fe14d4a74, type: 3}
+  lorePagePrefab: {fileID: 0}
   chapters:
   - {fileID: 4735580851375175043}
   - {fileID: 1403163091487467808}

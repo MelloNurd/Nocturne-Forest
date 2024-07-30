@@ -28,10 +28,8 @@ public class RecipePage : Interactable
     public override void Interact() {
         if (!canInteract) return;
 
-        int index = InventoryManager.currentInstance.globalCraftingRecipes.IndexOf(recipeToUnlock);
-        if (index == -1) return;
+        PlayerPrefs.SetInt("RecipePage_" + recipeToUnlock.name, 1);
 
-        InventoryManager.currentInstance.globalCraftingRecipes[index].showRecipeInBook = true;
         gameObject.SetActive(false);
     }
 }

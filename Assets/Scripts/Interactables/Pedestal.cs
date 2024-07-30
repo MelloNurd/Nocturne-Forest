@@ -31,8 +31,13 @@ public class Pedestal : Interactable
         OpenPedestal();
     }
 
-    private void OnDisable() {
+    protected override void OnDisable() {
+        base.OnDisable();
         SaveInventory();
+    }
+
+    protected override void OnDestroy() {
+        base.OnDestroy();
     }
 
     private void OnEnable() {

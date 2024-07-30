@@ -20,6 +20,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager currentInstance; // There should only ever be one InventoryManager per scene, so we are doing this for easy access.
 
     public List<Recipe> globalCraftingRecipes = new List<Recipe>();
+    public List<Lore> globalLoreList = new List<Lore>();
     public List<Item> globalItemList = new List<Item>();
 
     public static Dictionary<string, Item> itemLookup = new Dictionary<string, Item>(); // A dictionary where you can get an Item object from the item's name
@@ -205,6 +206,16 @@ public class InventoryManager : MonoBehaviour
                 InventoryItem newItem = SpawnNewItem(_item, slot);
                 newItem.SetCount(amount);
             }
+        }
+
+
+        // This is kinda different from the inventory stuff so we're just doing it in start
+        foreach (Recipe recipe in globalCraftingRecipes) {
+            recipe.showRecipeInBook = PlayerPrefs.GetInt("RecipePage_" + recipe.name, 0) != 0;
+        }
+
+        foreach (Lore lore in globalLoreList) {
+            lore.showLoreInBook = PlayerPrefs.GetInt("LorePage_" + lore.name, 0) != 0;
         }
     }
 

@@ -15,6 +15,7 @@ public class ShopBookMenu : MonoBehaviour
     [SerializeField] TMP_Text itemsCollectedText;
     [SerializeField] GameObject totalSlainText;
     [SerializeField] GameObject recipePagePrefab;
+    [SerializeField] GameObject lorePagePrefab;
 
     [SerializeField] List<GameObject> chapters = new List<GameObject>();
 
@@ -26,11 +27,11 @@ public class ShopBookMenu : MonoBehaviour
 
         var enemyTypes = Enum.GetValues(typeof(EnemyTypes));
         for (int i = 0; i < enemyTypes.Length; i++) {
-            GameObject newText = Instantiate(totalSlainText, totalSlainText.transform.position + Vector3.down * 80 * (i+1), totalSlainText.transform.rotation);
+            GameObject newText = Instantiate(totalSlainText, totalSlainText.transform.position + Vector3.down * 40 * (i+1), totalSlainText.transform.rotation);
             newText.transform.SetParent(totalSlainText.transform.parent, true);
-            string enemyTypeName = enemyTypes.GetValue(i).ToString();
-            newText.GetComponent<TMP_Text>().text = enemyTypeName + "s Slain: " + PlayerPrefs.GetInt(enemyTypeName + "_killed", 0).ToString();
-            textObjs.Add(newText);
+            newText.transform.localScale = Vector3.one;
+            string enemyTypeName = enemyTypes.GetValue(i).ToString().Replace("_", " ");
+            newText.GetComponent<TMP_Text>().text = enemyTypeName + "s  Slain: " + PlayerPrefs.GetInt(enemyTypeName + "_killed", 0).ToString();
         }
     }
 
@@ -38,22 +39,30 @@ public class ShopBookMenu : MonoBehaviour
     void OnEnable()
     {
         ChangeChapter(chapters[0]);
-        itemsSoldText.text = "Items Sold: " + PlayerPrefs.GetInt("total_items_sold", 0).ToString();
-        itemsCollectedText.text = "Items Collected: " + PlayerPrefs.GetInt("total_items_collected", 0).ToString();
+        itemsSoldText.text = "Items  Sold: " + PlayerPrefs.GetInt("total_items_sold", 0).ToString();
+        itemsCollectedText.text = "Items  Collected: " + PlayerPrefs.GetInt("total_items_collected", 0).ToString();
         StartCoroutine(LoadBook());
+
+        // This is dumb but we're doubling all of the spaces in the text to make it for better readability.
+        Transform loreChapter = transform.Find("Lore Chapter");
+        for(int i = 0; i < loreChapter.childCount; i++) {
+            TMP_Text text = loreChapter.GetChild(i).GetComponentInChildren<TMP_Text>();
+            text.text = text.text.Replace(" ", "  ");
+        }
     }
 
     IEnumerator LoadBook() {
         yield return new WaitForSeconds(0.1f);
 
         int pageIndex = 0;
-        foreach (Recipe recipe in InventoryManager.currentInstance.globalCraftingRecipes) {
-            if (!recipe.showRecipeInBook || recipe.craftingIngredients.Count <= 0) continue;
+        foreach (Recipe recipe in InventoryManager.currentInstance.globalCraftingRecipes.FindAll(x => x.showRecipeInBook)) {
+            if (recipe.craftingIngredients.Count <= 0) continue;
 
             GameObject newPage = Instantiate(recipePagePrefab, transform.position + Vector3.down * 50, Quaternion.identity);
             newPage.name = recipe.craftedItem.name + " Recipe Page";
             newPage.transform.SetParent(transform.Find("Recipe Chapter"), true);
-            if(pageIndex % 2 != 0) newPage.transform.position = new Vector2(newPage.transform.position.x * 1.75f, newPage.transform.position.y);
+            newPage.transform.localScale = Vector3.one;
+            if (pageIndex % 2 != 0) newPage.transform.position = new Vector2(newPage.transform.position.x * 1.75f, newPage.transform.position.y);
 
             newPage.transform.Find("Crafted Name").GetComponent<TMP_Text>().text = recipe.craftedItem.name;
             newPage.transform.Find("Crafted Icon").GetComponent<Image>().sprite = recipe.craftedItem.image;
@@ -69,12 +78,36 @@ public class ShopBookMenu : MonoBehaviour
                     Image ingredient = Instantiate(ingredientSprite).GetComponent<Image>();
                     ingredient.gameObject.name = recipe.craftingIngredients[i].name + " (Ingredient)";
                     ingredient.transform.SetParent(ingredientsGridObj.transform); // We use a grid, which will do the layout for us. No need to move anything.
+                    ingredient.transform.localScale = Vector3.one;
                     ingredient.sprite = recipe.craftingIngredients[i].image;
                 }
             }
 
             if (pageIndex > 1) newPage.SetActive(false);
             pageIndex++;
+
+            textObjs.Add(newPage);
+        }
+
+        pageIndex = 0;
+        Debug.Log(InventoryManager.currentInstance.globalLoreList.FindAll(x => x.showLoreInBook).Count);
+        foreach (Lore lore in InventoryManager.currentInstance.globalLoreList.FindAll(x => x.showLoreInBook)) {
+            if (String.IsNullOrEmpty(lore.loreText)) continue;
+
+            Debug.Log(lore.name);
+
+            GameObject newPage = Instantiate(lorePagePrefab, transform.position + Vector3.up * 15, Quaternion.identity);
+            newPage.name = lore.name + " Lore Page";
+            newPage.transform.SetParent(transform.Find("Lore Chapter"), true);
+            newPage.transform.localScale = Vector3.one;
+            if (pageIndex % 2 != 0) newPage.transform.position = new Vector2(newPage.transform.position.x * 1.75f, newPage.transform.position.y);
+
+            newPage.transform.GetChild(0).GetComponent<TMP_Text>().text = lore.loreText;
+
+            if (pageIndex > 1) newPage.SetActive(false);
+            pageIndex++;
+
+            textObjs.Add(newPage);
         }
     }
 
@@ -156,8 +189,8 @@ public class ShopBookMenu : MonoBehaviour
         rightPageFlip.SetActive(chapterObj.transform.childCount > 2);
 
         // Enable the first child, and the second if it exists. To clarify, the children are the individual pages.
-        chapterObj.transform.GetChild(0).gameObject.SetActive(true);
-        if (chapterObj.transform.GetChild(1)) chapterObj.transform.GetChild(1).gameObject.SetActive(true);
+        if (chapterObj.transform.childCount > 0) chapterObj.transform.GetChild(0).gameObject.SetActive(true);
+        if (chapterObj.transform.childCount > 1) chapterObj.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     int GetIndexOfFirstActiveChild(Transform transform) { // Will be -1 if no active children found

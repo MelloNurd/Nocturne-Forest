@@ -17,6 +17,14 @@ public class PotionCraftingStation : Interactable {
         base.Update();
     }
 
+    protected override void OnDisable() {
+        base.OnDisable();
+    }
+
+    protected override void OnDestroy() {
+        base.OnDestroy();
+    }
+
     public override void Interact() {
         InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.PotionCrafting, gameObject);
     }

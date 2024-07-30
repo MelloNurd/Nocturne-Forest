@@ -5,7 +5,14 @@ using UnityEngine;
 
 public enum EnemyTypes {
     Golbin,
-    Slime
+    Slime,
+    Bat,
+    Dryad,
+    Gnome,
+    Lizardfolk,
+    Medusa,
+    Ogre,
+    Red_Slime
 }
 
 public enum RespawnType {

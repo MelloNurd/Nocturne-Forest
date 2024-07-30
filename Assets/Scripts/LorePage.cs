@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopCheckout : Interactable
-{
-    public Customer customer;
+public class LorePage : Interactable {
+
+    public Lore lorePage;
 
     protected override void Awake() {
         base.Awake();
@@ -13,6 +13,8 @@ public class ShopCheckout : Interactable
     // Start is called before the first frame update
     protected override void Start() {
         base.Start();
+
+        if (lorePage == null) Debug.LogError("No lore page assigned to page: " + gameObject.name);
     }
 
     // Update is called once per frame
@@ -20,17 +22,11 @@ public class ShopCheckout : Interactable
         base.Update();
     }
 
-    protected override void OnDisable() {
-        base.OnDisable();
-    }
-
-    protected override void OnDestroy() {
-        base.OnDestroy();
-    }
-
     public override void Interact() {
         if (!canInteract) return;
-        customer.OnCheckout();
-        PlayerPrefs.SetInt("total_items_sold", PlayerPrefs.GetInt("total_items_sold", 0) + 1);
+        Debug.Log(lorePage.name);
+        PlayerPrefs.SetInt("LorePage_" + lorePage.name, 1);
+        //InventoryManager.currentInstance.globalCraftingRecipes[index].showRecipeInBook = true;
+        gameObject.SetActive(false);
     }
 }

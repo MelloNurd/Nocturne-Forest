@@ -42,6 +42,16 @@ public class Activator : Interactable
         base.Update();
     }
 
+    protected override void OnDisable() {
+        base.OnDisable();
+        hintTween.Kill();
+    }
+
+    protected override void OnDestroy() {
+        base.OnDestroy();
+        hintTween.Kill();
+    }
+
     public override void Interact() {
         if (keyItem != null) {
             Item heldItem = InventoryManager.currentInstance.GetSelectedItem(false);
@@ -60,9 +70,5 @@ public class Activator : Interactable
         }
         PlayerPrefs.SetInt("Activator_" + gameObject.scene + "_" + gameObject.name, 1);
         onSuccessfulInteract?.Invoke();
-    }
-
-    private void OnDisable() {
-        hintTween.Kill();
     }
 }

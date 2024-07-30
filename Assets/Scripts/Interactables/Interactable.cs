@@ -33,13 +33,24 @@ public abstract class Interactable : MonoBehaviour
         player = playerObj.GetComponent<Player>();
     }
 
+    protected virtual void OnDisable() {
+        if(nextInteract == this) nextInteract = null;
+    }
+
+    protected virtual void OnDestroy() {
+        if (nextInteract == this) nextInteract = null;
+    }
+
     // Update is called once per frame
     protected virtual void Update()
     {
         playerDist = Vector2.Distance(transform.position, playerObj.transform.position);
+        isInRange = playerDist <= player.interactionRange;
+
         if (nextInteract != null && playerDist < nextInteract.playerDist && canInteract) nextInteract = this;
         else if (isInRange && nextInteract == null && canInteract) nextInteract = this;
-        isInRange = playerDist <= player.interactionRange;
+        else if (nextInteract == this && !isInRange) nextInteract = null;
+
         if (canInteract) {
             if (!IsOutlined() && nextInteract == this && isInRange) {
                 EnableOutline();
