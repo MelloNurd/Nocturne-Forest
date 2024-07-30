@@ -174,11 +174,7 @@ MonoBehaviour:
   timeBetweenRoam: 3
   roamSpeedModifier: 0
   canPatrol: 1
-  patrolPoints:
-  - {x: 5, y: 0}
-  - {x: 0, y: 5}
-  - {x: -5, y: 0}
-  - {x: 0, y: -5}
+  patrolPoints: []
   patrolStyle: 1
   timeBetweenPatrol: 3
   patrolSpeedModifier: 0
@@ -208,14 +204,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373157027581528569}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -226,7 +222,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &4843673610100126040
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -126,6 +126,8 @@ public class SoldierEnemy : EnemyBase
                     return;
                 }
 
+                Debug.Log(activeRoamPoint);
+                Debug.Log(transform.position);
                 rb.velocity = ((Vector3)activeRoamPoint - transform.position).normalized * moveSpeed * roamSpeedModifier; // Moving in direction of activeRoamPoint
 
                 if (Vector2.Distance(transform.position, activeRoamPoint) < 0.2f) {
@@ -262,7 +264,7 @@ public class SoldierEnemy : EnemyBase
     }
 
     Vector3 GetNewRoamPoint() {
-        return (Vector2)transform.localPosition + (UnityEngine.Random.insideUnitCircle * roamRadius); // Get a random point in a circle around the enemy, by roamRadius size
+        return (Vector2)transform.position + (UnityEngine.Random.insideUnitCircle * roamRadius); // Get a random point in a circle around the enemy, by roamRadius size
     }
 
     Vector2 GetNewPatrolPoint() {

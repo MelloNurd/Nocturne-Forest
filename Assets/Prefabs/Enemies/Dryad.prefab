@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a0b39ca0993fb40b1b258ce1e3b26c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 3
   respawningType: 0
   respawnChance: 50
   overrideOneTime: 0
@@ -417,7 +417,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &6969216839458400591
 CircleCollider2D:
   m_ObjectHideFlags: 0

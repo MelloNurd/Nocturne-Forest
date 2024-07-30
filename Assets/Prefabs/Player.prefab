@@ -56,10 +56,10 @@ MonoBehaviour:
   canOpenInventory: 1
   itemOpened: {fileID: 0}
   currentState: 1
-  maxHealth: 20
-  currentHealth: 20
+  maxHealth: 30
+  currentHealth: 30
   attackDamage: 5
-  baseKnockback: 1
+  baseKnockback: 0.7
   attackKnockback: 1
   interactionRange: 2
   moveSpeed: 5
