@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9a1bef97e425f4c955407c116c139d, type: 3}
   m_Name: RobeLore
   m_EditorClassIdentifier: 
-  loreText: When putting on the robe, you notice that you can see around you much
-    more easily in the night.
-  showLoreInBook: 0
+  loreText: While out exploring the strange forest today, I found this old, brown
+    cloak. On my way home, I ended up getting lost. (Stupid, I know.) Without my
+    lantern and with the temperture dropping, I decided to put on the musty, old
+    thing. To my surprise, the robe helped me see through the darkness. Fascinating!
+  showLoreInBook: 1

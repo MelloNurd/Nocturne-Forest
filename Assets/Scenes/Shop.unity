@@ -8153,6 +8153,30 @@ PrefabInstance:
       propertyPath: resetRecipeListOnStart
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: globalLoreList.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: globalLoreList.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e737f2f7d6f34547946d05c2d4e8290, type: 2}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: globalLoreList.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d1466ab5d135704db8e7b13eb77fb8f, type: 2}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: globalLoreList.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6d23d2b78ef617249aac3b0e37f93be6, type: 2}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: globalLoreList.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: a2e58d4430d0eea41b04d9327ac3f69a, type: 2}
+    - target: {fileID: 6092691134284989004, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: globalLoreList.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 592318cd84cf56d41bd70a1cdf919607, type: 2}
     - target: {fileID: 6210745054826548369, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_IsActive
       value: 0

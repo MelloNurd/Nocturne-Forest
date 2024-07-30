@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c9a1bef97e425f4c955407c116c139d, type: 3}
+  m_Name: Entry4
+  m_EditorClassIdentifier: 
+  loreText: I combined supplies I've gathered from the forest to make a potion with
+    healing properties. Just a sip of this potion can make a person's wounds begin
+    to heal! I must continue my research, there's so much left to learn! I am getting
+    low on cash and food though... a man can only eat so many berrries.
+  showLoreInBook: 1
