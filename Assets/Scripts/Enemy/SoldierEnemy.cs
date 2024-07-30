@@ -126,8 +126,6 @@ public class SoldierEnemy : EnemyBase
                     return;
                 }
 
-                Debug.Log(activeRoamPoint);
-                Debug.Log(transform.position);
                 rb.velocity = ((Vector3)activeRoamPoint - transform.position).normalized * moveSpeed * roamSpeedModifier; // Moving in direction of activeRoamPoint
 
                 if (Vector2.Distance(transform.position, activeRoamPoint) < 0.2f) {

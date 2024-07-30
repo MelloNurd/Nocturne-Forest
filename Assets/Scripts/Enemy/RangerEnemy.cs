@@ -84,7 +84,7 @@ public class RangerEnemy : EnemyBase
     // Update is called once per frame
     protected override void Update()
     {
-        base.Start();
+        base.Update();
 
         if (rb.velocity != Vector2.zero)
         {

@@ -112,7 +112,6 @@ public abstract class EnemyBase : MonoBehaviour
                 DropItem(item);
             }
         }
-        
         // Destroy the gameObject
         Destroy(gameObject);
     }
