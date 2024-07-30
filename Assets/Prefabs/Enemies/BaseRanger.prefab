@@ -59,6 +59,7 @@ MonoBehaviour:
   attackKnockback: 1
   itemDrops: {fileID: 11400000, guid: 9733ef90348d71e469316d525666378d, type: 2}
   currentState: 1
+  animator: {fileID: 0}
   moveSpeed: 2
   playerDistanceCutoff: 9
   canRoam: 1
@@ -110,7 +111,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &2436795771861358766
 CircleCollider2D:
   m_ObjectHideFlags: 0

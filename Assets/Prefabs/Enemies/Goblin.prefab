@@ -369,11 +369,7 @@ MonoBehaviour:
   timeBetweenRoam: 3
   roamSpeedModifier: 1
   canPatrol: 1
-  patrolPoints:
-  - {x: 5, y: 0}
-  - {x: 0, y: 5}
-  - {x: -5, y: 0}
-  - {x: 0, y: -5}
+  patrolPoints: []
   patrolStyle: 1
   timeBetweenPatrol: 3
   patrolSpeedModifier: 1

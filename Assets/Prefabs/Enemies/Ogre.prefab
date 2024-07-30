@@ -519,7 +519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3690a2b0b5b6ae24097c426c55bfa7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 7
   respawningType: 0
   respawnChance: 50
   overrideOneTime: 0
@@ -538,11 +538,7 @@ MonoBehaviour:
   timeBetweenRoam: 3
   roamSpeedModifier: 1
   canPatrol: 1
-  patrolPoints:
-  - {x: 5, y: 0}
-  - {x: 0, y: 5}
-  - {x: -5, y: 0}
-  - {x: 0, y: -5}
+  patrolPoints: []
   patrolStyle: 1
   timeBetweenPatrol: 3
   patrolSpeedModifier: 1
@@ -572,14 +568,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7145853389001168198}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -590,7 +586,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &6196296095487233768
 CircleCollider2D:
   m_ObjectHideFlags: 0
