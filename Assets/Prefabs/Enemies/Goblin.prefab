@@ -365,7 +365,7 @@ MonoBehaviour:
   recipeToDrop: {fileID: 0}
   recipePrefab: {fileID: 0}
   attackSound: {fileID: 0}
-  hurtSound: {fileID: 8300000, guid: 9f1e05425e5ebce4d802c978a4eabcac, type: 3}
+  hurtSound: {fileID: 8300000, guid: ffb6aa74437a486428fa48b8955f64f9, type: 3}
   deathSound: {fileID: 0}
   animator: {fileID: 8180105081330678898}
   currentState: 1

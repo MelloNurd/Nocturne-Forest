@@ -81,7 +81,9 @@ MonoBehaviour:
   rollSpeedModifier: 3.5
   attackSound: {fileID: 8300000, guid: ba954e4c8268e3d478d7a334f80e6c42, type: 3}
   dieSound: {fileID: 8300000, guid: 6b0512e2fe7a18142bb134520be000bc, type: 3}
-  pickupSound: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: e49fccad96955e8429d5df533ce461ac, type: 3}
+  forestAudioSource: {fileID: 0}
+  forestAudioClip: {fileID: 8300000, guid: 0bd1e6d08ed8ae94fb4c58a1f8d32fe0, type: 3}
   walkSounds: []
   audioSource: {fileID: 0}
   showRadiusSizes: 0

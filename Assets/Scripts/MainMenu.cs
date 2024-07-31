@@ -15,6 +15,9 @@ public class MainMenu : MonoBehaviour
 
     AudioSource audioSource;
 
+    [SerializeField] AudioSource musicAudioSource;
+    [SerializeField] AudioClip musicClip;
+
     [SerializeField] AudioClip buttonClickClip;
 
     public void PlaySound(AudioClip audioClip, float volume = 1f, float pitch = 1f) {
@@ -33,6 +36,12 @@ public class MainMenu : MonoBehaviour
         Debug.Log(hasPlayed);
         newGameContinueButton.GetComponentInChildren<TMP_Text>().text = (hasPlayed != 0) ? "Continue" : "New Game";
         sceneToLoad = (hasPlayed != 0) ? "Shop" : "Tutorial";
+
+        if (musicAudioSource != null) {
+            musicAudioSource.clip = musicClip;
+            musicAudioSource.volume = 0.2f;
+            musicAudioSource.Play();
+        }
     }
 
     // Update is called once per frame

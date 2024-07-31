@@ -69,7 +69,6 @@ public class Shop : MonoBehaviour
     }
 
     IEnumerator StartNewSong(float currentLength) {
-        Debug.Log(currentLength);
         yield return new WaitForSecondsRealtime(currentLength);
         songIndex++;
         if (songIndex > shopSongs.Count - 1) songIndex = 0;

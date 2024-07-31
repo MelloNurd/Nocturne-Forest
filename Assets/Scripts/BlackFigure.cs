@@ -18,6 +18,9 @@ public class BlackFigure : MonoBehaviour
     Animator animator;
     [SerializeField] Animator fade;
 
+    [SerializeField] AudioSource forestAudioSource;
+    [SerializeField] AudioClip forestAudioClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,13 @@ public class BlackFigure : MonoBehaviour
         Vector3 endPosition = transform.position + Vector3.right * distance;
         tween = transform.DOMove(endPosition, durationInSeconds).SetDelay(delayInSeconds);
         tween.onComplete = doThing;
+
+        if (forestAudioSource != null) {
+            forestAudioSource.clip = forestAudioClip;
+            forestAudioSource.volume = 0.1f;
+            forestAudioSource.loop = true;
+            forestAudioSource.Play();
+        }
     }
 
     // Update is called once per frame
