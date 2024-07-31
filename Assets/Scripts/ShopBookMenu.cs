@@ -56,7 +56,7 @@ public class ShopBookMenu : MonoBehaviour
 
         var enemyTypes = Enum.GetValues(typeof(EnemyTypes));
         for (int i = 0; i < enemyTypes.Length; i++) {
-            GameObject newText = Instantiate(totalSlainText, totalSlainText.transform.position + Vector3.down * 40 * (i+1), totalSlainText.transform.rotation);
+            GameObject newText = Instantiate(totalSlainText, totalSlainText.transform.position + Vector3.down * 25 * (i+1), totalSlainText.transform.rotation);
             newText.transform.SetParent(totalSlainText.transform.parent, true);
             newText.transform.localScale = Vector3.one;
             string enemyTypeName = enemyTypes.GetValue(i).ToString().Replace("_", " ");
