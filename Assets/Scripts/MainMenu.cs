@@ -29,10 +29,17 @@ public class MainMenu : MonoBehaviour
     }
 
     public void OnPlay() {
-        SceneManager.LoadScene(sceneToLoad);
+        
+        StartCoroutine(LoadSceneWithDelay());
     }
 
     public void DeleteSaveData() {
         PlayerPrefs.DeleteAll();
+    }
+
+    IEnumerator LoadSceneWithDelay()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        SceneManager.LoadScene(sceneToLoad);
     }
 }
