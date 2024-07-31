@@ -292,7 +292,7 @@ public class Customer : MonoBehaviour
                 // Randomize whether the customer will buy an available item or not
 
                 // Customer WILL NOT buy an item. itemToBuy is set to an item they want to buy, to inform the player.
-                if (Random.Range(0, 2) == 0) { // 50% chance
+                if (Random.Range(0, 4) == 0) { // 50% chance
                     customerPurchasingState = PurchasingState.WontBuy;
                     itemToBuy = new ShopItem(desiredItems[Random.Range(0, desiredItems.Count)], -1, null);
                 }

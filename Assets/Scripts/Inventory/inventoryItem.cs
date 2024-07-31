@@ -117,7 +117,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerClick(PointerEventData eventData) {
         if (eventData.button != 0) return;
         InventoryManager.currentInstance.KillHideItemTitle();
-        InventoryManager.currentInstance.itemTitleObj.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().position + Vector3.up * 70;
+        InventoryManager.currentInstance.itemTitleObj.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().position*1.6f + Vector3.up * 70;
         itemTitle.text = item.name;
         InventoryManager.currentInstance.HideItemTitle();
     }
