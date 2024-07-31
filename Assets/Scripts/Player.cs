@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField] Animator animator;
+    [SerializeField] LevelLoader levelLoader;
 
     [Header("General")]
     public bool canPickup = true;
@@ -196,7 +198,7 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if(currentState != PlayerStates.Rolling && collision.CompareTag("EnemyAttack")) { // Code for when the player is hit by Enemy attack area
+        if(currentState != PlayerStates.Rolling && collision.CompareTag("EnemyAttack") && currentState != PlayerStates.Static) { // Code for when the player is hit by Enemy attack area
             // Player was hit
             float knockbackMultipler = 1f;
 
@@ -230,9 +232,20 @@ public class Player : MonoBehaviour
     }
 
     void Die() {
+        GetComponent<CapsuleCollider2D>().enabled = false;
+        currentState = PlayerStates.Static;
         healthTween.Kill();
         currentHealth = 0;
+        animator.SetTrigger("Death");
+        StartCoroutine(AfterDeath());
         Debug.Log("holy moly the player died!");
+    }
+
+    IEnumerator AfterDeath()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        string loadScene = (PlayerPrefs.GetInt("tutorial_completed", 0) != 0) ? "Shop" : "Tutorial";
+        StartCoroutine(levelLoader.loadLevel(loadScene));
     }
 
     public void UpdateHealthBar() {
