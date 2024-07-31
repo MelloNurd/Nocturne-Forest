@@ -372,9 +372,14 @@ public class Player : MonoBehaviour
         // Gets all interactable/pickupables in range and orders it by closest to player
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask).OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray();
 
+        bool playPickupSound = false;
         foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
-            if (objCol.TryGetComponent(out Pickupable pickupable)) pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+            if (objCol.TryGetComponent(out Pickupable pickupable)) {
+                pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+                playPickupSound = true;
+            }
         }
+        if (playPickupSound) PlaySound(pickupSound, 0.7f, UnityEngine.Random.Range(0.85f, 1.15f));
 
         if (Interactable.nextInteract != null) { // If there is a highlighted interactable, interact with it and ignore the pickupables
             Interactable.nextInteract.Interact();
