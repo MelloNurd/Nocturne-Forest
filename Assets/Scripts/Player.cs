@@ -86,6 +86,8 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip dieSound;
     [SerializeField] AudioClip pickupSound;
+    [SerializeField] AudioSource forestAudioSource;
+    [SerializeField] AudioClip forestAudioClip;
     [SerializeField] List<AudioClip> walkSounds = new List<AudioClip>();
     [HideInInspector] public AudioSource audioSource;
 
@@ -181,6 +183,13 @@ public class Player : MonoBehaviour
         }
 
         currentHealth = maxHealth;
+
+        if(forestAudioSource != null) {
+            forestAudioSource.clip = forestAudioClip;
+            forestAudioSource.volume = 0.1f;
+            forestAudioSource.loop = true;
+            forestAudioSource.Play();
+        }
     }
 
     // Update is called once per frame

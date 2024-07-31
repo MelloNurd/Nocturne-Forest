@@ -32,6 +32,7 @@ public class ShopChest : Interactable
     public override void Interact() {
         if (!canInteract) return;
 
+        if (interactSound != null) player.PlaySound(interactSound, 1, Random.Range(0.85f, 1.15f));
         InventoryManager.currentInstance.ToggleInventory(InventoryManager.InventoryOpening.ShopInventory, gameObject);
     }
 }

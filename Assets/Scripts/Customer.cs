@@ -64,6 +64,8 @@ public class Customer : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] AudioClip customerEnterShopClip;
     [SerializeField] AudioClip customerCheckoutSound;
+    [SerializeField] AudioClip customerLikes;
+    [SerializeField] AudioClip customerDislikes;
 
     /**
      * just gonna jot some ideas down for all of this
@@ -157,6 +159,7 @@ public class Customer : MonoBehaviour
                     }
                     else {
                         if (customerPurchasingState == PurchasingState.WillBuy) {
+                            player.PlaySound(customerLikes);
                             currDestination = buyLinePos;
                             currentState = CustomerStates.Buying;
                             itemSpriteRenderer.sprite = itemToBuy.item.image;
@@ -164,6 +167,7 @@ public class Customer : MonoBehaviour
                             // GRAB ITEM
                         }
                         else {
+                            player.PlaySound(customerDislikes);
                             currDestination = doorPos;
                             currentState = CustomerStates.Leaving;
                             bubbleSpriteRenderer.sprite = emptyBubbleSprite;

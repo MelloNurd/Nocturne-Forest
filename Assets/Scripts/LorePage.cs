@@ -24,7 +24,6 @@ public class LorePage : Interactable {
 
     public override void Interact() {
         if (!canInteract) return;
-        Debug.Log(lorePage.name);
         PlayerPrefs.SetInt("LorePage_" + lorePage.name, 1);
         //InventoryManager.currentInstance.globalCraftingRecipes[index].showRecipeInBook = true;
         gameObject.SetActive(false);

@@ -71,7 +71,7 @@ MonoBehaviour:
   interactionRange: 2
   moveSpeed: 5
   moveSpeedUpgradeModifier: 0.5
-  canAttack: 1
+  canAttack: 0
   attackDelaySeconds: 0.2
   attackLengthSeconds: 0.2
   attackSpeedModifier: 0.2
@@ -82,6 +82,7 @@ MonoBehaviour:
   attackSound: {fileID: 8300000, guid: ba954e4c8268e3d478d7a334f80e6c42, type: 3}
   dieSound: {fileID: 8300000, guid: 6b0512e2fe7a18142bb134520be000bc, type: 3}
   pickupSound: {fileID: 0}
+  walkSounds: []
   audioSource: {fileID: 0}
   showRadiusSizes: 0
 --- !u!114 &4630779527530026524
