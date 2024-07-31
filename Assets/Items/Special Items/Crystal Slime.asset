@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01c5a4fe16bb43d43880f07a41b5d0ec, type: 3}
-  m_Name: GnomePondKey
+  m_Name: Crystal Slime
   m_EditorClassIdentifier: 
-  image: {fileID: 941113030, guid: 5a6939ac85fe3e74d86872d6a08fa7c8, type: 3}
+  image: {fileID: -2031121019, guid: 0382b5907f86b4648abd7f0778d4d1b1, type: 3}
   usage: 2
   maxStackSize: 1
-  marketPrice: -1
+  marketPrice: 500
   useAmount: 0
   deleteOnUse: 1
