@@ -46463,7 +46463,7 @@ MonoBehaviour:
   delayInSeconds: 4
   distance: 4.5
   durationInSeconds: 5
-  scene: Shop
+  scene: MainMenu
   transitionTime: 3
   fade: {fileID: 1651109668}
 --- !u!114 &951756752021421294
@@ -46478,9 +46478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32aac5216aae05746a8f60a4c3abdcf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene: Shop
+  scene: MainMenu
   animator: {fileID: 1651109668}
   transitionTime: 1
+  isTutorialArea: 0
 --- !u!1001 &5044031613079965059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46489,6 +46490,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2600466400542788200, guid: 576ad7ec553eb804cbfafdc2f86f988c, type: 3}
+      propertyPath: scene
+      value: MainMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 2600466400542788200, guid: 576ad7ec553eb804cbfafdc2f86f988c, type: 3}
       propertyPath: animator
       value: 
