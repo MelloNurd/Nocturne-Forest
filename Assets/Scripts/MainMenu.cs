@@ -61,6 +61,8 @@ public class MainMenu : MonoBehaviour
 
     public void DeleteSaveData() {
         PlayerPrefs.DeleteAll();
+        newGameContinueButton.GetComponentInChildren<TMP_Text>().text = "New Game";
+        sceneToLoad = "Tutorial";
     }
 
     IEnumerator LoadSceneWithDelay()
