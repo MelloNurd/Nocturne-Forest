@@ -52,17 +52,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4575373480017886365}
+  levelLoader: {fileID: 0}
   canPickup: 1
   canOpenInventory: 1
+  enableUpgradeChanges: 1
   itemOpened: {fileID: 0}
   currentState: 1
-  maxHealth: 30
+  maxHealth: 20
+  maxHealthUpgradeModifier: 5
   currentHealth: 30
   attackDamage: 5
+  attackDamageUpgradeModifier: 1.2
   baseKnockback: 0.7
   attackKnockback: 1
   interactionRange: 2
   moveSpeed: 5
+  moveSpeedUpgradeModifier: 0.5
   canAttack: 1
   attackDelaySeconds: 0.2
   attackLengthSeconds: 0.2
@@ -310,7 +315,7 @@ MonoBehaviour:
   m_ComponentVersion: 1
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.831
+  m_FalloffIntensity: 0.64
   m_Color: {r: 1, g: 0.6222279, b: 0.18679237, a: 1}
   m_Intensity: 0.7
   m_LightVolumeIntensity: 0
