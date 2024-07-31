@@ -21,18 +21,18 @@ public class CauldronCrafting : MonoBehaviour
 
     [SerializeField] AudioClip ingredientAddSound;
     [SerializeField] AudioClip cauldronCraftSound;
-    
+    [SerializeField] AudioClip buttonClickClip;
+
     InventorySlot inputSlot;
 
     Sequence sequence;
 
-    Player player;
+    [SerializeField] Player player;
 
     private void Awake() {
         inputSlot = transform.Find("InventorySlot").GetComponent<InventorySlot>();
         movingItem.rectTransform.localScale = Vector3.one * 0.5f;
         ClearIngredients();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     public void AddInputItemToIngredients() {
@@ -66,6 +66,10 @@ public class CauldronCrafting : MonoBehaviour
         cauldronImage.sprite = greenWaterSprite;
         craftButton.interactable = true;
         emptyButton.interactable = true;
+    }
+
+    public void PlayButtonSound() {
+        player.PlaySound(buttonClickClip, 1, Random.Range(0.8f, 1.2f));
     }
 
     public void ClearIngredients() {

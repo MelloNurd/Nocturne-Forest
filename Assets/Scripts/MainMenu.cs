@@ -5,17 +5,28 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class MainMenu : MonoBehaviour
 {
-
     [SerializeField] Button newGameContinueButton;
 
     string sceneToLoad;
 
+    AudioSource audioSource;
+
+    [SerializeField] AudioClip buttonClickClip;
+
+    public void PlaySound(AudioClip audioClip, float volume = 1f, float pitch = 1f) {
+        audioSource.volume = volume;
+        audioSource.pitch = pitch;
+        audioSource.PlayOneShot(audioClip);
+        Debug.Log(audioSource.volume);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         int hasPlayed = PlayerPrefs.GetInt("tutorial_completed", 0);
         Debug.Log(hasPlayed);
         newGameContinueButton.GetComponentInChildren<TMP_Text>().text = (hasPlayed != 0) ? "Continue" : "New Game";
@@ -26,6 +37,10 @@ public class MainMenu : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PlayButtonSound() {
+        PlaySound(buttonClickClip, 1, Random.Range(0.8f, 1.2f));
     }
 
     public void OnPlay() {

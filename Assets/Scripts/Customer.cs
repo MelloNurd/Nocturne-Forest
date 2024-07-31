@@ -59,6 +59,12 @@ public class Customer : MonoBehaviour
     [SerializeField] Sprite emptyBubbleSprite;
     [SerializeField] Sprite tooExpensiveSprite;
 
+    Player player;
+
+    [Header("Sounds")]
+    [SerializeField] AudioClip customerEnterShopClip;
+    [SerializeField] AudioClip customerCheckoutSound;
+
     /**
      * just gonna jot some ideas down for all of this
      * 
@@ -82,6 +88,8 @@ public class Customer : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
         buyPos = new Vector3(checkout.transform.position.x, 0, 0);
         buyLinePos = new Vector3(checkout.transform.position.x, -0.9f, 0);
 
@@ -97,6 +105,7 @@ public class Customer : MonoBehaviour
     }
 
     private void OnEnable() {
+        player.PlaySound(customerEnterShopClip, 0.6f, 1.35f);
         animator.SetInteger("PersonType", Random.Range(1, numTypesCustomers+1));
         currentState = CustomerStates.Thinking;
         StartCoroutine(StartBrowsing());
@@ -234,6 +243,7 @@ public class Customer : MonoBehaviour
 
     public void OnCheckout() {
         checkout.canInteract = false;
+        player.PlaySound(customerCheckoutSound, 0.5f);
         checkout.DisableOutline();
         itemSpriteRenderer.sortingOrder = 2;
         itemSpriteRenderer.transform.localPosition = new Vector2(0, -itemSpriteRenderer.transform.position.y);

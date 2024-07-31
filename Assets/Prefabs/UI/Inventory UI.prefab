@@ -6234,25 +6234,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   globalCraftingRecipes:
-  - {fileID: 11400000, guid: a59c1b6c7382d9e48b8e8d43e3b6fdc4, type: 2}
+  - {fileID: 11400000, guid: f417e1d963060d64a89e1218f90a1bcf, type: 2}
+  - {fileID: 11400000, guid: cd8d6ea43f6eb864ebbae90f79643590, type: 2}
   - {fileID: 11400000, guid: 6fbf2bd8574881046909a32ee8ff3048, type: 2}
   - {fileID: 11400000, guid: 5d5f53ee985c46d4ea07b21923705b7c, type: 2}
-  - {fileID: 11400000, guid: f417e1d963060d64a89e1218f90a1bcf, type: 2}
+  - {fileID: 11400000, guid: 4bade225776332149833643efb9d65f2, type: 2}
   - {fileID: 11400000, guid: 7af6f2ade2e87e64d889afc829139260, type: 2}
-  - {fileID: 11400000, guid: cd8d6ea43f6eb864ebbae90f79643590, type: 2}
   - {fileID: 11400000, guid: a42584dc89103464f9ed6b264a28a095, type: 2}
   - {fileID: 11400000, guid: d44fc62610ca73848953c777fed06f2a, type: 2}
   - {fileID: 11400000, guid: b29013e72b69d6a4bbb7eecde98098f8, type: 2}
   - {fileID: 11400000, guid: 8ef2dcc5947351f4e97022134ba2e10d, type: 2}
-  - {fileID: 11400000, guid: 4bade225776332149833643efb9d65f2, type: 2}
+  - {fileID: 11400000, guid: a59c1b6c7382d9e48b8e8d43e3b6fdc4, type: 2}
+  - {fileID: 11400000, guid: 27c83929d087729488333178cffccdd8, type: 2}
+  - {fileID: 11400000, guid: bb409510b09d77f41935bd72c374d00b, type: 2}
+  - {fileID: 11400000, guid: 0698b52bb1db310439efc020e7c6b3d2, type: 2}
+  - {fileID: 11400000, guid: 8c6258cd32227ab44a61225ef4085a59, type: 2}
+  - {fileID: 11400000, guid: 51ecd5b331810fb488a3e1deafc64416, type: 2}
+  - {fileID: 11400000, guid: f7d3560fcd5d2e2489fe24d50dd86d07, type: 2}
   globalLoreList:
-  - {fileID: 11400000, guid: 4f8cde01bd6170b4ebe211b16ffcdab0, type: 2}
-  - {fileID: 11400000, guid: e7622614a17b2fd48a4967eb7bce24a0, type: 2}
   - {fileID: 11400000, guid: 3e737f2f7d6f34547946d05c2d4e8290, type: 2}
   - {fileID: 11400000, guid: 9d1466ab5d135704db8e7b13eb77fb8f, type: 2}
   - {fileID: 11400000, guid: 6d23d2b78ef617249aac3b0e37f93be6, type: 2}
   - {fileID: 11400000, guid: a2e58d4430d0eea41b04d9327ac3f69a, type: 2}
   - {fileID: 11400000, guid: 592318cd84cf56d41bd70a1cdf919607, type: 2}
+  - {fileID: 11400000, guid: 7fb3f6efa3015f14ca87699f56d3101f, type: 2}
+  - {fileID: 11400000, guid: e5979953f6bcb3e469faa51557af5fe7, type: 2}
+  - {fileID: 11400000, guid: c11f5bea684cadb4ba67d68b9df1156c, type: 2}
+  - {fileID: 11400000, guid: 4f8cde01bd6170b4ebe211b16ffcdab0, type: 2}
   globalItemList:
   - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
   - {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}

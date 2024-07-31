@@ -32,6 +32,7 @@ public class ShopBookMenu : MonoBehaviour
     [SerializeField] GameObject shopUpgradeObj;
 
     [SerializeField] AudioClip pageFlipClip;
+    [SerializeField] AudioClip buttonClickClip;
 
     int baseCost = 25;
     int costLevelMultiplier = 18; // Basically... Upgrade Cost = baseCost + (costLevelMultiplier * (level-1))

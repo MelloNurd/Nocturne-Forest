@@ -15,6 +15,7 @@ public class Shop : MonoBehaviour
     public List<ShopItem> items = new List<ShopItem>();
 
     public Customer customer;
+    Player player;
 
     Color dayTimeLight = Color.white;
     Color nightTimeLight = new Color(0.65f, 0.78f, 1);
@@ -31,12 +32,16 @@ public class Shop : MonoBehaviour
 
     bool spawningCustomer;
 
-    float dayTimer = 0;
+    [SerializeField] float dayTimer = 0;
     float dayLength = 120; // in seconds
 
     int largeShopSceneIndex = 3;
 
+    [Header("Sounds")]
+    [SerializeField] AudioClip shopCloseSound;
+
     private void Awake() {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         if(PlayerPrefs.GetInt("player_stats_shopupg", 1) > 1 && SceneManager.GetActiveScene().buildIndex != largeShopSceneIndex) {
             SceneManager.LoadScene(largeShopSceneIndex);
         }
@@ -62,12 +67,13 @@ public class Shop : MonoBehaviour
         // entire number of customers that came is over 20. This will let the day pass but ensure the player
         // is able to at least make a few sales. But if they aren't making sales and not changing anything,
         // the day should still end eventually (after 20 customers).
-        if (dayTimer >= dayLength && (numCustomersBought >= 3 || numCustomersCame >= 20)) {
+        if (isShopOpen && dayTimer >= dayLength && (numCustomersBought >= 2 || numCustomersCame >= 8)) {
             StopCoroutine(SpawnCustomer());
             InventoryManager.currentInstance.openCloseShopText.text = "Open  Shop";
             openCloseButton.interactable = false;
             leaveButton.interactable = true;
             isShopOpen = false;
+            player.PlaySound(shopCloseSound, 0.2f);
         }
         if (isShopOpen && !IsCustomerShopping() && !spawningCustomer && items.Count > 0) {
             StartCoroutine(SpawnCustomer());

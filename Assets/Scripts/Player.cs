@@ -85,6 +85,7 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip dieSound;
     [SerializeField] AudioClip pickupSound;
+    [SerializeField] List<AudioClip> walkSounds = new List<AudioClip>();
     [HideInInspector] public AudioSource audioSource;
 
     [Header("Debug")]
@@ -94,6 +95,7 @@ public class Player : MonoBehaviour
         audioSource.volume = volume;
         audioSource.pitch = pitch;
         audioSource.PlayOneShot(audioClip);
+        Debug.Log(audioSource.volume);
     }
 
     private void OnEnable()
