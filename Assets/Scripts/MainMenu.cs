@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Button newGameContinueButton;
-    [SerializeField] GameObject darkness;
+    [SerializeField] Animator animator;
 
     string sceneToLoad;
 
@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        darkness.SetActive(true);
+        animator.SetTrigger("Start");
         int hasPlayed = PlayerPrefs.GetInt("tutorial_completed", 0);
         Debug.Log(hasPlayed);
         newGameContinueButton.GetComponentInChildren<TMP_Text>().text = (hasPlayed != 0) ? "Continue" : "New Game";

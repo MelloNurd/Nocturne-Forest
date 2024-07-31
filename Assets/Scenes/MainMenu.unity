@@ -458,8 +458,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newGameContinueButton: {fileID: 1088943891}
-  darkness: {fileID: 0}
-  buttonClickClip: {fileID: 0}
+  animator: {fileID: 2112684548}
+  buttonClickClip: {fileID: 8300000, guid: 1d08fa0394769244888c7e5cf3f2dc7d, type: 3}
 --- !u!82 &411129248
 AudioSource:
   m_ObjectHideFlags: 0
@@ -853,7 +853,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &540566445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3101,7 +3101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1628193419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3627,7 +3627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2112684547
 RectTransform:
   m_ObjectHideFlags: 0
