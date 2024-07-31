@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     [Header("General")]
     public bool canPickup = true;
     public bool canOpenInventory = true;
+    public bool canPause = true;
     public bool enableUpgradeChanges = true;
     public GameObject itemOpened = null;
     public PlayerStates currentState = PlayerStates.Dynamic;
@@ -53,6 +54,7 @@ public class Player : MonoBehaviour
     private InputAction interact;
     private InputAction useItem;
     private InputAction openInv;
+    private InputAction pause;
 
     Vector2 moveDirection = Vector2.zero; // Vector which will be based on the movement inputs
 
@@ -102,6 +104,10 @@ public class Player : MonoBehaviour
         openInv = playerControls.Player.OpenInventory;
         openInv.performed += OnInventory;
         openInv.Enable();
+
+        pause = playerControls.Player.Pause;
+        pause.performed += OnPause;
+        pause.Enable();
     }
 
     private void OnDisable()
@@ -341,6 +347,12 @@ public class Player : MonoBehaviour
 
         if(itemOpened == null) inventoryManager.ToggleInventory(InventoryManager.InventoryOpening.PlayerInventory, gameObject);
         else inventoryManager.ToggleInventory(InventoryManager.InventoryOpening.Closing, gameObject);
+    }
+
+    private void OnPause(InputAction.CallbackContext context) {
+        if (!canPause) return;
+
+        inventoryManager.ToggleInventory(InventoryManager.InventoryOpening.PauseMenu, gameObject);
     }
 
     #endregion

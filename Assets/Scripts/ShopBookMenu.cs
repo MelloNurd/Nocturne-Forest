@@ -295,7 +295,7 @@ public class ShopBookMenu : MonoBehaviour
                 upgradeLevel = PlayerPrefs.GetInt("player_stats_shopupg", 1);
                 if (upgradeLevel >= 2) return;
 
-                cost = 1000;
+                cost = 500;
 
                 if (InventoryManager.currentInstance.playerCash < cost) {
                     InventoryManager.currentInstance.playerCashText.rectTransform.DOShakeAnchorPos(0.15f, 20f, 50).SetUpdate(true);
@@ -373,7 +373,7 @@ public class ShopBookMenu : MonoBehaviour
         }
 
         // overriding the cost for the shop. lazy way but quick
-        int cost = 1000; // baseCost + (costLevelMultiplier * (upgradeLevel - 1));
+        int cost = 500; // baseCost + (costLevelMultiplier * (upgradeLevel - 1));
         shopUpgradeObj.transform.Find("Cash Amount").GetComponent<TMP_Text>().text = upgradeLevel >= maxUpgrades ? "MAX" : "$" + cost;
     }
 }

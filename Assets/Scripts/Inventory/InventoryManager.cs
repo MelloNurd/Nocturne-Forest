@@ -15,6 +15,7 @@ public class InventoryManager : MonoBehaviour
         ShopBook,
         DoorMenu,
         TutorialBook,
+        PauseMenu,
         Closing
     }
 
@@ -49,6 +50,7 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public GameObject cauldronCraftingObj;
     [HideInInspector] public GameObject shopBookObj;
     [HideInInspector] public GameObject doorMenuObj;
+    [HideInInspector] public GameObject pauseMenuObj;
     [HideInInspector] public GameObject tutorialBookMenu;
 
     List<InventorySlot> shopInventorySlots = new List<InventorySlot>();
@@ -84,6 +86,7 @@ public class InventoryManager : MonoBehaviour
         cauldronCraftingObj = transform.Find("PotionCrafting").gameObject;
         shopBookObj = transform.Find("ShopBookMenu").gameObject;
         doorMenuObj = transform.Find("DoorMenu").gameObject;
+        pauseMenuObj = transform.Find("PauseMenu").gameObject;
         tutorialBookMenu = transform.Find("TutorialBook").gameObject;
 
         playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -303,6 +306,10 @@ public class InventoryManager : MonoBehaviour
                 tutorialBookMenu.SetActive(true);
                 hotbarObj.SetActive(false);
                 break;
+            case InventoryOpening.PauseMenu:
+                pauseMenuObj.SetActive(true);
+                hotbarObj.SetActive(false);
+                break;
             case InventoryOpening.Closing:
                 Time.timeScale = 1f;
                 hotbarObj.SetActive(true);
@@ -323,6 +330,8 @@ public class InventoryManager : MonoBehaviour
                 shopBookObj.SetActive(false);
 
                 doorMenuObj.SetActive(false);
+
+                pauseMenuObj.SetActive(false);
 
                 tutorialBookMenu.SetActive(false);
 
