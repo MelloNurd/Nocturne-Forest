@@ -6264,6 +6264,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c11f5bea684cadb4ba67d68b9df1156c, type: 2}
   - {fileID: 11400000, guid: 4f8cde01bd6170b4ebe211b16ffcdab0, type: 2}
   globalItemList:
+  - {fileID: 11400000, guid: b40f01638b2abf24ebe552e320064be6, type: 2}
+  - {fileID: 11400000, guid: 0352dfae4e694ba4d9a7b714a59653b2, type: 2}
+  - {fileID: 11400000, guid: 6533bb780e0cfee45a638eb00817133b, type: 2}
   - {fileID: 11400000, guid: 15f5b5402357fd8459310265da8ad221, type: 2}
   - {fileID: 11400000, guid: 4479633bc15535c4db7376c7c3e72acc, type: 2}
   - {fileID: 11400000, guid: ece4ed1601ce19b4db92648228a656c4, type: 2}
@@ -6271,7 +6274,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cebaab648c1c8f2498cfe0ac9f270e3d, type: 2}
   - {fileID: 11400000, guid: 9ebbd97ae0240f6429607128717d199c, type: 2}
   - {fileID: 11400000, guid: 551882f4abdae7945a125ffa9c732aea, type: 2}
-  - {fileID: 11400000, guid: 0352dfae4e694ba4d9a7b714a59653b2, type: 2}
   - {fileID: 11400000, guid: 96ee64e87d8c5f64ebdc00503355fa7e, type: 2}
   - {fileID: 11400000, guid: efda91c876cad714dbe42a602bf7c169, type: 2}
   - {fileID: 11400000, guid: 5d6cc2521ae947e4fb3099153a61cf85, type: 2}
@@ -6300,6 +6302,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f979c2ec9ee0eef42987ee4150a2e802, type: 2}
   - {fileID: 11400000, guid: a760ba5b854aa254f8ab025f4157202c, type: 2}
   - {fileID: 11400000, guid: 393ce5795bf3ae144b2546aa2b14b8f7, type: 2}
+  - {fileID: 11400000, guid: 334609d63c8036a458d4ce8f94248103, type: 2}
+  - {fileID: 11400000, guid: 8184f2b7cf3aef4468938ef5f916b56d, type: 2}
+  - {fileID: 11400000, guid: 1b082be70c34b5d43a86a459f1144932, type: 2}
   resetRecipeListOnStart: 0
   resetLoreListOnStart: 0
   playerCash: 0
