@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(AudioSource))]
 public class Player : MonoBehaviour
 {
 
@@ -77,8 +78,18 @@ public class Player : MonoBehaviour
     [SerializeField] float rollCooldownSeconds = 1f; // The length of time until the player can roll again
     [SerializeField] float rollSpeedModifier = 3.5f; // Multiplicative modifier of moveSpeed while rolling
 
+    [Header("Sounds")]
+    [SerializeField] AudioClip attackSound;
+    AudioSource audioSource;
+
     [Header("Debug")]
     [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes = true; // Shows the radiuses for various variables within the scene view
+
+    public void PlaySound(AudioClip audioClip, float volume, float pitch) {
+        audioSource.volume = volume;
+        audioSource.pitch = pitch;
+        audioSource.PlayOneShot(audioClip);
+    }
 
     private void OnEnable()
     { // This is where we are initialzing all of the input stuff
@@ -123,6 +134,8 @@ public class Player : MonoBehaviour
 
     private void Awake() 
     {
+        audioSource = GetComponent<AudioSource>();
+
         playerControls = new PlayerInputActions(); // Creates an input object
 
         attackArea = transform.Find("AttackArea").gameObject; // Initializes object to the "AttackArea" child
@@ -384,6 +397,7 @@ public class Player : MonoBehaviour
 
         animator.SetBool("Attack", true);
         yield return new WaitForSeconds(attackDelaySeconds); // Waits for attackDelaySeconds
+        PlaySound(attackSound, 1, UnityEngine.Random.Range(0.85f, 1.15f));
         EnableAttackArea(); // Enables the attack area
         yield return new WaitForSeconds(attackLengthSeconds); // Waits for attackLengthSeconds
         DisableAttackArea(); // Disables the attack area

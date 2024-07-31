@@ -21,6 +21,7 @@ public enum RespawnType {
     OneTime
 }
 
+[RequireComponent(typeof(AudioSource))]
 public abstract class EnemyBase : MonoBehaviour
 {
     public EnemyTypes enemyType;
@@ -50,7 +51,18 @@ public abstract class EnemyBase : MonoBehaviour
     protected Player player;
     protected Rigidbody2D rb;
 
+    [Header("Sounds")]
+    [SerializeField] AudioClip attackSound;
+    AudioSource audioSource;
+
+    public void PlaySound(AudioClip audioClip, float volume, float pitch) {
+        audioSource.volume = volume;
+        audioSource.pitch = pitch;
+        audioSource.PlayOneShot(audioClip);
+    }
+
     protected virtual void Awake() {
+        audioSource = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;

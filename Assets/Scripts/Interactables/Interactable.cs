@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public abstract class Interactable : MonoBehaviour
 {
     public static Interactable nextInteract; // This will be the object that the player has in range to interact. Only one Interactable can be interacted with at a time.
@@ -19,11 +20,22 @@ public abstract class Interactable : MonoBehaviour
     protected Player player;
     float playerDist;
 
+    [Header("Sounds")]
+    [SerializeField] AudioClip attackSound;
+    AudioSource audioSource;
+
     public abstract void Interact();
-    
+
+    public void PlaySound(AudioClip audioClip, float volume, float pitch) {
+        audioSource.volume = volume;
+        audioSource.pitch = pitch;
+        audioSource.PlayOneShot(audioClip);
+    }
+
     // Start is called before the first frame update
     protected virtual void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         gameObject.layer = LayerMask.NameToLayer("Interactable");
     }
 
