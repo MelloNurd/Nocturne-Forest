@@ -43,6 +43,10 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] LootTable itemDrops;
     GameObject pickupablePrefab;
 
+    public bool dropsRecipeInstead = false;
+    public Recipe recipeToDrop;
+    public GameObject recipePrefab;
+
     protected Player player;
     protected Rigidbody2D rb;
 
@@ -106,7 +110,11 @@ public abstract class EnemyBase : MonoBehaviour
         PlayerPrefs.SetInt("total_enemies_killed", PlayerPrefs.GetInt("total_enemies_killed", 0) + 1);
 
         // Run through item drops
-        if (itemDrops != null) {
+        if (dropsRecipeInstead && recipeToDrop != null && recipePrefab != null) {
+            GameObject newRecipe = Instantiate(recipePrefab, transform.position, Quaternion.identity);
+            newRecipe.GetComponent<RecipePage>().recipeToUnlock = recipeToDrop;
+        }
+        else if (itemDrops != null) {
             List<Item> drops = itemDrops.RollDrops();
             foreach (Item item in itemDrops.RollDrops()) {
                 DropItem(item);

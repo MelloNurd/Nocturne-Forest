@@ -8,6 +8,8 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] Animator animator;
     public float transitionTime = 1f;
 
+    public bool isTutorialArea = false;
+
     private void Start() {
         Time.timeScale = 1;
         animator.gameObject.SetActive(true);
@@ -21,6 +23,9 @@ public class LevelLoader : MonoBehaviour
     
     public IEnumerator loadLevel(string scene)
     {
+        if (isTutorialArea) {
+            PlayerPrefs.SetInt("tutorial_completed", 1);
+        }
         animator.SetTrigger("Start");
         yield return new WaitForSecondsRealtime(transitionTime);
         animator.ResetTrigger("Start");
@@ -30,6 +35,7 @@ public class LevelLoader : MonoBehaviour
     public void triggerTransition()
     {
         Time.timeScale = 1;
+
         StartCoroutine(loadLevel(scene));
     }
 }

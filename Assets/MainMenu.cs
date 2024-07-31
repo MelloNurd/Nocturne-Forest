@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -16,6 +17,7 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         int hasPlayed = PlayerPrefs.GetInt("tutorial_completed", 0);
+        Debug.Log(hasPlayed);
         newGameContinueButton.GetComponentInChildren<TMP_Text>().text = (hasPlayed != 0) ? "Continue" : "New Game";
         sceneToLoad = (hasPlayed != 0) ? "Shop" : "Tutorial";
     }
@@ -27,6 +29,10 @@ public class MainMenu : MonoBehaviour
     }
 
     public void OnPlay() {
+        SceneManager.LoadScene(sceneToLoad);
+    }
 
+    public void DeleteSaveData() {
+        PlayerPrefs.DeleteAll();
     }
 }
