@@ -53,6 +53,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip hurtSound;
     [SerializeField] AudioClip deathSound;
     AudioSource audioSource;
 
@@ -95,9 +96,11 @@ public abstract class EnemyBase : MonoBehaviour
     protected bool TakeDamage(float damage) {
         if ((currentHealth -= damage) <= 0) {
             UpdateHealthBar();
+            if(hurtSound != null) player.PlaySound(hurtSound, 1, 0.5f);
             Die();
             return false;
         }
+        if (hurtSound != null) PlaySound(hurtSound, 1, Random.Range(0.9f, 1.1f));
         UpdateHealthBar();
         return true;
     }

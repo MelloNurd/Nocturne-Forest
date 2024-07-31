@@ -47,6 +47,9 @@ public class Player : MonoBehaviour
     private InventoryManager inventoryManager;
     Rigidbody2D rb;
 
+    TMP_Text pagePickupText;
+    Sequence pagePickupTextSequence;
+
     // Input stuff
     [HideInInspector] public PlayerInputActions playerControls;
     private InputAction move;
@@ -150,7 +153,7 @@ public class Player : MonoBehaviour
         healthBar = transform.Find("HealthBarOBJ").Find("HealthBarParent").gameObject;
         healthBar.transform.parent.localScale = Vector2.right;
 
-        //Time.timeScale = Time.timeScale / 2;
+        pagePickupText = GetComponentInChildren<TMP_Text>();
     }
 
     private void Start() {
@@ -218,6 +221,20 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void SetPickupString(string text) {
+        pagePickupText.text = text.Replace(" ", "  ");
+        pagePickupText.color = Color.white;
+
+        pagePickupText.transform.localPosition = new Vector2(0, 3.25f);
+
+        if (pagePickupTextSequence.IsActive()) pagePickupTextSequence.Kill();
+        pagePickupTextSequence = DOTween.Sequence();
+
+        pagePickupTextSequence.Append(pagePickupText.transform.DOLocalMove(new Vector2(0, 6f), 2.5f).SetEase(Ease.Linear));
+        pagePickupTextSequence.Join(pagePickupText.DOColor(Color.clear, 1.5f).SetDelay(1f));
+        pagePickupTextSequence.Play();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
         if(currentState != PlayerStates.Rolling && collision.CompareTag("EnemyAttack") && currentState != PlayerStates.Static) { // Code for when the player is hit by Enemy attack area
             // Player was hit
@@ -237,19 +254,22 @@ public class Player : MonoBehaviour
                 damage = projectile.attackDamage;
             }
 
-            Knockback(knockbackDir, knockbackMultipler);
-            TakeDamage(damage);
+            if(TakeDamage(damage)) Knockback(knockbackDir, knockbackMultipler);
         }
     }
 
-    void TakeDamage(float damage) {
+    bool TakeDamage(float damage) {
         // The order of stuff is a little confusing here because we need to subtract damage, clamp to zero if below, set the health bar, THEN check if its below zero to die...
         currentHealth -= damage;
         if(currentHealth <= 0) currentHealth = 0;
 
         UpdateHealthBar();
 
-        if (currentHealth <= 0)  Die(); 
+        if (currentHealth <= 0) {
+            Die();
+            return false;
+        }
+        return true;
     }
 
     void Die() {
