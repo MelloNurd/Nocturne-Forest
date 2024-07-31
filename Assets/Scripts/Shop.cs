@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class Shop : MonoBehaviour
 {
     [SerializeField] GameObject pedestalUI;
@@ -39,8 +40,13 @@ public class Shop : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioClip shopCloseSound;
+    [SerializeField] List<AudioClip> shopSongs = new List<AudioClip>();
+    int songIndex;
+    AudioSource audioSource;
 
     private void Awake() {
+        audioSource = GetComponent<AudioSource>();
+
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         if(PlayerPrefs.GetInt("player_stats_shopupg", 1) > 1 && SceneManager.GetActiveScene().buildIndex != largeShopSceneIndex) {
             SceneManager.LoadScene(largeShopSceneIndex);
@@ -53,6 +59,22 @@ public class Shop : MonoBehaviour
         dayTimer = 0;
         globalLight.color = dayTimeLight;
         globalLight.intensity = 1;
+
+        audioSource.volume = 0.08f;
+        if(shopSongs.Count > 0) {
+            songIndex = UnityEngine.Random.Range(0, shopSongs.Count);
+            audioSource.PlayOneShot(shopSongs[songIndex]);
+            StartCoroutine(StartNewSong(shopSongs[songIndex].length + 3));
+        }
+    }
+
+    IEnumerator StartNewSong(float currentLength) {
+        Debug.Log(currentLength);
+        yield return new WaitForSecondsRealtime(currentLength);
+        songIndex++;
+        if (songIndex > shopSongs.Count - 1) songIndex = 0;
+        audioSource.PlayOneShot(shopSongs[songIndex]);
+        StartCoroutine(StartNewSong(shopSongs[songIndex].length + 3));
     }
 
     // Update is called once per frame

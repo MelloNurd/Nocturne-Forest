@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 [RequireComponent(typeof(AudioSource))]
 public class Player : MonoBehaviour
@@ -91,11 +92,12 @@ public class Player : MonoBehaviour
     [Header("Debug")]
     [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes = true; // Shows the radiuses for various variables within the scene view
 
+    float footstepTimer;
+
     public void PlaySound(AudioClip audioClip, float volume = 1f, float pitch = 1f) {
         audioSource.volume = volume;
         audioSource.pitch = pitch;
         audioSource.PlayOneShot(audioClip);
-        Debug.Log(audioSource.volume);
     }
 
     private void OnEnable()
@@ -159,6 +161,8 @@ public class Player : MonoBehaviour
     }
 
     private void Start() {
+        footstepTimer = 0f;
+
         Vector2 facingDir = GetDirectionFacing();
         attackArea.transform.right = facingDir;
         attackArea.transform.localPosition = facingDir; // Do this once so the attackArea is going to be not centered on the player at the start
@@ -194,6 +198,13 @@ public class Player : MonoBehaviour
             {
                 animator.SetBool("Walking", false);
             }
+        }
+
+        footstepTimer += Time.deltaTime;
+        float seconds = IsMoving() ? 2.5f / rb.velocity.magnitude : 0.1f;
+        if(footstepTimer >= seconds && walkSounds.Count > 0) {
+            if (IsMoving()) PlaySound(walkSounds[UnityEngine.Random.Range(0, walkSounds.Count)], 0.2f);
+            footstepTimer = 0f;
         }
     }
 
@@ -258,6 +269,26 @@ public class Player : MonoBehaviour
 
             if(TakeDamage(damage)) Knockback(knockbackDir, knockbackMultipler);
         }
+    }
+
+    public void DropItemAtPlayer(string itemName) {
+        Item item = InventoryManager.itemLookup.GetValueOrDefault(itemName);
+        if(item == null) {
+            Debug.LogError("Trying to drop unkown item at player!");
+            return;
+        }
+        GameObject droppedItem = ObjectPoolManager.SpawnObject(InventoryManager.currentInstance.pickupablePrefab, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Pickupables);
+        Pickupable pickupScript = droppedItem.GetComponent<Pickupable>();
+        pickupScript.UpdatePickupableObj(item);
+        pickupScript.canPickup = false;
+        pickupScript.playerDropped = true;
+
+        Vector3 originalSize = droppedItem.transform.localScale;
+        droppedItem.transform.localScale = originalSize * 0.5f;
+
+        // Using DOTween package. Jump to a random position within dropRange. After animation, run the pickup's OnItemSpawn script.
+        droppedItem.transform.DOJump(transform.position + (Vector3)UnityEngine.Random.insideUnitCircle * InventoryManager.currentInstance.dropRange, InventoryManager.currentInstance.dropStrength, 1, InventoryManager.currentInstance.dropDuration).onComplete = pickupScript.OnItemSpawn;
+        droppedItem.transform.DOScale(originalSize, InventoryManager.currentInstance.dropDuration * 0.8f); // Scales the object up smoothly in dropDuration length * 0.8f (when it's 80% done)
     }
 
     bool TakeDamage(float damage) {
@@ -341,15 +372,12 @@ public class Player : MonoBehaviour
         // Gets all interactable/pickupables in range and orders it by closest to player
         Collider2D[] interacted = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactionMask).OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToArray();
 
-        Debug.Log(Interactable.nextInteract);
-        if(Interactable.nextInteract != null) { // If there is a highlighted interactable, interact with it and ignore the pickupables
-            Interactable.nextInteract.Interact();
-            return;
-        }
-
-        // If there have not been any Interactables, then we look for Pickupables.
         foreach (Collider2D objCol in interacted) { // Performs actions on each collider in range
             if (objCol.TryGetComponent(out Pickupable pickupable)) pickupable.Pickup(); // Attempts to pickup the item. There are checks inside of the function that determine if it can be picked up.
+        }
+
+        if (Interactable.nextInteract != null) { // If there is a highlighted interactable, interact with it and ignore the pickupables
+            Interactable.nextInteract.Interact();
         }
     }
 
@@ -357,7 +385,6 @@ public class Player : MonoBehaviour
         Item usedItem = inventoryManager.GetSelectedItem(false);
         if (usedItem == null) return;
 
-        Debug.Log(usedItem.usage);
         switch(usedItem.usage) {
             case ItemAction.Heal:
                 currentHealth += usedItem.useAmount;

@@ -5613,6 +5613,8 @@ MonoBehaviour:
   emptyButton: {fileID: 7991110207550684438}
   ingredientAddSound: {fileID: 0}
   cauldronCraftSound: {fileID: 0}
+  buttonClickClip: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &4140742966005765633
 GameObject:
   m_ObjectHideFlags: 0
@@ -6135,7 +6137,7 @@ RectTransform:
   m_GameObject: {fileID: 4513003156565302353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.6424478, y: 0.6424478, z: 0.6424478}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3213984777181028212}
@@ -8537,6 +8539,7 @@ MonoBehaviour:
   attackDmgUpgradeObj: {fileID: 1477512452836484324}
   shopUpgradeObj: {fileID: 6183841944954062254}
   pageFlipClip: {fileID: 0}
+  buttonClickClip: {fileID: 0}
   resetUpgradesOnStart: 0
 --- !u!1 &6238354527779345181
 GameObject:
@@ -11672,7 +11675,6 @@ GameObject:
   - component: {fileID: 7959221948239442141}
   - component: {fileID: 8474792309577140382}
   - component: {fileID: 973722278419667253}
-  - component: {fileID: 4239448101556310825}
   m_Layer: 5
   m_Name: Leave Shop Button
   m_TagString: Untagged
@@ -11782,7 +11784,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4239448101556310825}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelLoader, Assembly-CSharp
         m_MethodName: triggerTransition
         m_Mode: 1
@@ -11794,22 +11796,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
---- !u!114 &4239448101556310825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8409566771309000047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32aac5216aae05746a8f60a4c3abdcf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scene: Forest
-  animator: {fileID: 0}
-  transitionTime: 1
-  isTutorialArea: 0
 --- !u!1 &8491813348529748911
 GameObject:
   m_ObjectHideFlags: 0
