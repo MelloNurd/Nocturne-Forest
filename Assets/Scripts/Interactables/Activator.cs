@@ -22,6 +22,7 @@ public class Activator : Interactable
     public bool shakeOnFail = true;
 
     public UnityEvent onSuccessfulInteract;
+    public UnityEvent onFailInteract;
 
     protected override void Awake() {
         base.Awake();
@@ -63,6 +64,7 @@ public class Activator : Interactable
                 hintTween.Kill();
                 if (shakeOnFail) transform.DOShakePosition(0.15f, 0.2f, 50);
                 hintTween = hintTextObj.DOFade(0, 0.5f).SetDelay(hintLength);
+                onFailInteract?.Invoke();
                 return;
             }
             else {
