@@ -273,6 +273,7 @@ public class Player : MonoBehaviour
     }
 
     void Die() {
+        rb.velocity = Vector2.zero;
         GetComponent<CapsuleCollider2D>().enabled = false;
         currentState = PlayerStates.Static;
         healthTween.Kill();
