@@ -31,6 +31,8 @@ public class ShopBookMenu : MonoBehaviour
     [SerializeField] GameObject attackDmgUpgradeObj;
     [SerializeField] GameObject shopUpgradeObj;
 
+    [SerializeField] AudioClip pageFlipClip;
+
     int baseCost = 25;
     int costLevelMultiplier = 18; // Basically... Upgrade Cost = baseCost + (costLevelMultiplier * (level-1))
     public bool resetUpgradesOnStart = false;
@@ -38,8 +40,9 @@ public class ShopBookMenu : MonoBehaviour
     Color UpgradeBarColorOff = new Color(0.52f, 0.34f, 0.34f, 0.41f);
     Color UpgradeBarColorOn = new Color(0.52f, 0.34f, 0.34f, 1);
 
-
     List<GameObject> textObjs = new List<GameObject>(); // This is used to store/delete the duplicated text on the various pages
+
+    Player player;
 
     private void Awake() {
         if (resetUpgradesOnStart) {
@@ -48,6 +51,7 @@ public class ShopBookMenu : MonoBehaviour
             PlayerPrefs.SetInt("player_stats_atkdmg", 1);
             PlayerPrefs.SetInt("player_stats_shopupg", 1);
         }
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     private void Start() {
@@ -160,6 +164,7 @@ public class ShopBookMenu : MonoBehaviour
     }
 
     public void FlipPage(int direction) {
+        player.PlaySound(pageFlipClip, 1, UnityEngine.Random.Range(0.85f, 1.15f));
         Transform activeChapter = chapters.FirstOrDefault(x => x.activeSelf).transform;
         if(activeChapter == null) {
             Debug.LogWarning("No active chapter was found when flipping chapter in the shop book!");
@@ -217,7 +222,9 @@ public class ShopBookMenu : MonoBehaviour
     }
 
     public void ChangeChapter(GameObject chapterObj) {
-        foreach(GameObject obj in chapters) { // Go through all chapters in the book
+        player.PlaySound(pageFlipClip, 1, UnityEngine.Random.Range(0.85f, 1.15f)); 
+        
+        foreach (GameObject obj in chapters) { // Go through all chapters in the book
             for(int i = 0; i < obj.transform.childCount; i++) {
                 obj.transform.GetChild(i).gameObject.SetActive(false); // Disable all the children of the chapter(the pages)
             }

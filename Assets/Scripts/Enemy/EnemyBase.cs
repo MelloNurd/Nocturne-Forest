@@ -53,9 +53,10 @@ public abstract class EnemyBase : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip deathSound;
     AudioSource audioSource;
 
-    public void PlaySound(AudioClip audioClip, float volume, float pitch) {
+    public void PlaySound(AudioClip audioClip, float volume = 1f, float pitch = 1f) {
         audioSource.volume = volume;
         audioSource.pitch = pitch;
         audioSource.PlayOneShot(audioClip);

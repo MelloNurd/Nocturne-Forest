@@ -18,15 +18,21 @@ public class CauldronCrafting : MonoBehaviour
 
     [SerializeField] Button craftButton;
     [SerializeField] Button emptyButton;
+
+    [SerializeField] AudioClip ingredientAddSound;
+    [SerializeField] AudioClip cauldronCraftSound;
     
     InventorySlot inputSlot;
 
     Sequence sequence;
 
+    Player player;
+
     private void Awake() {
         inputSlot = transform.Find("InventorySlot").GetComponent<InventorySlot>();
         movingItem.rectTransform.localScale = Vector3.one * 0.5f;
         ClearIngredients();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     public void AddInputItemToIngredients() {
@@ -55,6 +61,7 @@ public class CauldronCrafting : MonoBehaviour
 
     public IEnumerator AddItemToIngredients(Item item) {
         yield return new WaitForSeconds(0.75f);
+        player.PlaySound(ingredientAddSound, 1, Random.Range(0.9f, 1.1f));
         addedIngredients.Add(item);
         cauldronImage.sprite = greenWaterSprite;
         craftButton.interactable = true;
@@ -104,6 +111,7 @@ public class CauldronCrafting : MonoBehaviour
     IEnumerator CraftItem(Item outputItem) {
         yield return new WaitForSeconds(0.75f);
         InventoryManager.currentInstance.SpawnNewItem(outputItem, inputSlot);
+        player.PlaySound(cauldronCraftSound, 0.6f);
     }
 
     bool CompareIngredientLists(List<Item> A, List<Item> B) {

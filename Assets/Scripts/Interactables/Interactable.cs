@@ -21,21 +21,13 @@ public abstract class Interactable : MonoBehaviour
     float playerDist;
 
     [Header("Sounds")]
-    [SerializeField] AudioClip attackSound;
-    AudioSource audioSource;
+    public AudioClip interactSound;
 
     public abstract void Interact();
-
-    public void PlaySound(AudioClip audioClip, float volume, float pitch) {
-        audioSource.volume = volume;
-        audioSource.pitch = pitch;
-        audioSource.PlayOneShot(audioClip);
-    }
 
     // Start is called before the first frame update
     protected virtual void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
         gameObject.layer = LayerMask.NameToLayer("Interactable");
     }
 

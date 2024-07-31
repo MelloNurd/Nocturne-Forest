@@ -80,12 +80,14 @@ public class Player : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioClip attackSound;
-    AudioSource audioSource;
+    [SerializeField] AudioClip dieSound;
+    [SerializeField] AudioClip pickupSound;
+    [HideInInspector] public AudioSource audioSource;
 
     [Header("Debug")]
     [Tooltip("This will only show in Scene view.")][SerializeField] bool showRadiusSizes = true; // Shows the radiuses for various variables within the scene view
 
-    public void PlaySound(AudioClip audioClip, float volume, float pitch) {
+    public void PlaySound(AudioClip audioClip, float volume = 1f, float pitch = 1f) {
         audioSource.volume = volume;
         audioSource.pitch = pitch;
         audioSource.PlayOneShot(audioClip);
@@ -256,8 +258,8 @@ public class Player : MonoBehaviour
         healthTween.Kill();
         currentHealth = 0;
         animator.SetTrigger("Death");
+        PlaySound(dieSound);
         StartCoroutine(AfterDeath());
-        Debug.Log("holy moly the player died!");
     }
 
     IEnumerator AfterDeath()

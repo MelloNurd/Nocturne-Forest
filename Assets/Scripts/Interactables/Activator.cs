@@ -71,6 +71,7 @@ public class Activator : Interactable
                 if(heldItem.deleteOnUse) InventoryManager.currentInstance.GetSelectedItem(true);
             }
         }
+        if(interactSound != null) player.PlaySound(interactSound);
         PlayerPrefs.SetInt("Activator_" + gameObject.scene + "_" + gameObject.name, 1);
         onSuccessfulInteract?.Invoke();
     }
