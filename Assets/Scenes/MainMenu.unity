@@ -853,7 +853,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &540566445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,8 +1112,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.2451172, y: 0.79400635}
-  m_SizeDelta: {x: 801.62, y: 449.07}
+  m_AnchoredPosition: {x: -0.00084102, y: 0.0010391}
+  m_SizeDelta: {x: 518.85, y: 291.92}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &654265670
 MonoBehaviour:
@@ -1291,7 +1291,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 562, y: 292}
+  m_AnchoredPosition: {x: 364, y: 189}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &778065225
@@ -2687,8 +2687,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -384.08105, y: 264}
-  m_SizeDelta: {x: -1016.8622, y: -631.0224}
+  m_AnchoredPosition: {x: -248, y: 175}
+  m_SizeDelta: {x: -626.6178, y: -483.6428}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1444914090
 MonoBehaviour:
@@ -2737,8 +2737,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.3
-  m_fontSizeBase: 35.3
+  m_fontSize: 29.2
+  m_fontSizeBase: 29.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2978,8 +2978,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.812988, y: 145}
-  m_SizeDelta: {x: -550.8491, y: -631.0224}
+  m_AnchoredPosition: {x: 11.959991, y: 89}
+  m_SizeDelta: {x: -296.67, y: -507.8602}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1522623871
 MonoBehaviour:
@@ -3033,8 +3033,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.54
-  m_fontSizeBase: 21.54
+  m_fontSize: 14.3
+  m_fontSizeBase: 14.3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3069,7 +3069,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0.6922531, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
