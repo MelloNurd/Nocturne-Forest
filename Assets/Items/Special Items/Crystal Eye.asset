@@ -15,6 +15,6 @@ MonoBehaviour:
   image: {fileID: -182830894, guid: 0382b5907f86b4648abd7f0778d4d1b1, type: 3}
   usage: 2
   maxStackSize: 1
-  marketPrice: 500
+  marketPrice: 250
   useAmount: 0
   deleteOnUse: 1
