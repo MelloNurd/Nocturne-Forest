@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ae2d7b343773594784ccee1d8cc3a4e, type: 3}
-  m_Name: StrengthPotionRecipe
+  m_Name: RedMonsterWingRecipe
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 11400000, guid: a760ba5b854aa254f8ab025f4157202c, type: 2}
+  craftedItem: {fileID: 11400000, guid: 8e5e31bb00ddd644196db8e879b46fac, type: 2}
   craftedAmount: 1
   craftingWorkstation: 0
   craftingIngredients:
-  - {fileID: 11400000, guid: f928eef2d5e07644694af39c362f10e5, type: 2}
-  - {fileID: 11400000, guid: e274678bc36441844aec31beefef1110, type: 2}
-  - {fileID: 11400000, guid: 83361ce46693b234f9946abeca2b6590, type: 2}
-  - {fileID: 11400000, guid: efda91c876cad714dbe42a602bf7c169, type: 2}
+  - {fileID: 11400000, guid: c1de4942633e5884f872802c96c38307, type: 2}
+  - {fileID: 11400000, guid: da3f0d50b60d0564d940582609cbd2a6, type: 2}
   showRecipeInBook: 0
