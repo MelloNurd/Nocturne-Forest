@@ -2510,6 +2510,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1055759009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8573912827128054025, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+  m_PrefabInstance: {fileID: 2120916690}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1249851764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4865,6 +4870,14 @@ PrefabInstance:
       propertyPath: pageFlipClip
       value: 
       objectReference: {fileID: 8300000, guid: e403a84747a0bdb43a3c330cde062248, type: 3}
+    - target: {fileID: 2834983523053101167, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: chapters.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834983523053101167, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: chapters.Array.data[4]
+      value: 
+      objectReference: {fileID: 1055759009}
     - target: {fileID: 3014833927551038550, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4968,6 +4981,14 @@ PrefabInstance:
     - target: {fileID: 5868634342750464923, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6210745054826548369, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6606144515439271929, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6772645381509956705, guid: a7b685ae5dc3c274691592f7d4c81130, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
