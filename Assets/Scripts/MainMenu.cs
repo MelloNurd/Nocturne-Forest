@@ -27,6 +27,10 @@ public class MainMenu : MonoBehaviour
         Debug.Log(audioSource.volume);
     }
 
+    private void Awake() {
+        Time.timeScale = 1f;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

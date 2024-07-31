@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 [RequireComponent(typeof(AudioSource))]
 public class Player : MonoBehaviour
