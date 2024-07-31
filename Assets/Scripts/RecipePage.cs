@@ -29,7 +29,7 @@ public class RecipePage : Interactable
         if (!canInteract) return;
 
         PlayerPrefs.SetInt("RecipePage_" + recipeToUnlock.name, 1);
-
+        player.SetPickupString(recipeToUnlock.craftedItem.name.Replace("_", " ") + " Recipe Acquired");
         gameObject.SetActive(false);
     }
 }
