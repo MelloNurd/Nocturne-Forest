@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae2d7b343773594784ccee1d8cc3a4e, type: 3}
   m_Name: CrystalEye
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 11400000, guid: 8184f2b7cf3aef4468938ef5f916b56d, type: 2}
+  craftedItem: {fileID: 11400000, guid: 334609d63c8036a458d4ce8f94248103, type: 2}
   craftedAmount: 1
   craftingWorkstation: 0
   craftingIngredients:
